@@ -1,3 +1,5 @@
+import FadeUp from "@/components/FadeUp";
+
 type Side = "tab" | "notch" | "flat";
 
 interface Piece {
@@ -165,9 +167,11 @@ const SVG_H = 2 * PH; // 400
 export default function WhyChooseSection() {
   return (
     <section id="why-choose" className="py-20 bg-white">
-      <h2 className="text-4xl font-extrabold text-center text-orange-500 mb-12">
-        Why Choose Ukti
-      </h2>
+      <FadeUp>
+        <h2 className="text-4xl font-extrabold text-center text-orange-500 mb-12">
+          Why Choose Ukti
+        </h2>
+      </FadeUp>
       <div className="w-full">
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}

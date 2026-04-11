@@ -2,6 +2,8 @@
 // Row 1 scrolls left→right. Row 2 scrolls right→left.
 // CSS keyframes (marquee-ltr / marquee-rtl) are defined in globals.css.
 
+import FadeUp from "@/components/FadeUp";
+
 const ITEMS_PER_ROW = 6;
 
 const row1 = Array.from({ length: ITEMS_PER_ROW }, (_, i) => i + 1);
@@ -10,9 +12,11 @@ const row2 = Array.from({ length: ITEMS_PER_ROW }, (_, i) => i + 1);
 export default function GallerySection() {
   return (
     <section id="gallery" className="py-20 bg-white overflow-hidden">
-      <h2 className="text-4xl font-extrabold text-center text-orange-500 mb-12">
-        Gallery
-      </h2>
+      <FadeUp>
+        <h2 className="text-4xl font-extrabold text-center text-orange-500 mb-12">
+          Gallery
+        </h2>
+      </FadeUp>
 
       {/* Row 1 — left to right */}
       <div className="overflow-hidden mb-4">

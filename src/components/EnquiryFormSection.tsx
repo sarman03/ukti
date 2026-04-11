@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import FadeUp from "@/components/FadeUp";
 
 type FormTab = "tour" | "admission";
 
@@ -13,9 +14,11 @@ export default function EnquiryFormSection() {
       className="py-20 px-8 bg-white border-t-4 border-amber-400"
     >
       <div className="max-w-3xl mx-auto">
-        <h2 className="text-4xl font-extrabold text-center text-orange-500 mb-8">
-          Enquiry form
-        </h2>
+        <FadeUp>
+          <h2 className="text-4xl font-extrabold text-center text-orange-500 mb-8">
+            Enquiry form
+          </h2>
+        </FadeUp>
 
         {/* Tab toggle */}
         <div className="flex justify-center gap-3 mb-6">

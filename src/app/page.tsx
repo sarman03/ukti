@@ -11,21 +11,36 @@ import EnquiryFormSection from "@/components/EnquiryFormSection";
 import MapsSection from "@/components/MapsSection";
 import CTASection from "@/components/CTASection";
 
+// All scrolling sections in order. They'll be wrapped in sticky containers
+// with increasing z-index so each new section slides UP and overlaps the
+// previous one as the user scrolls.
+const sections = [
+  HeroSection,
+  AboutSection,
+  WhyChooseSection,
+  ClassroomSection,
+  GallerySection,
+  LearningGoalsSection,
+  SafetyFacilitiesSection,
+  TestimonialsSection,
+  EnquiryFormSection,
+  MapsSection,
+  CTASection,
+];
+
 export default function Home() {
   return (
     <main>
       <Navbar />
-      <HeroSection />
-      <AboutSection />
-      <WhyChooseSection />
-      <ClassroomSection />
-      <GallerySection />
-      <LearningGoalsSection />
-      <SafetyFacilitiesSection />
-      <TestimonialsSection />
-      <EnquiryFormSection />
-      <MapsSection />
-      <CTASection />
+      {sections.map((Section, i) => (
+        <div
+          key={Section.name}
+          className="sticky top-0 min-h-screen bg-white"
+          style={{ zIndex: i + 1 }}
+        >
+          <Section />
+        </div>
+      ))}
     </main>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import FadeUp from "@/components/FadeUp";
 
 type Tab = "preschool" | "afterschool";
 
@@ -48,9 +49,11 @@ export default function ClassroomSection() {
   return (
     <section id="classes" className="py-20 px-8 bg-gray-50">
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-4xl font-extrabold text-center text-gray-900 mb-8">
-          Our Classroom
-        </h2>
+        <FadeUp>
+          <h2 className="text-4xl font-extrabold text-center text-gray-900 mb-8">
+            Our Classroom
+          </h2>
+        </FadeUp>
 
         {/* Tab toggle */}
         <div className="flex justify-center gap-3 mb-12">

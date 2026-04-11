@@ -2,6 +2,8 @@
 // lines. Text is rendered via <foreignObject> next to each circle.
 // The SVG uses viewBox so it scales responsively.
 
+import FadeUp from "@/components/FadeUp";
+
 const W = 920;
 const H = 600;
 
@@ -88,9 +90,11 @@ const ICON_SIZE = 64;
 export default function SafetyFacilitiesSection() {
   return (
     <section id="safety" className="py-20 px-8 bg-white">
-      <h2 className="text-4xl font-extrabold text-center text-orange-500 mb-4">
-        Safety &amp; Facilities
-      </h2>
+      <FadeUp>
+        <h2 className="text-4xl font-extrabold text-center text-orange-500 mb-4">
+          Safety &amp; Facilities
+        </h2>
+      </FadeUp>
 
       <div className="max-w-5xl mx-auto">
         <svg

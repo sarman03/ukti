@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import FadeUp from "@/components/FadeUp";
 
 const testimonials = [
   {
@@ -49,9 +50,11 @@ export default function TestimonialsSection() {
         background: "linear-gradient(to bottom, #fffff5 0%, #fefce8 25%, #fbbf24 80%, #f59e0b 100%)",
       }}
     >
-      <h2 className="text-4xl font-extrabold text-center text-green-800 mb-16">
-        Testimonials
-      </h2>
+      <FadeUp>
+        <h2 className="text-4xl font-extrabold text-center text-green-800 mb-16">
+          Testimonials
+        </h2>
+      </FadeUp>
 
       {/* Carousel container */}
       <div className="relative mx-auto" style={{ maxWidth: 1200, height: 460 }}>
