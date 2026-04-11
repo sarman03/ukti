@@ -54,15 +54,15 @@ export default function TestimonialsSection() {
       </h2>
 
       {/* Carousel container */}
-      <div className="relative mx-auto" style={{ maxWidth: 900, height: 280 }}>
+      <div className="relative mx-auto" style={{ maxWidth: 1200, height: 460 }}>
         {/* Left background card */}
         <div
           className="absolute rounded-2xl"
           style={{
             left: 0,
-            top: 40,
-            width: 280,
-            height: 200,
+            top: 60,
+            width: 360,
+            height: 340,
             backgroundColor: "#9c9188",
             zIndex: 0,
           }}
@@ -75,21 +75,21 @@ export default function TestimonialsSection() {
             left: "50%",
             transform: "translateX(-50%)",
             top: 0,
-            width: 480,
-            height: 268,
+            width: 680,
+            height: 460,
             backgroundColor: "#e5e7eb",
             zIndex: 10,
-            padding: "2rem",
+            padding: "2.5rem",
           }}
         >
-          <p className="text-gray-600 text-sm leading-relaxed italic">
+          <p className="text-gray-600 text-base leading-relaxed italic">
             &ldquo;{testimonials[current].quote}&rdquo;
           </p>
           <div>
-            <p className="font-extrabold text-gray-900 text-sm">
+            <p className="font-extrabold text-gray-900 text-base">
               {testimonials[current].name}
             </p>
-            <p className="text-xs text-gray-500 mt-0.5">
+            <p className="text-sm text-gray-500 mt-0.5">
               {testimonials[current].role}
             </p>
           </div>
@@ -100,48 +100,31 @@ export default function TestimonialsSection() {
           className="absolute rounded-2xl"
           style={{
             right: 0,
-            top: 40,
-            width: 280,
-            height: 200,
+            top: 60,
+            width: 360,
+            height: 340,
             backgroundColor: "#9c9188",
             zIndex: 0,
           }}
         />
-      </div>
 
-      {/* Navigation */}
-      <div className="flex flex-col items-center gap-4 mt-10">
-        {/* Arrows */}
-        <div className="flex gap-4">
-          <button
-            onClick={() => setCurrent(prev)}
-            className="w-9 h-9 rounded-full bg-white/60 hover:bg-white/90 flex items-center justify-center transition-colors text-green-800 font-bold text-lg"
-            aria-label="Previous"
-          >
-            ‹
-          </button>
-          <button
-            onClick={() => setCurrent(next)}
-            className="w-9 h-9 rounded-full bg-white/60 hover:bg-white/90 flex items-center justify-center transition-colors text-green-800 font-bold text-lg"
-            aria-label="Next"
-          >
-            ›
-          </button>
-        </div>
+        {/* Left arrow */}
+        <button
+          onClick={() => setCurrent(prev)}
+          className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg hover:bg-gray-50 flex items-center justify-center transition-colors text-green-800 font-bold text-2xl z-20"
+          aria-label="Previous testimonial"
+        >
+          ‹
+        </button>
 
-        {/* Dots */}
-        <div className="flex gap-2">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                i === current ? "bg-green-800" : "bg-amber-200"
-              }`}
-              aria-label={`Go to testimonial ${i + 1}`}
-            />
-          ))}
-        </div>
+        {/* Right arrow */}
+        <button
+          onClick={() => setCurrent(next)}
+          className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg hover:bg-gray-50 flex items-center justify-center transition-colors text-green-800 font-bold text-2xl z-20"
+          aria-label="Next testimonial"
+        >
+          ›
+        </button>
       </div>
     </section>
   );

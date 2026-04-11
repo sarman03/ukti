@@ -15,58 +15,68 @@ interface Piece {
 // Piece dimensions
 const PW = 220; // piece width
 const PH = 200; // piece height
-const TAB = 24; // tab protrusion px
-const NECK = 16; // half-width of tab neck px
+
+// Bulb geometry — narrow neck flaring into a circular head
+const NECK = 14;       // half-width of the neck (where bulb meets the edge)
+const BULB_R = 24;     // bulb radius (also half-width of bulb head)
+const BULB_C = 22;     // distance from edge to bulb center
+const NECK_PULL = 4;   // initial outward pull at the neck base for the cusp curve
+// Maximum protrusion = BULB_C + BULB_R. Used to oversize fill rects.
+const TAB = BULB_C + BULB_R;
 
 // Grid layout: 5 cols × 2 rows
-// Tab/notch adjacency rules — if piece A has right=tab, piece B (same row, next col) must have left=notch
+// Rule: TEXT pieces always have a "tab" on every interior edge,
+//       IMAGE pieces always have a "notch" on every interior edge.
+// This makes text pieces visually OVERLAP image pieces from every side.
 const pieces: Piece[] = [
-  // ── Row 0 ────────────────────────────────────────────────────────────
+  // ── Row 0: text / image / text / image / text ──────────────────────
+  // Outer top edge: images get OUTWARD tabs, text pieces get INWARD notches
   {
     row: 0, col: 0, type: "text", color: "#F5C842",
     text: "Personal attention with a 1:6 ratio, ensuring every child is seen, heard, and supported.",
-    top: "flat", right: "tab", bottom: "tab", left: "flat",
+    top: "notch", right: "tab", bottom: "tab", left: "flat",
   },
   {
     row: 0, col: 1, type: "image",
-    top: "flat", right: "tab", bottom: "notch", left: "notch",
+    top: "tab", right: "notch", bottom: "notch", left: "notch",
   },
   {
     row: 0, col: 2, type: "text", color: "#F28B30",
     text: "A perfect blend of Montessori + Play-way methods for hands-on, joyful learning.",
-    top: "flat", right: "tab", bottom: "tab", left: "notch",
+    top: "notch", right: "tab", bottom: "tab", left: "tab",
   },
   {
     row: 0, col: 3, type: "image",
-    top: "flat", right: "tab", bottom: "notch", left: "notch",
+    top: "tab", right: "notch", bottom: "notch", left: "notch",
   },
   {
     row: 0, col: 4, type: "text", color: "#F5C842",
     text: "Focus on critical thinking, communication & independence from an early age.",
-    top: "flat", right: "flat", bottom: "tab", left: "notch",
+    top: "notch", right: "flat", bottom: "tab", left: "tab",
   },
-  // ── Row 1 ────────────────────────────────────────────────────────────
+  // ── Row 1: image / text / image / text / image ─────────────────────
+  // Outer bottom edge: images get OUTWARD tabs, text pieces get INWARD notches
   {
     row: 1, col: 0, type: "image",
-    top: "notch", right: "notch", bottom: "flat", left: "flat",
+    top: "notch", right: "notch", bottom: "tab", left: "flat",
   },
   {
     row: 1, col: 1, type: "text", color: "#3DBFBF",
     text: "We nurture mind, emotions, creativity & physical growth for well-rounded development.",
-    top: "tab", right: "notch", bottom: "flat", left: "tab",
+    top: "tab", right: "tab", bottom: "notch", left: "tab",
   },
   {
     row: 1, col: 2, type: "image",
-    top: "notch", right: "notch", bottom: "flat", left: "tab",
+    top: "notch", right: "notch", bottom: "tab", left: "notch",
   },
   {
     row: 1, col: 3, type: "text", color: "#3DBFBF",
     text: "Guided by passionate and professional teachers who understand early learning deeply.",
-    top: "tab", right: "notch", bottom: "flat", left: "tab",
+    top: "tab", right: "tab", bottom: "notch", left: "tab",
   },
   {
     row: 1, col: 4, type: "image",
-    top: "notch", right: "flat", bottom: "flat", left: "tab",
+    top: "notch", right: "flat", bottom: "tab", left: "notch",
   },
 ];
 
@@ -83,56 +93,66 @@ function buildPath(p: Piece): string {
   const y0 = p.row * PH;
   const x1 = x0 + PW;
   const y1 = y0 + PH;
-  const mx = x0 + PW / 2; // horizontal midpoint
-  const my = y0 + PH / 2; // vertical midpoint
-  const n = NECK;
-  const t = TAB;
+  const mx = x0 + PW / 2;
+  const my = y0 + PH / 2;
 
-  // Direction: +1 means away from piece center (tab), -1 means into piece (notch)
-  const ts = p.top === "tab" ? -1 : p.top === "notch" ? 1 : 0;    // y-axis, tab = up = -1
-  const rs = p.right === "tab" ? 1 : p.right === "notch" ? -1 : 0; // x-axis, tab = right = +1
-  const bs = p.bottom === "tab" ? 1 : p.bottom === "notch" ? -1 : 0; // y-axis, tab = down = +1
-  const ls = p.left === "tab" ? -1 : p.left === "notch" ? 1 : 0;   // x-axis, tab = left = -1
+  // Direction: tab pushes AWAY from piece center, notch pushes INTO piece.
+  const ts = p.top === "tab" ? -1 : p.top === "notch" ? 1 : 0;       // y, up = -1
+  const rs = p.right === "tab" ? 1 : p.right === "notch" ? -1 : 0;   // x, right = +1
+  const bs = p.bottom === "tab" ? 1 : p.bottom === "notch" ? -1 : 0; // y, down = +1
+  const ls = p.left === "tab" ? -1 : p.left === "notch" ? 1 : 0;     // x, left = -1
+
+  // Each side uses 3 cubic beziers to draw a "neck → bulb" shape:
+  //   1) From neck base, curve outward and up to the left side of the bulb
+  //   2) Arc over the top of the bulb (left → right)
+  //   3) Curve from right of bulb back down to the right neck base
 
   let d = `M ${x0} ${y0}`;
 
-  // Top edge — left → right
+  // ── TOP edge: left → right ─────────────────────────────────────────
   if (p.top === "flat") {
     d += ` L ${x1} ${y0}`;
   } else {
-    d += ` L ${mx - n} ${y0}`;
-    d += ` C ${mx - n} ${y0 + ts * t * 0.6} ${mx - n * 0.5} ${y0 + ts * t} ${mx} ${y0 + ts * t}`;
-    d += ` C ${mx + n * 0.5} ${y0 + ts * t} ${mx + n} ${y0 + ts * t * 0.6} ${mx + n} ${y0}`;
+    d += ` L ${mx - NECK} ${y0}`;
+    // Left side of bulb
+    d += ` C ${mx - NECK} ${y0 + ts * NECK_PULL}, ${mx - BULB_R} ${y0 + ts * (BULB_C - BULB_R * 0.4)}, ${mx - BULB_R} ${y0 + ts * BULB_C}`;
+    // Around the top
+    d += ` C ${mx - BULB_R} ${y0 + ts * (BULB_C + BULB_R)}, ${mx + BULB_R} ${y0 + ts * (BULB_C + BULB_R)}, ${mx + BULB_R} ${y0 + ts * BULB_C}`;
+    // Right side of bulb back down to neck
+    d += ` C ${mx + BULB_R} ${y0 + ts * (BULB_C - BULB_R * 0.4)}, ${mx + NECK} ${y0 + ts * NECK_PULL}, ${mx + NECK} ${y0}`;
     d += ` L ${x1} ${y0}`;
   }
 
-  // Right edge — top → bottom
+  // ── RIGHT edge: top → bottom ───────────────────────────────────────
   if (p.right === "flat") {
     d += ` L ${x1} ${y1}`;
   } else {
-    d += ` L ${x1} ${my - n}`;
-    d += ` C ${x1 + rs * t * 0.6} ${my - n} ${x1 + rs * t} ${my - n * 0.5} ${x1 + rs * t} ${my}`;
-    d += ` C ${x1 + rs * t} ${my + n * 0.5} ${x1 + rs * t * 0.6} ${my + n} ${x1} ${my + n}`;
+    d += ` L ${x1} ${my - NECK}`;
+    d += ` C ${x1 + rs * NECK_PULL} ${my - NECK}, ${x1 + rs * (BULB_C - BULB_R * 0.4)} ${my - BULB_R}, ${x1 + rs * BULB_C} ${my - BULB_R}`;
+    d += ` C ${x1 + rs * (BULB_C + BULB_R)} ${my - BULB_R}, ${x1 + rs * (BULB_C + BULB_R)} ${my + BULB_R}, ${x1 + rs * BULB_C} ${my + BULB_R}`;
+    d += ` C ${x1 + rs * (BULB_C - BULB_R * 0.4)} ${my + BULB_R}, ${x1 + rs * NECK_PULL} ${my + NECK}, ${x1} ${my + NECK}`;
     d += ` L ${x1} ${y1}`;
   }
 
-  // Bottom edge — right → left
+  // ── BOTTOM edge: right → left ──────────────────────────────────────
   if (p.bottom === "flat") {
     d += ` L ${x0} ${y1}`;
   } else {
-    d += ` L ${mx + n} ${y1}`;
-    d += ` C ${mx + n} ${y1 + bs * t * 0.6} ${mx + n * 0.5} ${y1 + bs * t} ${mx} ${y1 + bs * t}`;
-    d += ` C ${mx - n * 0.5} ${y1 + bs * t} ${mx - n} ${y1 + bs * t * 0.6} ${mx - n} ${y1}`;
+    d += ` L ${mx + NECK} ${y1}`;
+    d += ` C ${mx + NECK} ${y1 + bs * NECK_PULL}, ${mx + BULB_R} ${y1 + bs * (BULB_C - BULB_R * 0.4)}, ${mx + BULB_R} ${y1 + bs * BULB_C}`;
+    d += ` C ${mx + BULB_R} ${y1 + bs * (BULB_C + BULB_R)}, ${mx - BULB_R} ${y1 + bs * (BULB_C + BULB_R)}, ${mx - BULB_R} ${y1 + bs * BULB_C}`;
+    d += ` C ${mx - BULB_R} ${y1 + bs * (BULB_C - BULB_R * 0.4)}, ${mx - NECK} ${y1 + bs * NECK_PULL}, ${mx - NECK} ${y1}`;
     d += ` L ${x0} ${y1}`;
   }
 
-  // Left edge — bottom → top  (Z closes straight back to x0,y0 = upper straight portion)
+  // ── LEFT edge: bottom → top ────────────────────────────────────────
   if (p.left === "flat") {
     d += ` Z`;
   } else {
-    d += ` L ${x0} ${my + n}`;
-    d += ` C ${x0 + ls * t * 0.6} ${my + n} ${x0 + ls * t} ${my + n * 0.5} ${x0 + ls * t} ${my}`;
-    d += ` C ${x0 + ls * t} ${my - n * 0.5} ${x0 + ls * t * 0.6} ${my - n} ${x0} ${my - n}`;
+    d += ` L ${x0} ${my + NECK}`;
+    d += ` C ${x0 + ls * NECK_PULL} ${my + NECK}, ${x0 + ls * (BULB_C - BULB_R * 0.4)} ${my + BULB_R}, ${x0 + ls * BULB_C} ${my + BULB_R}`;
+    d += ` C ${x0 + ls * (BULB_C + BULB_R)} ${my + BULB_R}, ${x0 + ls * (BULB_C + BULB_R)} ${my - BULB_R}, ${x0 + ls * BULB_C} ${my - BULB_R}`;
+    d += ` C ${x0 + ls * (BULB_C - BULB_R * 0.4)} ${my - BULB_R}, ${x0 + ls * NECK_PULL} ${my - NECK}, ${x0} ${my - NECK}`;
     d += ` Z`;
   }
 
@@ -144,11 +164,11 @@ const SVG_H = 2 * PH; // 400
 
 export default function WhyChooseSection() {
   return (
-    <section id="why-choose" className="py-20 px-8 bg-white">
+    <section id="why-choose" className="py-20 bg-white">
       <h2 className="text-4xl font-extrabold text-center text-orange-500 mb-12">
         Why Choose Ukti
       </h2>
-      <div className="max-w-6xl mx-auto">
+      <div className="w-full">
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
           width="100%"
@@ -169,17 +189,24 @@ export default function WhyChooseSection() {
             ))}
           </defs>
 
-          {/* ── Piece backgrounds (clipped to puzzle shape) ── */}
+          {/* ── Piece backgrounds (clipped to puzzle shape) ──
+              Each fill rect is enlarged by TAB on every side so that the clipPath
+              has content to clip in the protruding tab regions. */}
           {pieces.map((p) => {
             const clipId = `clip-${p.row}-${p.col}`;
             const x = p.col * PW;
             const y = p.row * PH;
+            // Extended bounds covering tab overhangs on all sides
+            const fx = x - TAB;
+            const fy = y - TAB;
+            const fw = PW + TAB * 2;
+            const fh = PH + TAB * 2;
 
             if (p.type === "image") {
               return (
                 <g key={clipId} clipPath={`url(#${clipId})`}>
                   {/* Grey placeholder — replace rect with <image> when real photos are ready */}
-                  <rect x={x} y={y} width={PW} height={PH} fill="#d1d5db" />
+                  <rect x={fx} y={fy} width={fw} height={fh} fill="#d1d5db" />
                   <text
                     x={x + PW / 2}
                     y={y + PH / 2}
@@ -198,7 +225,7 @@ export default function WhyChooseSection() {
             // Text piece
             return (
               <g key={clipId} clipPath={`url(#${clipId})`}>
-                <rect x={x} y={y} width={PW} height={PH} fill={p.color} />
+                <rect x={fx} y={fy} width={fw} height={fh} fill={p.color} />
                 <foreignObject
                   x={x + 18}
                   y={y + 18}
@@ -229,14 +256,14 @@ export default function WhyChooseSection() {
             );
           })}
 
-          {/* ── White joint lines drawn on top of every piece border ── */}
+          {/* ── Black outline drawn on top of every piece border ── */}
           {pieces.map((p) => (
             <path
               key={`border-${p.row}-${p.col}`}
               d={buildPath(p)}
               fill="none"
-              stroke="white"
-              strokeWidth="5"
+              stroke="#111"
+              strokeWidth="4"
               strokeLinejoin="round"
             />
           ))}

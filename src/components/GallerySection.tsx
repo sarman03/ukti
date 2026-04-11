@@ -21,7 +21,7 @@ export default function GallerySection() {
           {[...row1, ...row1].map((n, i) => (
             <div
               key={i}
-              className="w-56 h-44 bg-gray-300 rounded-2xl flex-shrink-0 flex items-center justify-center"
+              className="w-56 h-56 bg-gray-300 rounded-2xl flex-shrink-0 flex items-center justify-center"
             >
               <span className="text-gray-400 text-xs font-medium">Photo {n}</span>
             </div>
@@ -35,7 +35,7 @@ export default function GallerySection() {
           {[...row2, ...row2].map((n, i) => (
             <div
               key={i}
-              className="w-56 h-44 bg-gray-300 rounded-2xl flex-shrink-0 flex items-center justify-center"
+              className="w-56 h-56 bg-gray-300 rounded-2xl flex-shrink-0 flex items-center justify-center"
             >
               <span className="text-gray-400 text-xs font-medium">Photo {n}</span>
             </div>

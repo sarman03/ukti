@@ -4,7 +4,9 @@ import { useState } from "react";
 
 type Tab = "preschool" | "afterschool";
 
-const programs: Record<Tab, { title: string; age: string; description: string }[]> = {
+type Program = { title: string; age?: string; description: string };
+
+const programs: Record<Tab, Program[]> = {
   preschool: [
     {
       title: "Toddlers",
@@ -27,22 +29,14 @@ const programs: Record<Tab, { title: string; age: string; description: string }[
   ],
   afterschool: [
     {
-      title: "Art & Craft",
-      age: "Age: 4 – 6 Years",
+      title: "Storytelling Program",
       description:
-        "Creative exploration through various art forms, building fine motor skills, imagination, and self-expression.",
+        "An immersive storytelling experience where children learn through imagination, expression, and play.",
     },
     {
-      title: "Music & Movement",
-      age: "Age: 4 – 6 Years",
+      title: "Language & Math Program",
       description:
-        "Exploring rhythm, melody, and movement to develop coordination, confidence, and musical appreciation.",
-    },
-    {
-      title: "Story Time Plus",
-      age: "Age: 4 – 6 Years",
-      description:
-        "Engaging storytelling and reading activities that build language skills and a lifelong love for books.",
+        "A structured yet fun program focused on building strong literacy and numeracy foundations.",
     },
   ],
 };
@@ -76,25 +70,33 @@ export default function ClassroomSection() {
         </div>
 
         {/* Cards */}
-        <div className="grid grid-cols-3 gap-6 mb-12">
+        <div
+          className={`grid gap-6 mb-12 ${
+            activePrograms.length === 2
+              ? "grid-cols-2 max-w-3xl mx-auto"
+              : "grid-cols-3"
+          }`}
+        >
           {activePrograms.map((program) => (
             <div
               key={program.title}
-              className="rounded-2xl overflow-hidden shadow-md bg-white"
+              className="group rounded-2xl overflow-hidden shadow-md bg-white"
             >
               {/* Image placeholder */}
               <div className="h-52 bg-gray-300 flex items-center justify-center">
                 <span className="text-gray-500 text-sm">Image Placeholder</span>
               </div>
-              {/* Card content */}
-              <div className="bg-amber-400 p-5">
+              {/* Card content — white by default, amber on card hover */}
+              <div className="bg-white group-hover:bg-amber-400 transition-colors p-5">
                 <h3 className="text-lg font-extrabold text-gray-900">
                   {program.title}
                 </h3>
-                <p className="text-xs text-gray-700 font-medium mt-0.5 mb-2">
-                  {program.age}
-                </p>
-                <p className="text-sm text-gray-800 leading-relaxed">
+                {program.age && (
+                  <p className="text-xs text-gray-700 font-medium mt-0.5 mb-2">
+                    {program.age}
+                  </p>
+                )}
+                <p className="text-sm text-gray-800 leading-relaxed mt-2">
                   {program.description}
                 </p>
               </div>
