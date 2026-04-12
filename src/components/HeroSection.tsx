@@ -13,16 +13,16 @@ export default function HeroSection() {
 
   useEffect(() => {
     async function fetchImages() {
-      const { data } = await supabase.storage.from(BUCKET).list("", {
+      const { data } = await supabase.storage.from(BUCKET).list("hero", {
         sortBy: { column: "name", order: "asc" },
       });
 
       if (data && data.length > 0) {
         const urls = data
-          .filter((f) => !f.id?.startsWith("."))
+          .filter((f) => !f.id?.startsWith(".") && f.name !== ".emptyFolderPlaceholder")
           .map(
             (f) =>
-              supabase.storage.from(BUCKET).getPublicUrl(f.name).data.publicUrl
+              supabase.storage.from(BUCKET).getPublicUrl(`hero/${f.name}`).data.publicUrl
           );
         setImages(urls);
       }

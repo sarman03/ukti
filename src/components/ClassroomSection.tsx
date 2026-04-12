@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
+import { useSupabaseImages } from "@/lib/useSupabaseImages";
 
 type Tab = "preschool" | "afterschool";
 
@@ -46,6 +48,7 @@ const programs: Record<Tab, Program[]> = {
 export default function ClassroomSection() {
   const [activeTab, setActiveTab] = useState<Tab>("preschool");
   const activePrograms = programs[activeTab];
+  const { images } = useSupabaseImages("classroom");
 
   return (
     <section id="classes" className="py-20 px-8 bg-gray-50">
@@ -82,14 +85,18 @@ export default function ClassroomSection() {
               : "grid-cols-3"
           }`}
         >
-          {activePrograms.map((program) => (
+          {activePrograms.map((program, idx) => (
             <div
               key={program.title}
               className="group rounded-2xl overflow-hidden shadow-md bg-white"
             >
-              {/* Image placeholder */}
-              <div className="h-52 bg-gray-300 flex items-center justify-center">
-                <span className="text-gray-500 text-sm">Image Placeholder</span>
+              {/* Image */}
+              <div className="h-52 bg-gray-300 relative">
+                {images[idx] ? (
+                  <Image src={images[idx]} alt={program.title} fill className="object-cover" sizes="33vw" />
+                ) : (
+                  <span className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm">Image Placeholder</span>
+                )}
               </div>
               {/* Card content — white by default, amber on card hover */}
               <div className="bg-white group-hover:bg-amber-400 transition-colors p-5">

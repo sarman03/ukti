@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
+import { useSupabaseImages } from "@/lib/useSupabaseImages";
 
 const goals = [
   {
@@ -29,6 +32,8 @@ const goals = [
 ];
 
 export default function LearningGoalsSection() {
+  const { images } = useSupabaseImages("learning-goals");
+
   return (
     <section id="learning" className="py-20 bg-white">
       <FadeUp>
@@ -43,18 +48,24 @@ export default function LearningGoalsSection() {
             <div className="relative w-full max-w-sm aspect-square">
               {/* Main image — heavily tilted like a kite */}
               <div
-                className="absolute inset-0 bg-gray-300 rounded-2xl shadow-lg flex items-center justify-center"
-                style={{ transform: "rotate(-12deg)" }}
+                className="absolute inset-0 bg-gray-300 rounded-2xl shadow-lg overflow-hidden animate-swing-slow"
               >
-                <span className="text-gray-500 text-sm">Image Placeholder</span>
+                {images[0] ? (
+                  <Image src={images[0]} alt="Learning goals" fill className="object-cover" sizes="400px" />
+                ) : (
+                  <span className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm">Image Placeholder</span>
+                )}
               </div>
 
               {/* Smaller image overlapping the top-right corner */}
               <div
-                className="absolute -top-6 -right-6 w-32 h-24 bg-gray-400 rounded-xl shadow-lg flex items-center justify-center z-10"
-                style={{ transform: "rotate(8deg)" }}
+                className="absolute -top-14 -right-6 w-32 h-24 bg-gray-400 rounded-xl shadow-lg overflow-hidden z-10 animate-swing-slow-reverse"
               >
-                <span className="text-gray-600 text-xs">Image</span>
+                {images[1] ? (
+                  <Image src={images[1]} alt="Learning" fill className="object-cover" sizes="128px" />
+                ) : (
+                  <span className="absolute inset-0 flex items-center justify-center text-gray-600 text-xs">Image</span>
+                )}
               </div>
             </div>
           </div>

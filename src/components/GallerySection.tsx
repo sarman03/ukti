@@ -1,15 +1,17 @@
-// Each row contains ITEM_COUNT placeholder cards, duplicated for a seamless loop.
-// Row 1 scrolls left→right. Row 2 scrolls right→left.
-// CSS keyframes (marquee-ltr / marquee-rtl) are defined in globals.css.
+"use client";
 
+import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
-
-const ITEMS_PER_ROW = 6;
-
-const row1 = Array.from({ length: ITEMS_PER_ROW }, (_, i) => i + 1);
-const row2 = Array.from({ length: ITEMS_PER_ROW }, (_, i) => i + 1);
+import { useSupabaseImages } from "@/lib/useSupabaseImages";
 
 export default function GallerySection() {
+  const { images } = useSupabaseImages("gallery");
+
+  // Split images into two rows, duplicate for seamless loop
+  const half = Math.ceil(images.length / 2);
+  const row1 = images.length > 0 ? images.slice(0, half) : Array(6).fill(null);
+  const row2 = images.length > 0 ? images.slice(half) : Array(6).fill(null);
+
   return (
     <section id="gallery" className="py-20 bg-white overflow-hidden">
       <FadeUp>
@@ -20,13 +22,16 @@ export default function GallerySection() {
       {/* Row 1 — left to right */}
       <div className="overflow-hidden mb-4">
         <div className="flex gap-4 w-max animate-marquee-ltr">
-          {/* Items duplicated so the scroll loops seamlessly */}
-          {[...row1, ...row1].map((n, i) => (
+          {[...row1, ...row1].map((url, i) => (
             <div
               key={i}
-              className="w-56 h-56 bg-gray-300 rounded-2xl flex-shrink-0 flex items-center justify-center"
+              className="w-56 h-56 bg-gray-300 rounded-2xl flex-shrink-0 relative overflow-hidden"
             >
-              <span className="text-gray-400 text-xs font-medium">Photo {n}</span>
+              {url ? (
+                <Image src={url} alt={`Gallery photo`} fill className="object-cover" sizes="224px" />
+              ) : (
+                <span className="absolute inset-0 flex items-center justify-center text-gray-400 text-xs font-medium">Photo {(i % 6) + 1}</span>
+              )}
             </div>
           ))}
         </div>
@@ -35,12 +40,16 @@ export default function GallerySection() {
       {/* Row 2 — right to left */}
       <div className="overflow-hidden">
         <div className="flex gap-4 w-max animate-marquee-rtl">
-          {[...row2, ...row2].map((n, i) => (
+          {[...row2, ...row2].map((url, i) => (
             <div
               key={i}
-              className="w-56 h-56 bg-gray-300 rounded-2xl flex-shrink-0 flex items-center justify-center"
+              className="w-56 h-56 bg-gray-300 rounded-2xl flex-shrink-0 relative overflow-hidden"
             >
-              <span className="text-gray-400 text-xs font-medium">Photo {n}</span>
+              {url ? (
+                <Image src={url} alt={`Gallery photo`} fill className="object-cover" sizes="224px" />
+              ) : (
+                <span className="absolute inset-0 flex items-center justify-center text-gray-400 text-xs font-medium">Photo {(i % 6) + 1}</span>
+              )}
             </div>
           ))}
         </div>

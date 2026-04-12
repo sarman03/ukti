@@ -1,10 +1,66 @@
 "use client";
 
 import { useState } from "react";
-import HeroImageManager from "./HeroImageManager";
+import SectionImageManager from "./SectionImageManager";
 
 const ADMIN_EMAIL = "admin@ukti.in";
 const ADMIN_PASSWORD = "ukti@2026";
+
+const sections = [
+  {
+    folder: "hero",
+    title: "Hero Section",
+    aspect: 16 / 9,
+    aspectLabel: "Hero — 16:9 full screen",
+  },
+  {
+    folder: "about",
+    title: "About Us",
+    aspect: 5 / 4,
+    aspectLabel: "About — 5:4",
+    maxImages: 2,
+  },
+  {
+    folder: "why-choose",
+    title: "Why Choose Ukti (Puzzle Images)",
+    aspect: 11 / 10,
+    aspectLabel: "Puzzle — 11:10",
+    maxImages: 6,
+  },
+  {
+    folder: "classroom",
+    title: "Our Classroom",
+    aspect: 16 / 9,
+    aspectLabel: "Classroom card — 16:9",
+    maxImages: 5,
+  },
+  {
+    folder: "gallery",
+    title: "Gallery",
+    aspect: 1,
+    aspectLabel: "Gallery — 1:1 square",
+  },
+  {
+    folder: "learning-goals",
+    title: "Learning Goals",
+    aspect: 1,
+    aspectLabel: "Learning Goals — 1:1 square",
+    maxImages: 2,
+  },
+  {
+    folder: "testimonials",
+    title: "Testimonials",
+    aspect: 1,
+    aspectLabel: "Testimonial — 1:1 square",
+  },
+  {
+    folder: "cta",
+    title: "Growing Section (CTA)",
+    aspect: 4 / 3,
+    aspectLabel: "CTA — 4:3",
+    maxImages: 3,
+  },
+];
 
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -88,8 +144,10 @@ export default function AdminPage() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <HeroImageManager />
+      <main className="max-w-7xl mx-auto px-4 py-8 space-y-4">
+        {sections.map((s) => (
+          <SectionImageManager key={s.folder} {...s} />
+        ))}
       </main>
     </div>
   );

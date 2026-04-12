@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
+import { useSupabaseImages } from "@/lib/useSupabaseImages";
 
 const stats = [
   { value: "6+", label: "Years of Experience", icon: "/about-us/6+.png" },
@@ -9,15 +12,21 @@ const stats = [
 ];
 
 export default function AboutSection() {
+  const { images } = useSupabaseImages("about");
+
   return (
     <section id="about" className="bg-white pt-20 pb-[50vh] px-8">
       <FadeUp>
       <div className="max-w-6xl mx-auto">
         {/* Main content grid */}
         <div className="grid grid-cols-3 items-start gap-8 mb-16">
-          {/* Left column: image at top, shorter aspect */}
-          <div className="w-full aspect-[5/4] bg-gray-300 rounded-2xl flex items-center justify-center">
-            <span className="text-gray-500 text-sm">Image Placeholder</span>
+          {/* Left column: image at top */}
+          <div className="w-full aspect-[5/4] bg-gray-300 rounded-2xl overflow-hidden relative">
+            {images[0] ? (
+              <Image src={images[0]} alt="About Ukti" fill className="object-cover" sizes="33vw" />
+            ) : (
+              <span className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm">Image Placeholder</span>
+            )}
           </div>
 
           {/* Center text */}
@@ -42,9 +51,12 @@ export default function AboutSection() {
               height={294}
               className="w-60 h-auto"
             />
-            {/* Image is pushed down so it sits roughly at the level of the Know More button */}
-            <div className="w-full aspect-[5/4] bg-gray-300 rounded-2xl flex items-center justify-center mt-12">
-              <span className="text-gray-500 text-sm">Image Placeholder</span>
+            <div className="w-full aspect-[5/4] bg-gray-300 rounded-2xl overflow-hidden relative mt-12">
+              {images[1] ? (
+                <Image src={images[1]} alt="About Ukti" fill className="object-cover" sizes="33vw" />
+              ) : (
+                <span className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm">Image Placeholder</span>
+              )}
             </div>
           </div>
         </div>

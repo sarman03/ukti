@@ -4,6 +4,10 @@
   --font-baloo: var(--font-baloo);
 }
 
+html {
+  font-size: 112.5%;
+}
+
 body {
   background: #ffffff;
   color: #171717;
@@ -32,6 +36,25 @@ body {
 .animate-marquee-ltr:hover,
 .animate-marquee-rtl:hover {
   animation-play-state: paused;
+}
+
+/* ── Swing animations for images ── */
+@keyframes swing-slow {
+  0%, 100% { transform: rotate(-12deg); }
+  50% { transform: rotate(-8deg); }
+}
+
+@keyframes swing-slow-reverse {
+  0%, 100% { transform: rotate(8deg); }
+  50% { transform: rotate(4deg); }
+}
+
+.animate-swing-slow {
+  animation: swing-slow 4s ease-in-out infinite;
+}
+
+.animate-swing-slow-reverse {
+  animation: swing-slow-reverse 3.5s ease-in-out infinite;
 }
 
 /* ── Ripple button animations ── */
