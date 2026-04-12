@@ -236,9 +236,8 @@ export default function WhyChooseSection() {
                   width={PW - 36}
                   height={PH - 36}
                 >
-                  {/* xmlns required for foreignObject HTML content */}
                   <div
-                    xmlns="http://www.w3.org/1999/xhtml"
+                    {...{ xmlns: "http://www.w3.org/1999/xhtml" }}
                     style={{
                       width: "100%",
                       height: "100%",

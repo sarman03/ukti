@@ -141,7 +141,7 @@ export default function SafetyFacilitiesSection() {
               height={c.textHeight}
             >
               <div
-                xmlns="http://www.w3.org/1999/xhtml"
+                {...{ xmlns: "http://www.w3.org/1999/xhtml" }}
                 style={{
                   fontFamily: "inherit",
                   color: "#111827",
