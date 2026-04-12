@@ -2,6 +2,7 @@
 // Three scattered image placeholders around a centered tagline.
 
 import FadeUp from "@/components/FadeUp";
+import RippleButton from "@/components/RippleButton";
 
 export default function CTASection() {
   return (
@@ -40,9 +41,9 @@ export default function CTASection() {
             </p>
             <p className="font-extrabold text-gray-900">at a time.</p>
           </div>
-          <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-full transition-colors text-sm">
+          <RippleButton>
             Enroll Your Child
-          </button>
+          </RippleButton>
         </div>
 
         {/* Right image */}

@@ -1,6 +1,6 @@
-import Link from "next/link";
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
+import RippleButton from "@/components/RippleButton";
 
 const stats = [
   { value: "6+", label: "Years of Experience", icon: "/about-us/6+.png" },
@@ -10,7 +10,7 @@ const stats = [
 
 export default function AboutSection() {
   return (
-    <section id="about" className="bg-white py-20 px-8">
+    <section id="about" className="bg-white pt-20 pb-[50vh] px-8">
       <FadeUp>
       <div className="max-w-6xl mx-auto">
         {/* Main content grid */}
@@ -28,12 +28,9 @@ export default function AboutSection() {
                 learners. We aspire to create an environment where children not only learn but thrive, where every
                 moment is an opportunity to sculpt curious minds and nurture boundless potential
               </p>
-              <Link
-                href="#"
-                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-full transition-colors text-sm inline-block"
-              >
+              <RippleButton href="#">
                 Know More
-              </Link>
+              </RippleButton>
           </div>
 
           {/* Right column: large logo at top, image offset lower */}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import FadeUp from "@/components/FadeUp";
+import RippleButton from "@/components/RippleButton";
 
 type Tab = "preschool" | "afterschool";
 
@@ -60,13 +61,15 @@ export default function ClassroomSection() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-7 py-2.5 rounded-full font-semibold text-sm transition-colors ${
+              className={`ripple-btn px-7 py-2.5 rounded-full font-semibold text-sm transition-colors ${
                 activeTab === tab
                   ? "bg-orange-500 text-white shadow-sm"
                   : "border-2 border-gray-800 text-gray-800 bg-white hover:bg-gray-100"
               }`}
+              style={{ "--ripple-color": activeTab === tab ? "rgba(249, 115, 22, 0.4)" : "rgba(31, 41, 55, 0.2)" } as React.CSSProperties}
             >
-              {tab === "preschool" ? "Pre School" : "After School"}
+              <span className="ripple-extra absolute inset-0 rounded-full pointer-events-none" />
+              <span className="relative z-10">{tab === "preschool" ? "Pre School" : "After School"}</span>
             </button>
           ))}
         </div>
@@ -108,9 +111,9 @@ export default function ClassroomSection() {
 
         {/* CTA */}
         <div className="flex justify-center">
-          <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-10 py-3 rounded-full transition-colors text-sm">
+          <RippleButton className="px-10">
             Explore More
-          </button>
+          </RippleButton>
         </div>
       </div>
       </FadeUp>

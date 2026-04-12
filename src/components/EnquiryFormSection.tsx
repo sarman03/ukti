@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import FadeUp from "@/components/FadeUp";
+import RippleButton from "@/components/RippleButton";
 
 type FormTab = "tour" | "admission";
 
@@ -23,23 +24,27 @@ export default function EnquiryFormSection() {
         <div className="flex justify-center gap-3 mb-6">
           <button
             onClick={() => setActiveTab("tour")}
-            className={`px-7 py-2.5 rounded-full font-semibold text-sm transition-colors ${
+            className={`ripple-btn relative px-7 py-2.5 rounded-full font-semibold text-sm transition-colors ${
               activeTab === "tour"
                 ? "bg-orange-500 text-white shadow-sm"
                 : "border-2 border-gray-800 text-gray-800 bg-white hover:bg-gray-50"
             }`}
+            style={{ "--ripple-color": activeTab === "tour" ? "rgba(249, 115, 22, 0.4)" : "rgba(31, 41, 55, 0.2)" } as React.CSSProperties}
           >
-            Book a Tour
+            <span className="ripple-extra absolute inset-0 rounded-full pointer-events-none" />
+            <span className="relative z-10">Book a Tour</span>
           </button>
           <button
             onClick={() => setActiveTab("admission")}
-            className={`px-7 py-2.5 rounded-full font-semibold text-sm transition-colors ${
+            className={`ripple-btn relative px-7 py-2.5 rounded-full font-semibold text-sm transition-colors ${
               activeTab === "admission"
                 ? "bg-orange-500 text-white shadow-sm"
                 : "border-2 border-gray-800 text-gray-800 bg-white hover:bg-gray-50"
             }`}
+            style={{ "--ripple-color": activeTab === "admission" ? "rgba(249, 115, 22, 0.4)" : "rgba(31, 41, 55, 0.2)" } as React.CSSProperties}
           >
-            Admission Enquiry
+            <span className="ripple-extra absolute inset-0 rounded-full pointer-events-none" />
+            <span className="relative z-10">Admission Enquiry</span>
           </button>
         </div>
 
@@ -108,12 +113,9 @@ function TourForm() {
         placeholder="Location"
         className="rounded-full px-5 py-3 text-sm bg-white outline-none placeholder-gray-400 focus:ring-2 focus:ring-orange-400"
       />
-      <button
-        type="submit"
-        className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3.5 rounded-full transition-colors text-sm mt-2"
-      >
+      <RippleButton type="submit" color="bg-orange-600" rippleCss="rgba(234, 88, 12, 0.4)" className="mt-2 w-full">
         Book a Tour
-      </button>
+      </RippleButton>
     </form>
   );
 }
@@ -163,12 +165,9 @@ function AdmissionForm() {
         rows={3}
         className="rounded-2xl px-5 py-3 text-sm bg-white outline-none placeholder-gray-400 resize-none focus:ring-2 focus:ring-orange-400"
       />
-      <button
-        type="submit"
-        className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3.5 rounded-full transition-colors text-sm mt-2"
-      >
+      <RippleButton type="submit" color="bg-orange-600" rippleCss="rgba(234, 88, 12, 0.4)" className="mt-2 w-full">
         Submit Enquiry
-      </button>
+      </RippleButton>
     </form>
   );
 }

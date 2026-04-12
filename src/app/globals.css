@@ -34,3 +34,43 @@ body {
   animation-play-state: paused;
 }
 
+/* ── Ripple button animations ── */
+.ripple-btn {
+  position: relative;
+}
+
+.ripple-btn::before,
+.ripple-btn::after,
+.ripple-btn .ripple-extra {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  pointer-events: none;
+  box-shadow: 0 0 0 0 var(--ripple-color, rgba(249, 115, 22, 0.4));
+  opacity: 0;
+}
+
+.ripple-btn:hover::before {
+  animation: ripple-shadow 1.8s ease-out infinite;
+}
+
+.ripple-btn:hover::after {
+  animation: ripple-shadow 1.8s ease-out 0.5s infinite;
+}
+
+.ripple-btn:hover .ripple-extra {
+  animation: ripple-shadow 1.8s ease-out 1s infinite;
+}
+
+@keyframes ripple-shadow {
+  0% {
+    box-shadow: 0 0 0 0 var(--ripple-color, rgba(249, 115, 22, 0.4));
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 16px var(--ripple-color, rgba(249, 115, 22, 0));
+    opacity: 0;
+  }
+}
+
