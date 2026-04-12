@@ -13,12 +13,11 @@ export default function EnquiryFormSection() {
       id="contact"
       className="py-20 px-8 bg-white border-t-4 border-amber-400"
     >
+      <FadeUp>
       <div className="max-w-3xl mx-auto">
-        <FadeUp>
-          <h2 className="text-4xl font-extrabold text-center text-orange-500 mb-8">
+          <h2 className="text-5xl font-extrabold text-center text-orange-500 mb-8">
             Enquiry form
           </h2>
-        </FadeUp>
 
         {/* Tab toggle */}
         <div className="flex justify-center gap-3 mb-6">
@@ -64,6 +63,7 @@ export default function EnquiryFormSection() {
           {activeTab === "tour" ? <TourForm /> : <AdmissionForm />}
         </div>
       </div>
+      </FadeUp>
     </section>
   );
 }

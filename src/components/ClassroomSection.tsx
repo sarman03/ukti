@@ -48,12 +48,11 @@ export default function ClassroomSection() {
 
   return (
     <section id="classes" className="py-20 px-8 bg-gray-50">
+      <FadeUp>
       <div className="max-w-5xl mx-auto">
-        <FadeUp>
-          <h2 className="text-4xl font-extrabold text-center text-gray-900 mb-8">
+          <h2 className="text-5xl font-extrabold text-center text-gray-900 mb-8">
             Our Classroom
           </h2>
-        </FadeUp>
 
         {/* Tab toggle */}
         <div className="flex justify-center gap-3 mb-12">
@@ -114,6 +113,7 @@ export default function ClassroomSection() {
           </button>
         </div>
       </div>
+      </FadeUp>
     </section>
   );
 }

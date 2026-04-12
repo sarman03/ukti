@@ -51,10 +51,9 @@ export default function TestimonialsSection() {
       }}
     >
       <FadeUp>
-        <h2 className="text-4xl font-extrabold text-center text-green-800 mb-16">
+        <h2 className="text-5xl font-extrabold text-center text-green-800 mb-16">
           Testimonials
         </h2>
-      </FadeUp>
 
       {/* Carousel container */}
       <div className="relative mx-auto" style={{ maxWidth: 1200, height: 460 }}>
@@ -129,6 +128,7 @@ export default function TestimonialsSection() {
           ›
         </button>
       </div>
+      </FadeUp>
     </section>
   );
 }

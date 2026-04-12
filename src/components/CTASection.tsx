@@ -6,6 +6,7 @@ import FadeUp from "@/components/FadeUp";
 export default function CTASection() {
   return (
     <section className="py-20 px-8 bg-white overflow-hidden">
+      <FadeUp>
       <div className="max-w-5xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center gap-8">
 
         {/* Left images — stacked, slightly rotated */}
@@ -29,7 +30,7 @@ export default function CTASection() {
         </div>
 
         {/* Center tagline */}
-        <FadeUp className="flex flex-col items-center text-center gap-6">
+        <div className="flex flex-col items-center text-center gap-6">
           <div className="leading-tight" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
             <p className="font-extrabold text-gray-900">Growing</p>
             <p className="font-extrabold text-green-700">curious minds,</p>
@@ -42,7 +43,7 @@ export default function CTASection() {
           <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-full transition-colors text-sm">
             Enroll Your Child
           </button>
-        </FadeUp>
+        </div>
 
         {/* Right image */}
         <div className="flex flex-col items-start gap-5">
@@ -56,6 +57,7 @@ export default function CTASection() {
           </div>
         </div>
       </div>
+      </FadeUp>
     </section>
   );
 }

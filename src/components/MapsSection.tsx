@@ -14,10 +14,9 @@ export default function MapsSection() {
   return (
     <section id="maps" className="py-16 bg-white">
       <FadeUp>
-        <h2 className="text-4xl font-extrabold text-center text-green-700 mb-8">
+        <h2 className="text-5xl font-extrabold text-center text-green-700 mb-8">
           Maps
         </h2>
-      </FadeUp>
 
       <div className="grid grid-cols-2 max-w-5xl mx-auto">
         {locations.map((loc) => (
@@ -36,6 +35,7 @@ export default function MapsSection() {
           </div>
         ))}
       </div>
+      </FadeUp>
     </section>
   );
 }

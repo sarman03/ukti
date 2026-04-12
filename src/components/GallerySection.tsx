@@ -13,10 +13,9 @@ export default function GallerySection() {
   return (
     <section id="gallery" className="py-20 bg-white overflow-hidden">
       <FadeUp>
-        <h2 className="text-4xl font-extrabold text-center text-orange-500 mb-12">
+        <h2 className="text-5xl font-extrabold text-center text-orange-500 mb-12">
           Gallery
         </h2>
-      </FadeUp>
 
       {/* Row 1 — left to right */}
       <div className="overflow-hidden mb-4">
@@ -46,6 +45,7 @@ export default function GallerySection() {
           ))}
         </div>
       </div>
+      </FadeUp>
     </section>
   );
 }

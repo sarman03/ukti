@@ -168,10 +168,9 @@ export default function WhyChooseSection() {
   return (
     <section id="why-choose" className="py-20 bg-white">
       <FadeUp>
-        <h2 className="text-4xl font-extrabold text-center text-orange-500 mb-12">
+        <h2 className="text-5xl font-extrabold text-center text-orange-500 mb-12">
           Why Choose Ukti
         </h2>
-      </FadeUp>
       <div className="w-full">
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
@@ -272,6 +271,7 @@ export default function WhyChooseSection() {
           ))}
         </svg>
       </div>
+      </FadeUp>
     </section>
   );
 }

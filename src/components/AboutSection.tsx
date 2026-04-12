@@ -11,6 +11,7 @@ const stats = [
 export default function AboutSection() {
   return (
     <section id="about" className="bg-white py-20 px-8">
+      <FadeUp>
       <div className="max-w-6xl mx-auto">
         {/* Main content grid */}
         <div className="grid grid-cols-3 items-start gap-8 mb-16">
@@ -21,24 +22,18 @@ export default function AboutSection() {
 
           {/* Center text */}
           <div className="text-center flex flex-col items-center gap-6 pt-2">
-            <FadeUp>
-              <h2 className="text-4xl font-extrabold text-green-700">About Us</h2>
-            </FadeUp>
-            <FadeUp delay={0.1}>
+              <h2 className="text-5xl font-extrabold text-green-700">About Us</h2>
               <p className="text-gray-600 leading-relaxed text-base">
                 Welcome to Ukti Early Years where we believe in fostering the brightest beginnings for our young
                 learners. We aspire to create an environment where children not only learn but thrive, where every
                 moment is an opportunity to sculpt curious minds and nurture boundless potential
               </p>
-            </FadeUp>
-            <FadeUp delay={0.2}>
               <Link
                 href="#"
                 className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-full transition-colors text-sm inline-block"
               >
                 Know More
               </Link>
-            </FadeUp>
           </div>
 
           {/* Right column: large logo at top, image offset lower */}
@@ -83,6 +78,7 @@ export default function AboutSection() {
           ))}
         </div>
       </div>
+      </FadeUp>
     </section>
   );
 }

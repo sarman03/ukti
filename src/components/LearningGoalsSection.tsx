@@ -31,12 +31,11 @@ const goals = [
 export default function LearningGoalsSection() {
   return (
     <section id="learning" className="py-20 bg-white">
+      <FadeUp>
       <div className="max-w-6xl mx-auto px-8">
-        <FadeUp>
-          <h2 className="text-4xl font-extrabold text-center text-green-700 mb-12">
+          <h2 className="text-5xl font-extrabold text-center text-green-700 mb-12">
             Learning goals
           </h2>
-        </FadeUp>
 
         <div className="grid grid-cols-2 gap-12 items-center">
           {/* Left: kite-tilted main image with smaller overlap image at top-right */}
@@ -62,10 +61,9 @@ export default function LearningGoalsSection() {
 
           {/* Right: goal items */}
           <div className="flex flex-col gap-4">
-            {goals.map((goal, idx) => (
-              <FadeUp
+            {goals.map((goal) => (
+              <div
                 key={goal.title}
-                delay={idx * 0.1}
                 className="flex gap-4 items-center bg-white border border-amber-300 rounded-2xl px-5 py-5 shadow-sm"
               >
                 <div className="w-16 h-16 rounded-xl flex-shrink-0 flex items-center justify-center bg-amber-200">
@@ -85,11 +83,12 @@ export default function LearningGoalsSection() {
                     {goal.description}
                   </p>
                 </div>
-              </FadeUp>
+              </div>
             ))}
           </div>
         </div>
       </div>
+      </FadeUp>
     </section>
   );
 }
