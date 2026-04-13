@@ -15,7 +15,7 @@ export default function AboutSection() {
   const { images } = useSupabaseImages("about");
 
   return (
-    <section id="about" className="bg-white pt-20 pb-12 md:pb-[50vh] px-4 md:px-8">
+    <section id="about" className="bg-white pt-20 pb-12 md:pb-20 px-4 md:px-8">
       <FadeUp>
       <div className="max-w-6xl mx-auto">
         {/* Main content grid */}

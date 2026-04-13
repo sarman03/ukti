@@ -51,7 +51,7 @@ export default function ClassroomSection() {
   const { images } = useSupabaseImages("classroom");
 
   return (
-    <section id="classes" className="py-12 md:py-20 px-4 md:px-8 bg-gray-50">
+    <section id="classes" className="py-12 md:py-20 px-4 md:px-8 bg-white">
       <FadeUp>
       <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-5xl font-extrabold text-center text-gray-900 mb-6 md:mb-8">
