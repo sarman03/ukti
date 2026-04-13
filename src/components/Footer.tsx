@@ -13,7 +13,7 @@ export default function Footer() {
               alt="Ukti Early Years"
               width={88}
               height={92}
-              className="w-16 md:w-20 h-auto"
+              className="w-32 md:w-40 h-auto"
             />
           </Link>
           <p className="text-gray-800 text-sm leading-relaxed max-w-xs">

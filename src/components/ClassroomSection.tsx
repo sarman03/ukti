@@ -118,7 +118,7 @@ export default function ClassroomSection() {
 
         {/* CTA */}
         <div className="flex justify-center">
-          <RippleButton className="px-10">
+          <RippleButton href="/classroom" className="px-10">
             Explore More
           </RippleButton>
         </div>
