@@ -1,7 +1,15 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
+import { useSupabaseImages } from "@/lib/useSupabaseImages";
+import { supabase } from "@/lib/supabase";
+
+const BUCKET = "images";
 
 const preschoolPrograms = [
   {
@@ -98,6 +106,7 @@ function ProgramCard({
   points,
   sections,
   imageLeft = false,
+  imageUrl,
 }: {
   title: string;
   subtitle: string;
@@ -105,16 +114,21 @@ function ProgramCard({
   points?: string[];
   sections?: { heading: string; points: string[] }[];
   imageLeft?: boolean;
+  imageUrl?: string;
 }) {
   return (
     <div className={`bg-amber-400 rounded-[3rem] md:rounded-[150px] p-5 ${imageLeft ? "md:p-10" : "md:py-10 md:pl-16 md:pr-10"} flex flex-col md:flex-row gap-5 md:gap-6 items-center text-center md:text-left`}>
-      {/* Image placeholder */}
+      {/* Image */}
       <div
-        className={`w-full md:w-80 h-44 md:h-72 bg-gray-300 rounded-[2rem] md:rounded-[120px] flex-shrink-0 flex items-center justify-center ${
+        className={`w-full md:w-80 h-44 md:h-72 bg-gray-300 rounded-[2rem] md:rounded-[120px] flex-shrink-0 overflow-hidden relative flex items-center justify-center ${
           imageLeft ? "order-1" : "order-1 md:order-2"
         }`}
       >
-        <span className="text-gray-500 text-sm">Image Placeholder</span>
+        {imageUrl ? (
+          <Image src={imageUrl} alt={title} fill className="object-cover" sizes="320px" />
+        ) : (
+          <span className="text-gray-500 text-sm">Image Placeholder</span>
+        )}
       </div>
 
       {/* Text content */}
@@ -163,29 +177,107 @@ function ProgramCard({
   );
 }
 
+function HeroCarousel() {
+  const [images, setImages] = useState<string[]>([]);
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    async function fetchImages() {
+      const { data } = await supabase.storage.from(BUCKET).list("classroom-hero", {
+        sortBy: { column: "name", order: "asc" },
+      });
+      if (data && data.length > 0) {
+        const urls = data
+          .filter((f) => !f.id?.startsWith(".") && f.name !== ".emptyFolderPlaceholder")
+          .map(
+            (f) =>
+              supabase.storage.from(BUCKET).getPublicUrl(`classroom-hero/${f.name}`).data.publicUrl
+          );
+        setImages(urls);
+      }
+    }
+    fetchImages();
+  }, []);
+
+  const nextSlide = useCallback(() => {
+    setCurrent((prev) => (prev + 1) % images.length);
+  }, [images.length]);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const timer = setInterval(nextSlide, 5000);
+    return () => clearInterval(timer);
+  }, [images.length, nextSlide]);
+
+  return (
+    <section className="relative w-full h-screen overflow-hidden">
+      {/* Images with fade transition */}
+      {images.length > 0 ? (
+        images.map((url, index) => (
+          <div
+            key={url}
+            className={`absolute inset-0 transition-opacity duration-[2000ms] ease-in-out ${
+              index === current ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <Image
+              src={url}
+              alt={`Classroom hero ${index + 1}`}
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority={index === 0}
+            />
+          </div>
+        ))
+      ) : (
+        <div className="absolute inset-0 bg-gray-400" />
+      )}
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/50" />
+
+      {/* Text content */}
+      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
+        <h1 className="text-3xl md:text-6xl font-extrabold text-white leading-tight mb-6">
+          Love, learning &amp;<br />
+          Laughter Every Day
+        </h1>
+        <RippleButton href="#contact" className="px-8 py-3">
+          Book a tour
+        </RippleButton>
+      </div>
+
+      {/* Dot indicators */}
+      {images.length > 1 && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrent(index)}
+              className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                index === current ? "bg-white" : "bg-white/50"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
 export default function ClassroomPage() {
+  const { images: cardImages } = useSupabaseImages("classroom-cards");
+
+  // Map card images to programs: first 3 for preschool, next 2 for afterschool
+  const allPrograms = [...preschoolPrograms, ...afterschoolPrograms];
+
   return (
     <main>
       <Navbar />
 
-      {/* Hero banner with dimmed image */}
-      <section className="relative w-full h-screen overflow-hidden">
-        {/* Placeholder image background */}
-        <div className="absolute inset-0 bg-gray-400" />
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/50" />
-
-        {/* Text content */}
-        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
-          <h1 className="text-3xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-            Love, learning &amp;<br />
-            Laughter Every Day
-          </h1>
-          <RippleButton href="#contact" className="px-8 py-3">
-            Book a tour
-          </RippleButton>
-        </div>
-      </section>
+      <HeroCarousel />
 
       {/* Pre School Section */}
       <section className="py-12 md:py-20 px-4 md:px-8 bg-white">
@@ -198,7 +290,7 @@ export default function ClassroomPage() {
           <div className="flex flex-col gap-8 md:gap-10">
             {preschoolPrograms.map((program, i) => (
               <FadeUp key={program.title} delay={i * 0.15}>
-                <ProgramCard {...program} imageLeft />
+                <ProgramCard {...program} imageLeft imageUrl={cardImages[i]} />
               </FadeUp>
             ))}
           </div>
@@ -216,7 +308,7 @@ export default function ClassroomPage() {
           <div className="flex flex-col gap-8 md:gap-10">
             {afterschoolPrograms.map((program, i) => (
               <FadeUp key={program.title} delay={i * 0.15}>
-                <ProgramCard {...program} />
+                <ProgramCard {...program} imageUrl={cardImages[preschoolPrograms.length + i]} />
               </FadeUp>
             ))}
           </div>

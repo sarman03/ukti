@@ -35,6 +35,19 @@ const sections = [
     maxImages: 5,
   },
   {
+    folder: "classroom-hero",
+    title: "Classroom Page — Hero Banner",
+    aspect: 16 / 9,
+    aspectLabel: "Classroom Hero — 16:9 full screen",
+  },
+  {
+    folder: "classroom-cards",
+    title: "Classroom Page — Program Cards",
+    aspect: 4 / 3,
+    aspectLabel: "Program Card — 4:3",
+    maxImages: 5,
+  },
+  {
     folder: "gallery",
     title: "Gallery",
     aspect: 1,
