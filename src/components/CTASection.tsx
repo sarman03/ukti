@@ -9,7 +9,7 @@ export default function CTASection() {
   const { images } = useSupabaseImages("cta");
 
   return (
-    <section className="min-h-screen px-4 md:px-8 bg-white overflow-hidden flex items-center justify-center">
+    <section className="py-12 md:py-0 md:min-h-screen px-4 md:px-8 bg-white overflow-hidden flex items-center justify-center">
       <FadeUp className="w-full">
       <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-8 md:gap-10">
 

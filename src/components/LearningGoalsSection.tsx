@@ -38,14 +38,14 @@ export default function LearningGoalsSection() {
     <section id="learning" className="py-20 bg-white">
       <FadeUp>
       <div className="max-w-6xl mx-auto px-4 md:px-8">
-          <h2 className="text-3xl md:text-5xl font-extrabold text-center text-green-700 mb-8 md:mb-12">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-center text-green-700 mb-4 md:mb-12">
             Learning goals
           </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-12 items-center">
           {/* Left: kite-tilted main image with smaller overlap image at top-right */}
-          <div className="flex justify-center">
-            <div className="relative w-full max-w-sm aspect-square">
+          <div className="flex justify-center mt-10 md:mt-0">
+            <div className="relative w-48 h-48 md:w-full md:max-w-sm md:aspect-square">
               {/* Main image — heavily tilted like a kite */}
               <div
                 className="absolute inset-0 bg-gray-300 rounded-2xl shadow-lg overflow-hidden animate-swing-slow"
@@ -59,7 +59,7 @@ export default function LearningGoalsSection() {
 
               {/* Smaller image overlapping the top-right corner */}
               <div
-                className="absolute -top-14 -right-6 w-32 h-24 bg-gray-400 rounded-xl shadow-lg overflow-hidden z-10 animate-swing-slow-reverse"
+                className="absolute -top-8 -right-4 w-20 h-16 md:-top-14 md:-right-6 md:w-32 md:h-24 bg-gray-400 rounded-xl shadow-lg overflow-hidden z-10 animate-swing-slow-reverse"
               >
                 {images[1] ? (
                   <Image src={images[1]} alt="Learning" fill className="object-cover" sizes="128px" />
