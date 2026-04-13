@@ -15,7 +15,7 @@ export default function GallerySection() {
   return (
     <section id="gallery" className="py-20 bg-white overflow-hidden">
       <FadeUp>
-        <h2 className="text-5xl font-extrabold text-center text-orange-500 mb-12">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-orange-500 mb-8 md:mb-12">
           Gallery
         </h2>
 
@@ -25,7 +25,7 @@ export default function GallerySection() {
           {[...row1, ...row1].map((url, i) => (
             <div
               key={i}
-              className="w-56 h-56 bg-gray-300 rounded-2xl flex-shrink-0 relative overflow-hidden"
+              className="w-40 h-40 md:w-56 md:h-56 bg-gray-300 rounded-2xl flex-shrink-0 relative overflow-hidden"
             >
               {url ? (
                 <Image src={url} alt={`Gallery photo`} fill className="object-cover" sizes="224px" />
@@ -43,7 +43,7 @@ export default function GallerySection() {
           {[...row2, ...row2].map((url, i) => (
             <div
               key={i}
-              className="w-56 h-56 bg-gray-300 rounded-2xl flex-shrink-0 relative overflow-hidden"
+              className="w-40 h-40 md:w-56 md:h-56 bg-gray-300 rounded-2xl flex-shrink-0 relative overflow-hidden"
             >
               {url ? (
                 <Image src={url} alt={`Gallery photo`} fill className="object-cover" sizes="224px" />

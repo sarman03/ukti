@@ -51,10 +51,10 @@ export default function ClassroomSection() {
   const { images } = useSupabaseImages("classroom");
 
   return (
-    <section id="classes" className="py-20 px-8 bg-gray-50">
+    <section id="classes" className="py-12 md:py-20 px-4 md:px-8 bg-gray-50">
       <FadeUp>
       <div className="max-w-5xl mx-auto">
-          <h2 className="text-5xl font-extrabold text-center text-gray-900 mb-8">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-center text-gray-900 mb-6 md:mb-8">
             Our Classroom
           </h2>
 
@@ -81,8 +81,8 @@ export default function ClassroomSection() {
         <div
           className={`grid gap-6 mb-12 ${
             activePrograms.length === 2
-              ? "grid-cols-2 max-w-3xl mx-auto"
-              : "grid-cols-3"
+              ? "grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto"
+              : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
           }`}
         >
           {activePrograms.map((program, idx) => (

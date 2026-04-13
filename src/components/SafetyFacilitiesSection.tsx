@@ -89,13 +89,29 @@ const ICON_SIZE = 64;
 
 export default function SafetyFacilitiesSection() {
   return (
-    <section id="safety" className="py-20 px-8 bg-white">
+    <section id="safety" className="py-12 md:py-20 px-4 md:px-8 bg-white">
       <FadeUp>
-        <h2 className="text-5xl font-extrabold text-center text-orange-500 mb-4">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-orange-500 mb-6 md:mb-4">
           Safety &amp; Facilities
         </h2>
 
-      <div className="max-w-5xl mx-auto">
+      {/* Mobile card layout */}
+      <div className="md:hidden grid grid-cols-1 gap-4 max-w-md mx-auto">
+        {circles.map((c) => (
+          <div key={c.id} className="flex items-start gap-4 rounded-2xl border border-gray-200 p-4 shadow-sm">
+            <div className="w-14 h-14 rounded-full flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: c.fill }}>
+              <img src={c.icon} alt="" className="w-8 h-8 object-contain" />
+            </div>
+            <div>
+              <p className="font-bold text-gray-900 text-sm">{c.title}</p>
+              <p className="text-gray-600 text-xs leading-relaxed mt-1">{c.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop SVG diagram */}
+      <div className="hidden md:block max-w-5xl mx-auto">
         <svg
           viewBox={`0 0 ${W} ${H}`}
           width="100%"

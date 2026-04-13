@@ -168,10 +168,25 @@ export default function WhyChooseSection() {
   return (
     <section id="why-choose" className="py-20 bg-white">
       <FadeUp>
-        <h2 className="text-5xl font-extrabold text-center text-orange-500 mb-12">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-orange-500 mb-8 md:mb-12">
           Why Choose Ukti
         </h2>
-      <div className="w-full">
+
+      {/* Mobile card layout */}
+      <div className="md:hidden grid grid-cols-1 gap-4 px-4">
+        {pieces.filter(p => p.type === "text").map((p, i) => (
+          <div
+            key={i}
+            className="rounded-2xl p-5 text-center text-sm font-semibold text-gray-800 leading-relaxed"
+            style={{ backgroundColor: p.color }}
+          >
+            {p.text}
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop SVG puzzle */}
+      <div className="hidden md:block w-full">
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
           width="100%"

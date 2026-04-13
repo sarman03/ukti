@@ -51,12 +51,45 @@ export default function TestimonialsSection() {
       }}
     >
       <FadeUp>
-        <h2 className="text-5xl font-extrabold text-center text-green-800 mb-16">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-green-800 mb-10 md:mb-16">
           Testimonials
         </h2>
 
-      {/* Carousel container */}
-      <div className="relative mx-auto" style={{ maxWidth: 1200, height: 460 }}>
+      {/* Mobile carousel — single card */}
+      <div className="md:hidden px-4">
+        <div className="bg-gray-200 rounded-2xl p-6 shadow-md min-h-[240px] flex flex-col justify-between">
+          <p className="text-gray-600 text-sm leading-relaxed italic">
+            &ldquo;{testimonials[current].quote}&rdquo;
+          </p>
+          <div className="mt-4">
+            <p className="font-extrabold text-gray-900 text-sm">
+              {testimonials[current].name}
+            </p>
+            <p className="text-xs text-gray-500 mt-0.5">
+              {testimonials[current].role}
+            </p>
+          </div>
+        </div>
+        <div className="flex justify-center gap-4 mt-6">
+          <button
+            onClick={() => setCurrent(prev)}
+            className="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-green-800 font-bold text-xl"
+            aria-label="Previous testimonial"
+          >
+            ‹
+          </button>
+          <button
+            onClick={() => setCurrent(next)}
+            className="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-green-800 font-bold text-xl"
+            aria-label="Next testimonial"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+
+      {/* Desktop carousel */}
+      <div className="hidden md:block relative mx-auto" style={{ maxWidth: 1200, height: 460 }}>
         {/* Left background card */}
         <div
           className="absolute rounded-2xl"

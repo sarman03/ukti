@@ -14,11 +14,11 @@ export default function MapsSection() {
   return (
     <section id="maps" className="py-16 bg-white">
       <FadeUp>
-        <h2 className="text-5xl font-extrabold text-center text-green-700 mb-8">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-green-700 mb-6 md:mb-8">
           Maps
         </h2>
 
-      <div className="grid grid-cols-2 max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto gap-6 md:gap-0 px-4 md:px-0">
         {locations.map((loc) => (
           <div key={loc.label}>
             <p className="font-extrabold text-center text-gray-900 mb-2 text-sm tracking-wide">
@@ -26,7 +26,7 @@ export default function MapsSection() {
             </p>
             {/* Map placeholder — swap for <iframe> when ready */}
             <div
-              className={`${loc.placeholder} h-96 flex items-center justify-center`}
+              className={`${loc.placeholder} h-64 md:h-96 flex items-center justify-center`}
             >
               <span className="text-white/60 text-sm font-medium">
                 Map Placeholder — {loc.label}

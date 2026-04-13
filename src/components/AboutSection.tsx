@@ -15,11 +15,11 @@ export default function AboutSection() {
   const { images } = useSupabaseImages("about");
 
   return (
-    <section id="about" className="bg-white pt-20 pb-[50vh] px-8">
+    <section id="about" className="bg-white pt-20 pb-12 md:pb-[50vh] px-4 md:px-8">
       <FadeUp>
       <div className="max-w-6xl mx-auto">
         {/* Main content grid */}
-        <div className="grid grid-cols-3 items-start gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 items-start gap-8 mb-10 md:mb-16">
           {/* Left column: image at top */}
           <div className="w-full aspect-[5/4] bg-gray-300 rounded-2xl overflow-hidden relative">
             {images[0] ? (
@@ -31,7 +31,7 @@ export default function AboutSection() {
 
           {/* Center text */}
           <div className="text-center flex flex-col items-center gap-6 pt-2">
-              <h2 className="text-5xl font-extrabold text-green-700">About Us</h2>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-green-700">About Us</h2>
               <p className="text-gray-600 leading-relaxed text-base">
                 Welcome to Ukti Early Years where we believe in fostering the brightest beginnings for our young
                 learners. We aspire to create an environment where children not only learn but thrive, where every
@@ -49,9 +49,9 @@ export default function AboutSection() {
               alt="Ukti Early Years"
               width={280}
               height={294}
-              className="w-60 h-auto"
+              className="w-40 md:w-60 h-auto"
             />
-            <div className="w-full aspect-[5/4] bg-gray-300 rounded-2xl overflow-hidden relative mt-12">
+            <div className="w-full aspect-[5/4] bg-gray-300 rounded-2xl overflow-hidden relative mt-6 md:mt-12">
               {images[1] ? (
                 <Image src={images[1]} alt="About Ukti" fill className="object-cover" sizes="33vw" />
               ) : (
@@ -62,21 +62,23 @@ export default function AboutSection() {
         </div>
 
         {/* Stats row */}
-        <div className="grid grid-cols-3 gap-8 pt-12">
+        <div className="flex flex-col sm:flex-row items-center sm:grid sm:grid-cols-3 gap-6 md:gap-8 pt-8 md:pt-12">
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="flex items-center justify-center gap-5"
+              className="flex items-center gap-5 w-56 sm:w-auto sm:justify-center"
             >
-              <Image
-                src={stat.icon}
-                alt=""
-                width={80}
-                height={80}
-                className="w-16 h-16 flex-shrink-0 object-contain"
-              />
+              <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center">
+                <Image
+                  src={stat.icon}
+                  alt=""
+                  width={80}
+                  height={80}
+                  className="w-16 h-16 object-contain"
+                />
+              </div>
               <div className="flex flex-col">
-                <span className="text-5xl font-extrabold text-green-700 leading-none">
+                <span className="text-3xl md:text-5xl font-extrabold text-green-700 leading-none">
                   {stat.value}
                 </span>
                 <span className="text-gray-700 text-sm font-medium mt-2">

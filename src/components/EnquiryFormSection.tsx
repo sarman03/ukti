@@ -12,11 +12,11 @@ export default function EnquiryFormSection() {
   return (
     <section
       id="contact"
-      className="py-20 px-8 bg-white border-t-4 border-amber-400"
+      className="py-12 md:py-20 px-4 md:px-8 bg-white border-t-4 border-amber-400"
     >
       <FadeUp>
       <div className="max-w-3xl mx-auto">
-          <h2 className="text-5xl font-extrabold text-center text-orange-500 mb-8">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-center text-orange-500 mb-6 md:mb-8">
             Enquiry form
           </h2>
 
@@ -58,7 +58,7 @@ export default function EnquiryFormSection() {
         )}
 
         {/* Form box */}
-        <div className="bg-amber-400 rounded-2xl p-8">
+        <div className="bg-amber-400 rounded-2xl p-5 md:p-8">
           <p className="font-extrabold text-gray-900 text-center mb-6 text-base">
             {activeTab === "tour"
               ? "Book a School Tour at Ukti Early Years"
@@ -76,7 +76,7 @@ export default function EnquiryFormSection() {
 function TourForm() {
   return (
     <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <input
           type="text"
           placeholder="Child's Name"
@@ -123,7 +123,7 @@ function TourForm() {
 function AdmissionForm() {
   return (
     <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <input
           type="text"
           placeholder="Child's Name"

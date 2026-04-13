@@ -4,8 +4,21 @@
   --font-baloo: var(--font-baloo);
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 html {
-  font-size: 112.5%;
+  font-size: 100%;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 112.5%;
+  }
 }
 
 body {

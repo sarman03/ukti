@@ -35,7 +35,7 @@ export default function Home() {
       {sections.map((Section, i) => (
         <div
           key={Section.name}
-          className="sticky top-0 min-h-screen bg-white"
+          className="sticky top-0 md:min-h-screen bg-white"
           style={{ zIndex: i + 1 }}
         >
           <Section />
