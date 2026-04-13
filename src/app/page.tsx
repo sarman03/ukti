@@ -10,6 +10,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import EnquiryFormSection from "@/components/EnquiryFormSection";
 import MapsSection from "@/components/MapsSection";
 import CTASection from "@/components/CTASection";
+import Footer from "@/components/Footer";
 
 // All scrolling sections in order. They'll be wrapped in sticky containers
 // with increasing z-index so each new section slides UP and overlaps the
@@ -41,6 +42,9 @@ export default function Home() {
           <Section />
         </div>
       ))}
+      <div className="sticky top-0" style={{ zIndex: sections.length + 1 }}>
+        <Footer />
+      </div>
     </main>
   );
 }
