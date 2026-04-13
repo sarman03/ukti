@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
 
 const preschoolPrograms = [
@@ -106,10 +107,10 @@ function ProgramCard({
   imageLeft?: boolean;
 }) {
   return (
-    <div className={`bg-amber-400 rounded-[150px] p-6 ${imageLeft ? "md:p-10" : "md:py-10 md:pl-16 md:pr-10"} flex flex-col md:flex-row gap-6 items-center`}>
+    <div className={`bg-amber-400 rounded-[3rem] md:rounded-[150px] p-5 ${imageLeft ? "md:p-10" : "md:py-10 md:pl-16 md:pr-10"} flex flex-col md:flex-row gap-5 md:gap-6 items-center text-center md:text-left`}>
       {/* Image placeholder */}
       <div
-        className={`w-full md:w-80 h-56 md:h-72 bg-gray-300 rounded-[120px] flex-shrink-0 flex items-center justify-center ${
+        className={`w-full md:w-80 h-44 md:h-72 bg-gray-300 rounded-[2rem] md:rounded-[120px] flex-shrink-0 flex items-center justify-center ${
           imageLeft ? "order-1" : "order-1 md:order-2"
         }`}
       >
@@ -127,7 +128,7 @@ function ProgramCard({
         </p>
 
         {points && (
-          <ul className="mt-3 space-y-1">
+          <ul className="mt-3 space-y-1 inline-block md:block text-left">
             {points.map((point) => (
               <li key={point} className="text-base text-gray-800 flex items-start gap-2">
                 <svg className="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>
@@ -141,7 +142,7 @@ function ProgramCard({
           sections.map((sec) => (
             <div key={sec.heading} className="mt-4">
               <p className="font-bold text-base text-gray-900">{sec.heading}</p>
-              <ul className="mt-1 space-y-1">
+              <ul className="mt-1 space-y-1 inline-block md:block text-left">
                 {sec.points.map((point) => (
                   <li key={point} className="text-base text-gray-800 flex items-start gap-2">
                     <svg className="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>
@@ -189,12 +190,16 @@ export default function ClassroomPage() {
       {/* Pre School Section */}
       <section className="py-12 md:py-20 px-4 md:px-8 bg-white">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-extrabold text-center text-gray-900 mb-10 md:mb-14">
-            Pre School
-          </h2>
+          <FadeUp>
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-gray-900 mb-10 md:mb-14">
+              Pre School
+            </h2>
+          </FadeUp>
           <div className="flex flex-col gap-8 md:gap-10">
-            {preschoolPrograms.map((program) => (
-              <ProgramCard key={program.title} {...program} imageLeft />
+            {preschoolPrograms.map((program, i) => (
+              <FadeUp key={program.title} delay={i * 0.15}>
+                <ProgramCard {...program} imageLeft />
+              </FadeUp>
             ))}
           </div>
         </div>
@@ -203,12 +208,16 @@ export default function ClassroomPage() {
       {/* After School Section */}
       <section className="py-12 md:py-20 px-4 md:px-8 bg-white">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-extrabold text-center text-gray-900 mb-10 md:mb-14">
-            After school
-          </h2>
+          <FadeUp>
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-gray-900 mb-10 md:mb-14">
+              After school
+            </h2>
+          </FadeUp>
           <div className="flex flex-col gap-8 md:gap-10">
-            {afterschoolPrograms.map((program) => (
-              <ProgramCard key={program.title} {...program} />
+            {afterschoolPrograms.map((program, i) => (
+              <FadeUp key={program.title} delay={i * 0.15}>
+                <ProgramCard {...program} />
+              </FadeUp>
             ))}
           </div>
         </div>
