@@ -1,15 +1,52 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
 import { useSupabaseImages } from "@/lib/useSupabaseImages";
 
 const stats = [
-  { value: "6+", label: "Years of Experience", icon: "/about-us/6+.png" },
-  { value: "50+", label: "Happy Little Learners", icon: "/about-us/50 +.png" },
-  { value: "3hrs+", label: "Tactile Play", icon: "/about-us/3+.png" },
+  { value: 6, suffix: "+", label: "Years of Experience", icon: "/about-us/6+.png" },
+  { value: 50, suffix: "+", label: "Happy Little Learners", icon: "/about-us/50 +.png" },
+  { value: 3, suffix: "hrs+", label: "Tactile Play", icon: "/about-us/3+.png" },
 ];
+
+function CountUp({ end, suffix = "", duration = 1600 }: { end: number; suffix?: string; duration?: number }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const start = performance.now();
+          const step = (now: number) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setCount(Math.round(eased * end));
+            if (progress < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [end, duration]);
+
+  return (
+    <span ref={ref}>
+      {count}
+      {suffix}
+    </span>
+  );
+}
 
 export default function AboutSection() {
   const { images } = useSupabaseImages("about");
@@ -79,7 +116,7 @@ export default function AboutSection() {
               </div>
               <div className="flex flex-col">
                 <span className="text-3xl md:text-5xl font-extrabold text-green-700 leading-none">
-                  {stat.value}
+                  <CountUp end={stat.value} suffix={stat.suffix} />
                 </span>
                 <span className="text-gray-700 text-sm font-medium mt-2">
                   {stat.label}

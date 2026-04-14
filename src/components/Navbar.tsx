@@ -10,6 +10,8 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const isClassroom = pathname === "/classroom";
+  const isAbout = pathname === "/about";
+  const isContact = pathname === "/contact";
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-amber-300 px-4 md:px-20 py-3 md:py-4 flex items-center justify-between">
@@ -27,13 +29,13 @@ export default function Navbar() {
 
       {/* Left: Nav Links (desktop) */}
       <div className="hidden md:flex items-center gap-10">
-        <a href="#about" className="text-gray-800 font-medium hover:text-gray-600 transition-colors">
+        <a href="/about" className={`font-medium transition-colors ${isAbout ? "text-green-700 font-bold" : "text-gray-800 hover:text-gray-600"}`}>
           About
         </a>
         <a href="/classroom" className={`font-medium transition-colors ${isClassroom ? "text-green-700 font-bold" : "text-gray-800 hover:text-gray-600"}`}>
           Classes
         </a>
-        <a href="#contact" className="text-gray-800 font-medium hover:text-gray-600 transition-colors">
+        <a href="/contact" className={`font-medium transition-colors ${isContact ? "text-green-700 font-bold" : "text-gray-800 hover:text-gray-600"}`}>
           Contact
         </a>
       </div>
@@ -73,13 +75,13 @@ export default function Navbar() {
       {/* Mobile: Slide-down menu */}
       {menuOpen && (
         <div className="absolute top-full left-0 right-0 bg-amber-300 shadow-lg flex flex-col items-center gap-4 py-6 md:hidden">
-          <a href="#about" onClick={() => setMenuOpen(false)} className="text-gray-800 font-medium text-lg">
+          <a href="/about" onClick={() => setMenuOpen(false)} className={`font-medium text-lg ${isAbout ? "text-green-700 font-bold" : "text-gray-800"}`}>
             About
           </a>
           <a href="/classroom" onClick={() => setMenuOpen(false)} className={`font-medium text-lg ${isClassroom ? "text-green-700 font-bold" : "text-gray-800"}`}>
             Classes
           </a>
-          <a href="#contact" onClick={() => setMenuOpen(false)} className="text-gray-800 font-medium text-lg">
+          <a href="/contact" onClick={() => setMenuOpen(false)} className={`font-medium text-lg ${isContact ? "text-green-700 font-bold" : "text-gray-800"}`}>
             Contact
           </a>
           <div className="flex flex-col gap-2 mt-2">

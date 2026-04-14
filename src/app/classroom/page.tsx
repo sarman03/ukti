@@ -5,6 +5,8 @@ import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FadeUp from "@/components/FadeUp";
+import DayAtUktiSection from "@/components/DayAtUktiSection";
+import EnquiryFormSection from "@/components/EnquiryFormSection";
 import RippleButton from "@/components/RippleButton";
 import { useSupabaseImages } from "@/lib/useSupabaseImages";
 import { supabase } from "@/lib/supabase";
@@ -314,6 +316,10 @@ export default function ClassroomPage() {
           </div>
         </div>
       </section>
+
+      <DayAtUktiSection />
+
+      <EnquiryFormSection />
 
       <Footer />
     </main>

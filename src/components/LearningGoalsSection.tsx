@@ -45,7 +45,7 @@ export default function LearningGoalsSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-12 items-center">
           {/* Left: kite-tilted main image with smaller overlap image at top-right */}
           <div className="flex justify-center mt-10 md:mt-0">
-            <div className="relative w-48 h-48 md:w-full md:max-w-sm md:aspect-square">
+            <div className="relative w-48 h-84 md:w-full md:max-w-sm md:aspect-[4/5]">
               {/* Main image — heavily tilted like a kite */}
               <div
                 className="absolute inset-0 bg-gray-300 rounded-2xl shadow-lg overflow-hidden animate-swing-slow"
