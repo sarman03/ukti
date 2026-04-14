@@ -167,15 +167,15 @@ export default function AboutPage() {
             {/* Vision Card */}
             <FadeUp delay={0.2}>
               <div className="relative bg-white rounded-3xl p-8 md:p-10 h-full overflow-hidden shadow-sm">
-                <span className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-sky-100" aria-hidden="true" />
+                <span className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-orange-100" aria-hidden="true" />
                 <div className="relative">
-                  <div className="w-14 h-14 rounded-full bg-sky-300/70 text-sky-800 flex items-center justify-center mb-6">
+                  <div className="w-14 h-14 rounded-full bg-orange-300/70 text-orange-800 flex items-center justify-center mb-6">
                     <svg className="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 2l1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6z" />
                       <path d="M19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8z" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-extrabold text-sky-600 mb-4">
+                  <h3 className="text-2xl md:text-3xl font-extrabold text-orange-500 mb-4">
                     Our Vision
                   </h3>
                   <p className="text-gray-700 leading-relaxed mb-5">
@@ -184,7 +184,7 @@ export default function AboutPage() {
                     innovation.
                   </p>
                   <p className="text-gray-700 leading-relaxed text-sm">
-                    <span className="font-bold text-sky-600">How to apply:</span>{" "}
+                    <span className="font-bold text-orange-500">How to apply:</span>{" "}
                     We nurture these qualities daily through hands-on
                     exploration and respectful guidance.
                   </p>
@@ -221,10 +221,10 @@ export default function AboutPage() {
               {
                 title: "Hands-On Exploration",
                 body: "Learning through touch, manipulation, and sensory experiences",
-                bg: "bg-sky-200",
-                titleColor: "text-sky-700",
-                iconBg: "bg-sky-300/60",
-                iconColor: "text-sky-800",
+                bg: "bg-[#F8D07A]",
+                titleColor: "text-orange-600",
+                iconBg: "bg-orange-300/60",
+                iconColor: "text-orange-700",
                 iconPath: "M9 11h6M12 8v6M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3l-2-2h-4l-2 2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z",
               },
               {
@@ -239,28 +239,28 @@ export default function AboutPage() {
               {
                 title: "Respect & Empathy",
                 body: "Fostering kindness, understanding, and peaceful conflict resolution",
-                bg: "bg-yellow-200",
-                titleColor: "text-yellow-700",
-                iconBg: "bg-yellow-300/60",
-                iconColor: "text-yellow-800",
+                bg: "bg-green-200",
+                titleColor: "text-green-700",
+                iconBg: "bg-green-300/60",
+                iconColor: "text-green-800",
                 iconPath: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
               },
               {
                 title: "Independence",
                 body: "Encouraging self-directed activity and decision-making capabilities",
-                bg: "bg-green-200",
-                titleColor: "text-green-700",
-                iconBg: "bg-green-300/60",
-                iconColor: "text-green-800",
+                bg: "bg-[#F8D07A]",
+                titleColor: "text-orange-600",
+                iconBg: "bg-orange-300/60",
+                iconColor: "text-orange-700",
                 iconPath: "M5 12h14M12 5l7 7-7 7",
               },
               {
                 title: "Natural Curiosity",
                 body: "Nurturing the innate desire to explore and understand the world",
-                bg: "bg-sky-200",
-                titleColor: "text-sky-700",
-                iconBg: "bg-sky-300/60",
-                iconColor: "text-sky-800",
+                bg: "bg-orange-200",
+                titleColor: "text-orange-700",
+                iconBg: "bg-orange-300/60",
+                iconColor: "text-orange-800",
                 iconPath: "M11 19a8 8 0 1 1 5.66-2.34L21 21",
               },
             ].map((card, i) => (
@@ -288,7 +288,7 @@ export default function AboutPage() {
       <section className="bg-[#F4EFE6] py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-5xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-sky-600 mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-green-600 mb-12 md:mb-16">
               Meet the Founders
             </h2>
           </FadeUp>
@@ -377,7 +377,7 @@ export default function AboutPage() {
                 title: "Freedom Within Limits",
                 iconPath:
                   "M12 22a10 10 0 1 0-10-10M12 18a6 6 0 1 0-6-6M12 14a2 2 0 1 0-2-2",
-                color: "text-rose-500",
+                color: "text-green-600",
               },
             ].map((item, i) => (
               <FadeUp key={item.title} delay={i * 0.05}>
@@ -401,7 +401,7 @@ export default function AboutPage() {
       <section className="bg-[#F4EFE6] py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-sky-600 mb-3">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-green-600 mb-3">
               Our Learning Environment
             </h2>
             <p className="text-center text-gray-600 mb-10 md:mb-14">
@@ -469,9 +469,9 @@ export default function AboutPage() {
               {
                 title: "Trained Teachers",
                 body: "Certified Montessori educators with years of experience",
-                titleColor: "text-sky-500",
-                iconBg: "bg-sky-300/70",
-                iconColor: "text-sky-800",
+                titleColor: "text-orange-500",
+                iconBg: "bg-orange-300/70",
+                iconColor: "text-orange-800",
                 icon: (
                   <>
                     <circle cx="9" cy="8" r="3" />
@@ -494,9 +494,9 @@ export default function AboutPage() {
               {
                 title: "Holistic Growth",
                 body: "Focus on social, emotional, physical & cognitive development",
-                titleColor: "text-yellow-500",
-                iconBg: "bg-yellow-300/70",
-                iconColor: "text-yellow-700",
+                titleColor: "text-green-600",
+                iconBg: "bg-green-300/70",
+                iconColor: "text-green-800",
                 icon: (
                   <>
                     <path d="M12 2l1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6z" />
