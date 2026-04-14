@@ -119,7 +119,7 @@ function ProgramCard({
   imageUrl?: string;
 }) {
   return (
-    <div className={`bg-amber-400 rounded-[3rem] md:rounded-[150px] p-5 ${imageLeft ? "md:p-10" : "md:py-10 md:pl-16 md:pr-10"} flex flex-col md:flex-row gap-5 md:gap-6 items-center text-center md:text-left`}>
+    <div className={`bg-[#F8D17C] rounded-[3rem] md:rounded-[150px] p-5 ${imageLeft ? "md:p-10" : "md:py-10 md:pl-24 md:pr-10"} flex flex-col md:flex-row gap-5 md:gap-6 items-center text-center md:text-left`}>
       {/* Image */}
       <div
         className={`w-full md:w-80 h-44 md:h-72 bg-gray-300 rounded-[2rem] md:rounded-[120px] flex-shrink-0 overflow-hidden relative flex items-center justify-center ${
@@ -238,6 +238,20 @@ function HeroCarousel() {
 
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/50" />
+
+      {/* Decorative icons - top right (desktop only) */}
+      <div className="hidden md:flex flex-col absolute top-24 right-0 lg:right-2 z-10 pointer-events-none">
+        <Image src="/classroom/Layer 1.png" alt="" width={120} height={120} className="w-24 lg:w-28 h-auto" />
+        <Image src="/classroom/Layer 3.png" alt="" width={120} height={120} className="w-24 lg:w-28 h-auto -mt-6" />
+        <Image src="/classroom/icon 16 1.png" alt="" width={120} height={120} className="w-24 lg:w-28 h-auto -mt-6" />
+      </div>
+
+      {/* Decorative icons - bottom left (desktop only) */}
+      <div className="hidden md:flex flex-col absolute bottom-16 left-0 lg:left-2 z-10 pointer-events-none">
+        <Image src="/classroom/Layer 1.png" alt="" width={120} height={120} className="w-24 lg:w-28 h-auto" />
+        <Image src="/classroom/Layer 3.png" alt="" width={120} height={120} className="w-24 lg:w-28 h-auto -mt-6" />
+        <Image src="/classroom/icon 16 1.png" alt="" width={120} height={120} className="w-24 lg:w-28 h-auto -mt-6" />
+      </div>
 
       {/* Text content */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
