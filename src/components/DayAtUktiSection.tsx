@@ -18,11 +18,10 @@ export default function DayAtUktiSection() {
         <FadeUp>
           <div className="relative w-full aspect-[7/6] overflow-hidden">
             <Image
-              src="/classroom/day-at-ukti.png"
+              src="/classroom/snake.png"
               alt="A day at Ukti Early Years"
               fill
               className="object-contain"
-              style={{ clipPath: "inset(0 0 0 1.2%)" }}
               sizes="(max-width: 768px) 100vw, 900px"
               priority
             />
