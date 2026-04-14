@@ -44,7 +44,7 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="bg-amber-300 px-4 md:px-20 py-10 md:py-14">
+    <footer className="bg-[#F8D07A] px-4 md:px-20 py-10 md:py-14">
       <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12">
         {/* Left: Logo + tagline */}
         <div className="col-span-2 md:col-span-1 flex flex-col items-start gap-3">
