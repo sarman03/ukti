@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
-import { useSupabaseImages } from "@/lib/useSupabaseImages";
+import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 
 const goals = [
   {
@@ -32,7 +32,7 @@ const goals = [
 ];
 
 export default function LearningGoalsSection() {
-  const { images } = useSupabaseImages("learning-goals");
+  const { images } = useSupabaseSlotImages("learning-goals", 2);
 
   return (
     <section id="learning" className="py-20 bg-white">

@@ -12,7 +12,7 @@ export default function EnquiryFormSection() {
   return (
     <section
       id="contact"
-      className="pt-0 pb-12 md:pb-20 px-4 md:px-8 bg-white -mt-16 md:-mt-32"
+      className="py-12 md:py-20 px-4 md:px-8 bg-white"
     >
       <FadeUp>
       <div className="max-w-3xl mx-auto">

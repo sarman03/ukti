@@ -8,7 +8,7 @@ import FadeUp from "@/components/FadeUp";
 import DayAtUktiSection from "@/components/DayAtUktiSection";
 import EnquiryFormSection from "@/components/EnquiryFormSection";
 import RippleButton from "@/components/RippleButton";
-import { useSupabaseImages } from "@/lib/useSupabaseImages";
+import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 import { supabase } from "@/lib/supabase";
 
 const BUCKET = "images";
@@ -284,7 +284,7 @@ function HeroCarousel() {
 }
 
 export default function ClassroomPage() {
-  const { images: cardImages } = useSupabaseImages("classroom-cards");
+  const { images: cardImages } = useSupabaseSlotImages("classroom-cards", 5);
 
   // Map card images to programs: first 3 for preschool, next 2 for afterschool
   const allPrograms = [...preschoolPrograms, ...afterschoolPrograms];
@@ -333,7 +333,9 @@ export default function ClassroomPage() {
 
       <DayAtUktiSection />
 
-      <EnquiryFormSection />
+      <div className="-mt-16 md:-mt-32">
+        <EnquiryFormSection />
+      </div>
 
       <Footer />
     </main>

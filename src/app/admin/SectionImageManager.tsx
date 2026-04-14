@@ -8,16 +8,20 @@ import ImageCropModal from "@/components/ImageCropModal";
 const BUCKET = "images";
 
 interface SectionImageManagerProps {
-  /** Folder path inside the bucket, e.g. "hero" or "about" */
   folder: string;
-  /** Display title */
   title: string;
-  /** Crop aspect ratio */
   aspect: number;
-  /** Label shown in crop modal */
   aspectLabel: string;
-  /** Max number of images allowed (0 = unlimited) */
   maxImages?: number;
+  /** When provided, enables slot-based mode: one fixed slot per label. */
+  slotLabels?: string[];
+}
+
+type SlotFile = { name: string; url: string } | null;
+
+function parseSlotIndex(name: string): number | null {
+  const m = name.match(/^slot-(\d+)-/);
+  return m ? parseInt(m[1], 10) : null;
 }
 
 export default function SectionImageManager({
@@ -26,14 +30,22 @@ export default function SectionImageManager({
   aspect,
   aspectLabel,
   maxImages = 0,
+  slotLabels,
 }: SectionImageManagerProps) {
+  const slotMode = !!slotLabels && slotLabels.length > 0;
+  const slotCount = slotLabels?.length ?? 0;
+
   const [images, setImages] = useState<{ name: string; url: string }[]>([]);
+  const [slots, setSlots] = useState<SlotFile[]>(
+    slotMode ? Array(slotCount).fill(null) : []
+  );
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
 
   const [cropSrc, setCropSrc] = useState<string | null>(null);
   const [replaceTarget, setReplaceTarget] = useState<string | null>(null);
+  const [targetSlot, setTargetSlot] = useState<number | null>(null);
 
   const fetchImages = useCallback(async () => {
     const { data, error } = await supabase.storage.from(BUCKET).list(folder, {
@@ -53,19 +65,29 @@ export default function SectionImageManager({
         url: supabase.storage.from(BUCKET).getPublicUrl(`${folder}/${f.name}`).data.publicUrl,
       }));
 
-    setImages(files);
+    if (slotMode) {
+      const next: SlotFile[] = Array(slotCount).fill(null);
+      for (const f of files) {
+        const i = parseSlotIndex(f.name);
+        if (i !== null && i >= 0 && i < slotCount) next[i] = f;
+      }
+      setSlots(next);
+    } else {
+      setImages(files);
+    }
     setLoading(false);
-  }, [folder]);
+  }, [folder, slotMode, slotCount]);
 
   useEffect(() => {
     fetchImages();
   }, [fetchImages]);
 
-  function openCrop(file: File, replaceOld?: string) {
+  function openCrop(file: File, opts?: { replaceOld?: string; slotIndex?: number }) {
     const reader = new FileReader();
     reader.onload = () => {
       setCropSrc(reader.result as string);
-      setReplaceTarget(replaceOld ?? null);
+      setReplaceTarget(opts?.replaceOld ?? null);
+      setTargetSlot(opts?.slotIndex ?? null);
     };
     reader.readAsDataURL(file);
   }
@@ -73,10 +95,12 @@ export default function SectionImageManager({
   function closeCrop() {
     setCropSrc(null);
     setReplaceTarget(null);
+    setTargetSlot(null);
   }
 
   async function handleCropped(blob: Blob) {
     const oldReplace = replaceTarget;
+    const slotIndex = targetSlot;
     closeCrop();
     setUploading(true);
 
@@ -85,7 +109,10 @@ export default function SectionImageManager({
         await supabase.storage.from(BUCKET).remove([`${folder}/${oldReplace}`]);
       }
 
-      const fileName = `${Date.now()}.webp`;
+      const fileName =
+        slotIndex !== null
+          ? `slot-${slotIndex}-${Date.now()}.webp`
+          : `${Date.now()}.webp`;
 
       const { error } = await supabase.storage
         .from(BUCKET)
@@ -115,11 +142,12 @@ export default function SectionImageManager({
     }
   }
 
-  const atLimit = maxImages > 0 && images.length >= maxImages;
+  const atLimit = !slotMode && maxImages > 0 && images.length >= maxImages;
+  const filledCount = slotMode ? slots.filter(Boolean).length : images.length;
+  const totalCount = slotMode ? slotCount : images.length;
 
   return (
     <div className="border border-gray-200 rounded-xl bg-white overflow-hidden">
-      {/* Collapsible header */}
       <button
         onClick={() => setCollapsed(!collapsed)}
         className="w-full flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors"
@@ -127,7 +155,11 @@ export default function SectionImageManager({
         <div className="flex items-center gap-3">
           <h2 className="text-base font-bold text-gray-800">{title}</h2>
           <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-            {loading ? "..." : images.length} image{images.length !== 1 ? "s" : ""}
+            {loading
+              ? "..."
+              : slotMode
+                ? `${filledCount}/${totalCount} filled`
+                : `${images.length} image${images.length !== 1 ? "s" : ""}`}
           </span>
         </div>
         <svg
@@ -140,80 +172,158 @@ export default function SectionImageManager({
 
       {!collapsed && (
         <div className="px-6 pb-6 border-t border-gray-100 pt-4">
-          {/* Upload button */}
-          {!atLimit && (
-            <div className="mb-4">
-              <label className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer">
-                {uploading ? "Uploading..." : "Upload Image"}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) openCrop(file);
-                    e.target.value = "";
-                  }}
-                  disabled={uploading}
-                  className="hidden"
-                />
-              </label>
-              {maxImages > 0 && (
-                <span className="text-xs text-gray-400 ml-3">
-                  {images.length}/{maxImages} slots used
-                </span>
-              )}
-            </div>
-          )}
-
-          {loading ? (
-            <p className="text-gray-400 text-sm">Loading...</p>
-          ) : images.length === 0 ? (
-            <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
-              <p className="text-gray-400 text-sm">No images yet</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {images.map((image) => (
-                <div
-                  key={image.name}
-                  className="rounded-lg border border-gray-200 overflow-hidden"
-                >
-                  <div className="relative aspect-video bg-gray-100">
-                    <Image
-                      src={image.url}
-                      alt={image.name}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 50vw, 25vw"
-                    />
-                  </div>
-                  <div className="p-2">
-                    <p className="text-xs text-gray-500 truncate mb-2">{image.name}</p>
-                    <div className="flex gap-1.5">
-                      <label className="flex-1 bg-amber-100 text-amber-700 py-1 rounded text-xs font-medium hover:bg-amber-200 transition-colors text-center cursor-pointer">
-                        Replace
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) openCrop(file, image.name);
-                            e.target.value = "";
-                          }}
-                          className="hidden"
-                        />
-                      </label>
-                      <button
-                        onClick={() => handleDelete(image.name)}
-                        className="flex-1 bg-red-100 text-red-700 py-1 rounded text-xs font-medium hover:bg-red-200 transition-colors"
-                      >
-                        Delete
-                      </button>
+          {slotMode ? (
+            loading ? (
+              <p className="text-gray-400 text-sm">Loading...</p>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {slotLabels!.map((label, i) => {
+                  const slot = slots[i];
+                  return (
+                    <div
+                      key={i}
+                      className="rounded-lg border border-gray-200 overflow-hidden"
+                    >
+                      <div className="bg-blue-50 border-b border-blue-100 px-2.5 py-2 text-xs font-semibold text-blue-900">
+                        {i + 1}. {label}
+                      </div>
+                      <div className="relative aspect-video bg-gray-100">
+                        {slot ? (
+                          <Image
+                            src={slot.url}
+                            alt={label}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 50vw, 25vw"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center text-xs text-gray-400">
+                            No image
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-2">
+                        {slot ? (
+                          <div className="flex gap-1.5">
+                            <label className="flex-1 bg-amber-100 text-amber-700 py-1 rounded text-xs font-medium hover:bg-amber-200 transition-colors text-center cursor-pointer">
+                              Replace
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) openCrop(file, { replaceOld: slot.name, slotIndex: i });
+                                  e.target.value = "";
+                                }}
+                                className="hidden"
+                              />
+                            </label>
+                            <button
+                              onClick={() => handleDelete(slot.name)}
+                              className="flex-1 bg-red-100 text-red-700 py-1 rounded text-xs font-medium hover:bg-red-200 transition-colors"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        ) : (
+                          <label className="block bg-blue-600 text-white py-1.5 rounded text-xs font-medium hover:bg-blue-700 transition-colors text-center cursor-pointer">
+                            {uploading ? "Uploading..." : "Upload"}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) openCrop(file, { slotIndex: i });
+                                e.target.value = "";
+                              }}
+                              disabled={uploading}
+                              className="hidden"
+                            />
+                          </label>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  );
+                })}
+              </div>
+            )
+          ) : (
+            <>
+              {!atLimit && (
+                <div className="mb-4">
+                  <label className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer">
+                    {uploading ? "Uploading..." : "Upload Image"}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) openCrop(file);
+                        e.target.value = "";
+                      }}
+                      disabled={uploading}
+                      className="hidden"
+                    />
+                  </label>
+                  {maxImages > 0 && (
+                    <span className="text-xs text-gray-400 ml-3">
+                      {images.length}/{maxImages} slots used
+                    </span>
+                  )}
                 </div>
-              ))}
-            </div>
+              )}
+
+              {loading ? (
+                <p className="text-gray-400 text-sm">Loading...</p>
+              ) : images.length === 0 ? (
+                <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
+                  <p className="text-gray-400 text-sm">No images yet</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {images.map((image) => (
+                    <div
+                      key={image.name}
+                      className="rounded-lg border border-gray-200 overflow-hidden"
+                    >
+                      <div className="relative aspect-video bg-gray-100">
+                        <Image
+                          src={image.url}
+                          alt={image.name}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                        />
+                      </div>
+                      <div className="p-2">
+                        <p className="text-xs text-gray-500 truncate mb-2">{image.name}</p>
+                        <div className="flex gap-1.5">
+                          <label className="flex-1 bg-amber-100 text-amber-700 py-1 rounded text-xs font-medium hover:bg-amber-200 transition-colors text-center cursor-pointer">
+                            Replace
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) openCrop(file, { replaceOld: image.name });
+                                e.target.value = "";
+                              }}
+                              className="hidden"
+                            />
+                          </label>
+                          <button
+                            onClick={() => handleDelete(image.name)}
+                            className="flex-1 bg-red-100 text-red-700 py-1 rounded text-xs font-medium hover:bg-red-200 transition-colors"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
       )}

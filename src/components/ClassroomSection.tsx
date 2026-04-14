@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
-import { useSupabaseImages } from "@/lib/useSupabaseImages";
+import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 
 type Tab = "preschool" | "afterschool";
 
@@ -48,7 +48,8 @@ const programs: Record<Tab, Program[]> = {
 export default function ClassroomSection() {
   const [activeTab, setActiveTab] = useState<Tab>("preschool");
   const activePrograms = programs[activeTab];
-  const { images } = useSupabaseImages("classroom");
+  const { images } = useSupabaseSlotImages("classroom", 5);
+  const slotOffset = activeTab === "preschool" ? 0 : programs.preschool.length;
 
   return (
     <section id="classes" className="py-12 md:py-20 px-4 md:px-8 bg-white">
@@ -85,15 +86,17 @@ export default function ClassroomSection() {
               : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
           }`}
         >
-          {activePrograms.map((program, idx) => (
+          {activePrograms.map((program, idx) => {
+            const imageUrl = images[slotOffset + idx];
+            return (
             <div
               key={program.title}
               className="group rounded-2xl overflow-hidden shadow-md bg-white"
             >
               {/* Image */}
               <div className="h-52 bg-gray-300 relative">
-                {images[idx] ? (
-                  <Image src={images[idx]} alt={program.title} fill className="object-cover" sizes="33vw" />
+                {imageUrl ? (
+                  <Image src={imageUrl} alt={program.title} fill className="object-cover" sizes="33vw" />
                 ) : (
                   <span className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm">Image Placeholder</span>
                 )}
@@ -113,7 +116,8 @@ export default function ClassroomSection() {
                 </p>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* CTA */}

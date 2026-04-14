@@ -5,10 +5,19 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FadeUp from "@/components/FadeUp";
-import { useSupabaseImages } from "@/lib/useSupabaseImages";
+import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 
 export default function AboutPage() {
-  const { images } = useSupabaseImages("about");
+  const { images: heroImages } = useSupabaseSlotImages("about", 2);
+  const { images: founderImages } = useSupabaseSlotImages("about-founders", 2);
+  const { images: environmentImages } = useSupabaseSlotImages("about-environment", 6);
+  const images = [
+    heroImages[0],
+    heroImages[1],
+    founderImages[0],
+    founderImages[1],
+    ...environmentImages,
+  ];
 
   return (
     <main>

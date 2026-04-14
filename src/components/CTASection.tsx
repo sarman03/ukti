@@ -3,10 +3,10 @@
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
-import { useSupabaseImages } from "@/lib/useSupabaseImages";
+import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 
 export default function CTASection() {
-  const { images } = useSupabaseImages("cta");
+  const { images } = useSupabaseSlotImages("cta", 3);
 
   return (
     <section className="py-12 md:py-0 md:min-h-screen px-4 md:px-8 bg-white overflow-hidden flex items-center justify-center">

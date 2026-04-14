@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
-import { useSupabaseImages } from "@/lib/useSupabaseImages";
+import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 
 const stats = [
   { value: 6, suffix: "+", label: "Years of Experience", icon: "/about-us/6+.png" },
@@ -49,7 +49,7 @@ function CountUp({ end, suffix = "", duration = 1600 }: { end: number; suffix?: 
 }
 
 export default function AboutSection() {
-  const { images } = useSupabaseImages("about");
+  const { images } = useSupabaseSlotImages("home-about", 2);
 
   return (
     <section id="about" className="bg-white pt-20 pb-12 md:pb-20 px-4 md:px-8">
