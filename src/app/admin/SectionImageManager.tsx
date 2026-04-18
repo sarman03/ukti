@@ -15,6 +15,8 @@ interface SectionImageManagerProps {
   maxImages?: number;
   /** When provided, enables slot-based mode: one fixed slot per label. */
   slotLabels?: string[];
+  /** Fallback images shown when no Supabase images are uploaded (currently active on site). */
+  fallbackImages?: string[];
 }
 
 type SlotFile = { name: string; url: string } | null;
@@ -31,6 +33,7 @@ export default function SectionImageManager({
   aspectLabel,
   maxImages = 0,
   slotLabels,
+  fallbackImages,
 }: SectionImageManagerProps) {
   const slotMode = !!slotLabels && slotLabels.length > 0;
   const slotCount = slotLabels?.length ?? 0;
@@ -196,6 +199,19 @@ export default function SectionImageManager({
                             className="object-cover"
                             sizes="(max-width: 768px) 50vw, 25vw"
                           />
+                        ) : fallbackImages?.[i] ? (
+                          <>
+                            <Image
+                              src={fallbackImages[i]}
+                              alt={label}
+                              fill
+                              className="object-cover opacity-80"
+                              sizes="(max-width: 768px) 50vw, 25vw"
+                            />
+                            <span className="absolute top-1 left-1 bg-amber-400 text-white text-[10px] font-bold px-1.5 py-0.5 rounded leading-tight">
+                              Default
+                            </span>
+                          </>
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center text-xs text-gray-400">
                             No image
@@ -275,6 +291,30 @@ export default function SectionImageManager({
 
               {loading ? (
                 <p className="text-gray-400 text-sm">Loading...</p>
+              ) : images.length === 0 && fallbackImages && fallbackImages.length > 0 ? (
+                <div>
+                  <p className="text-xs text-amber-600 font-semibold mb-3 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                    Currently showing default images — upload to replace them.
+                  </p>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {fallbackImages.map((src, i) => (
+                      <div key={i} className="rounded-lg border border-amber-200 overflow-hidden">
+                        <div className="relative aspect-video bg-gray-100">
+                          <Image
+                            src={src}
+                            alt={`Default ${i + 1}`}
+                            fill
+                            className="object-cover opacity-80"
+                            sizes="(max-width: 768px) 50vw, 25vw"
+                          />
+                          <span className="absolute top-1 left-1 bg-amber-400 text-white text-[10px] font-bold px-1.5 py-0.5 rounded leading-tight">
+                            Default
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               ) : images.length === 0 ? (
                 <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
                   <p className="text-gray-400 text-sm">No images yet</p>

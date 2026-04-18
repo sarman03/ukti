@@ -1,12 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { supabase } from "@/lib/supabase";
 import Image from "next/image";
 
-const BUCKET = "images";
-
-const fallbackHeroImages = [
+const heroImages = [
   "/home/hero/1.png",
   "/home/hero/Property 1=Frame 2.png",
   "/home/hero/Property 1=Frame 3.png",
@@ -14,27 +11,8 @@ const fallbackHeroImages = [
 ];
 
 export default function HeroSection() {
-  const [images, setImages] = useState<string[]>(fallbackHeroImages);
+  const [images] = useState<string[]>(heroImages);
   const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    async function fetchImages() {
-      const { data } = await supabase.storage.from(BUCKET).list("hero", {
-        sortBy: { column: "name", order: "asc" },
-      });
-
-      if (data && data.length > 0) {
-        const urls = data
-          .filter((f) => !f.id?.startsWith(".") && f.name !== ".emptyFolderPlaceholder")
-          .map(
-            (f) =>
-              supabase.storage.from(BUCKET).getPublicUrl(`hero/${f.name}`).data.publicUrl
-          );
-        if (urls.length > 0) setImages(urls);
-      }
-    }
-    fetchImages();
-  }, []);
 
   const nextSlide = useCallback(() => {
     setCurrent((prev) => (prev + 1) % images.length);

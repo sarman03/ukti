@@ -8,7 +8,7 @@ const AUTH_KEY = "ukti-admin-auth";
 const ADMIN_EMAIL = "admin@ukti.in";
 const ADMIN_PASSWORD = "ukti@2026";
 
-const pages: { label: string; sections: Array<{ folder: string; title: string; aspect: number; aspectLabel: string; maxImages?: number; slotLabels?: string[] }> }[] = [
+const pages: { label: string; sections: Array<{ folder: string; title: string; aspect: number; aspectLabel: string; maxImages?: number; slotLabels?: string[]; fallbackImages?: string[] }> }[] = [
   {
     label: "Home",
     sections: [
@@ -17,6 +17,12 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
         title: "Hero Section",
         aspect: 16 / 9,
         aspectLabel: "Hero — 16:9 full screen",
+        fallbackImages: [
+          "/home/hero/1.png",
+          "/home/hero/Property 1=Frame 2.png",
+          "/home/hero/Property 1=Frame 3.png",
+          "/home/hero/Property 1=Frame 4.png",
+        ],
       },
       {
         folder: "home-about",
@@ -25,6 +31,7 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
         aspectLabel: "About — 5:4",
         maxImages: 2,
         slotLabels: ["Left image (top)", "Right image (bottom)"],
+        fallbackImages: ["/home/about/1.jpg", "/home/about/2.jpg"],
       },
       {
         folder: "why-choose",
@@ -38,6 +45,13 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
           "Bottom row — 1st piece",
           "Bottom row — 3rd piece",
           "Bottom row — 5th piece",
+        ],
+        fallbackImages: [
+          "/home/why%20chose%20ukti/PHOTO-2026-03-22-18-10-00.jpg",
+          "/home/why%20chose%20ukti/PHOTO-2025-01-15-16-21-34.jpg",
+          "/home/why%20chose%20ukti/PHOTO-2025-01-10-19-18-37.jpg",
+          "/home/why%20chose%20ukti/PHOTO-2025-02-08-15-49-00.jpg",
+          "/home/why%20chose%20ukti/PHOTO-2025-11-07-20-46-21.jpg",
         ],
       },
       {
@@ -53,12 +67,33 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
           "Storytelling Program (After School)",
           "Language & Math Program (After School)",
         ],
+        fallbackImages: [
+          "/home/classroom/toddler.jpg",
+          "/home/classroom/pre%20nursery.jpg",
+          "/home/classroom/nursery.jpg",
+          "",
+          "",
+        ],
       },
       {
         folder: "gallery",
         title: "Gallery",
         aspect: 1,
         aspectLabel: "Gallery — 1:1 square",
+        fallbackImages: [
+          "/gallery/PHOTO-2024-09-03-14-59-18.jpg",
+          "/gallery/PHOTO-2024-10-28-13-26-25.jpg",
+          "/gallery/PHOTO-2025-01-09-16-01-16.jpg",
+          "/gallery/PHOTO-2025-02-18-16-20-16.jpg",
+          "/gallery/PHOTO-2025-03-03-12-00-07.jpg",
+          "/gallery/PHOTO-2025-03-11-19-28-14.jpg",
+          "/gallery/PHOTO-2025-05-04-18-10-58.jpg",
+          "/gallery/PHOTO-2025-08-22-19-14-09.jpg",
+          "/gallery/PHOTO-2025-10-14-14-13-49 (1).jpg",
+          "/gallery/PHOTO-2025-10-14-14-13-49.jpg",
+          "/gallery/PHOTO-2025-11-17-13-48-59.jpg",
+          "/gallery/PHOTO-2026-01-16-20-46-40.jpg",
+        ],
       },
       {
         folder: "learning-goals",
@@ -69,6 +104,10 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
         slotLabels: [
           "Main image (large, tilted)",
           "Overlay image (small, top-right corner)",
+        ],
+        fallbackImages: [
+          "/learning-goals/PHOTO-2025-05-09-14-27-34.jpg",
+          "/learning-goals/PHOTO-2024-10-28-13-26-25.jpg",
         ],
       },
       {
@@ -88,6 +127,11 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
           "Left bottom (wide)",
           "Right (square)",
         ],
+        fallbackImages: [
+          "/home/last%20section/PHOTO-2024-09-03-14-59-18.jpg",
+          "/home/last%20section/PHOTO-2025-05-09-14-35-38.jpg",
+          "/home/last%20section/PHOTO-2024-10-12-18-49-50.jpg",
+        ],
       },
     ],
   },
@@ -99,6 +143,14 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
         title: "Hero Banner",
         aspect: 16 / 9,
         aspectLabel: "Classroom Hero — 16:9 full screen",
+        fallbackImages: [
+          "/classroom/hero/AKN_2671.JPG",
+          "/classroom/hero/AKN_9699.JPG",
+          "/classroom/hero/AKN_9703.JPG",
+          "/classroom/hero/AKN_9728.JPG",
+          "/classroom/hero/AKN_9732.JPG",
+          "/classroom/hero/AKN_9744.JPG",
+        ],
       },
       {
         folder: "classroom-cards",
@@ -113,6 +165,13 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
           "Storytelling Program",
           "Language & Math Program",
         ],
+        fallbackImages: [
+          "/home/classroom/toddler.jpg",
+          "/home/classroom/pre%20nursery.jpg",
+          "/home/classroom/nursery.jpg",
+          "",
+          "",
+        ],
       },
     ],
   },
@@ -126,6 +185,10 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
         aspectLabel: "About — 5:4",
         maxImages: 2,
         slotLabels: ["Hero image", "Our Story image"],
+        fallbackImages: [
+          "/about%20page/first%20section%20pic.jpg",
+          "/about%20page/second%20section.JPG",
+        ],
       },
       {
         folder: "about-founders",
