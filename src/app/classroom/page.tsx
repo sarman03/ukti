@@ -8,7 +8,7 @@ import FadeUp from "@/components/FadeUp";
 import DayAtUktiSection from "@/components/DayAtUktiSection";
 import EnquiryFormSection from "@/components/EnquiryFormSection";
 import RippleButton from "@/components/RippleButton";
-import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
+import { useSupabaseImages, useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 
 const preschoolPrograms = [
   {
@@ -187,7 +187,7 @@ function ProgramCard({
 }
 
 function HeroCarousel() {
-  const { images: adminImages } = useSupabaseSlotImages("classroom-hero", 8);
+  const { images: adminImages } = useSupabaseImages("classroom-hero");
   const fallbackImages = [
     "/classroom/hero/AKN_2671.JPG",
     "/classroom/hero/AKN_9699.JPG",
@@ -196,7 +196,7 @@ function HeroCarousel() {
     "/classroom/hero/AKN_9732.JPG",
     "/classroom/hero/AKN_9744.JPG",
   ];
-  const images = adminImages.filter(Boolean).length > 0 ? adminImages.filter(Boolean) : fallbackImages;
+  const images = adminImages.length > 0 ? adminImages : fallbackImages;
   const [current, setCurrent] = useState(0);
 
   const nextSlide = useCallback(() => {
