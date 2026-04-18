@@ -189,12 +189,7 @@ function ProgramCard({
 function HeroCarousel() {
   const { images: adminImages } = useSupabaseImages("classroom-hero");
   const fallbackImages = [
-    "/classroom/hero/AKN_2671.JPG",
-    "/classroom/hero/AKN_9699.JPG",
-    "/classroom/hero/AKN_9703.JPG",
-    "/classroom/hero/AKN_9728.JPG",
-    "/classroom/hero/AKN_9732.JPG",
-    "/classroom/hero/AKN_9744.JPG",
+    "/home/classroom/Rectangle 18.png",
   ];
   const images = adminImages.length > 0 ? adminImages : fallbackImages;
   const [current, setCurrent] = useState(0);

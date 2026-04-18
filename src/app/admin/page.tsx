@@ -144,12 +144,7 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
         aspect: 16 / 9,
         aspectLabel: "Classroom Hero — 16:9 full screen",
         fallbackImages: [
-          "/classroom/hero/AKN_2671.JPG",
-          "/classroom/hero/AKN_9699.JPG",
-          "/classroom/hero/AKN_9703.JPG",
-          "/classroom/hero/AKN_9728.JPG",
-          "/classroom/hero/AKN_9732.JPG",
-          "/classroom/hero/AKN_9744.JPG",
+          "/home/classroom/Rectangle 18.png",
         ],
       },
       {
