@@ -14,7 +14,7 @@ export default function MapsSection() {
   return (
     <section id="maps" className="py-16 bg-white">
       <FadeUp>
-        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-green-700 mb-6 md:mb-8">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-6 md:mb-8">
           Maps
         </h2>
 

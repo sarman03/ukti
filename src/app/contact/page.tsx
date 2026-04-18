@@ -39,7 +39,7 @@ const contactDetails = [
   },
   {
     label: "Hours",
-    value: "Mon – Sat  •  9:00 AM – 5:00 PM",
+    value: "Mon – Fri: 1:30 PM – 3:30 PM\nSat: 11:00 AM – 2:00 PM",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10" />
@@ -96,10 +96,10 @@ export default function ContactPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="bg-amber-300 px-6 pt-32 pb-16 md:pt-40 md:pb-20">
+      <section className="bg-white px-6 pt-32 pb-16 md:pt-40 md:pb-20">
         <div className="max-w-4xl mx-auto text-center">
           <FadeUp>
-            <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-4">
+            <h1 className="text-4xl md:text-6xl font-extrabold text-[#F6892A] mb-4">
               Get in Touch
             </h1>
             <p className="text-lg md:text-xl text-gray-800 leading-relaxed max-w-2xl mx-auto">
@@ -116,15 +116,15 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
             {contactDetails.map((item, i) => {
               const Card = (
-                <div className="h-full bg-amber-50 border border-amber-200 rounded-2xl p-6 flex items-start gap-4 hover:shadow-md hover:-translate-y-0.5 transition-all">
-                  <div className="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center flex-shrink-0">
+                <div className="h-full bg-[#F2DA36]/10 border border-[#F2DA36]/50 rounded-2xl p-6 flex items-start gap-4 hover:shadow-md hover:-translate-y-0.5 transition-all">
+                  <div className="w-12 h-12 rounded-full bg-[#F6892A] text-white flex items-center justify-center flex-shrink-0">
                     {item.icon}
                   </div>
                   <div>
                     <p className="text-sm font-bold uppercase tracking-wide text-gray-600 mb-1">
                       {item.label}
                     </p>
-                    <p className="text-base md:text-lg font-semibold text-gray-900 leading-snug">
+                    <p className="text-base md:text-lg font-semibold text-gray-900 leading-snug whitespace-pre-line">
                       {item.value}
                     </p>
                   </div>
@@ -147,7 +147,7 @@ export default function ContactPage() {
           {/* Social links */}
           <FadeUp delay={0.2}>
             <div className="mt-10 md:mt-12 text-center">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-2">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-[#5EA85B] mb-2">
                 Follow our journey
               </h2>
               <p className="text-gray-700 mb-6">
@@ -161,7 +161,7 @@ export default function ContactPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={s.label}
-                    className="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center hover:bg-orange-600 hover:scale-110 transition-all shadow-sm"
+                    className="w-12 h-12 rounded-full bg-[#F6892A] text-white flex items-center justify-center hover:bg-[#F6892A] hover:scale-110 transition-all shadow-sm"
                   >
                     {s.icon}
                   </a>

@@ -68,7 +68,7 @@ export default function AboutSection() {
 
           {/* Center text */}
           <div className="text-center flex flex-col items-center gap-6 pt-2">
-              <h2 className="text-3xl md:text-5xl font-extrabold text-green-700">About Us</h2>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-[#5EA85B]">About Us</h2>
               <p className="text-gray-600 leading-relaxed text-base">
                 Welcome to Ukti Early Years where we believe in fostering the brightest beginnings for our young
                 learners. We aspire to create an environment where children not only learn but thrive, where every
@@ -115,7 +115,7 @@ export default function AboutSection() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-3xl md:text-5xl font-extrabold text-green-700 leading-none">
+                <span className="text-3xl md:text-5xl font-extrabold text-[#5EA85B] leading-none">
                   <CountUp end={stat.value} suffix={stat.suffix} />
                 </span>
                 <span className="text-gray-700 text-sm font-medium mt-2">

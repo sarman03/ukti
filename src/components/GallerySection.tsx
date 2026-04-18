@@ -15,7 +15,7 @@ export default function GallerySection() {
   return (
     <section id="gallery" className="py-20 bg-white overflow-hidden">
       <FadeUp>
-        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-orange-500 mb-8 md:mb-12">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#F6892A] mb-8 md:mb-12">
           Gallery
         </h2>
 

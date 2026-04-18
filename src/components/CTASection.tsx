@@ -35,10 +35,10 @@ export default function CTASection() {
         <div className="flex flex-col items-center text-center gap-6 md:gap-8">
           <div className="leading-tight" style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}>
             <p className="font-extrabold text-gray-900">Growing</p>
-            <p className="font-extrabold text-green-700">curious minds,</p>
+            <p className="font-extrabold text-[#5EA85B]">curious minds,</p>
             <p className="font-extrabold text-gray-900">
               one{" "}
-              <span className="text-orange-500 italic">moment</span>
+              <span className="text-[#F6892A] italic">moment</span>
             </p>
             <p className="font-extrabold text-gray-900">at a time.</p>
           </div>

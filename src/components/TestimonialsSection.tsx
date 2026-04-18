@@ -47,11 +47,11 @@ export default function TestimonialsSection() {
       id="testimonials"
       className="pt-20 pb-28 overflow-hidden"
       style={{
-        background: "linear-gradient(to bottom, #fffff5 0%, #fefce8 25%, #fbbf24 80%, #f59e0b 100%)",
+        background: "linear-gradient(to bottom, #fffff5 0%, #fefce8 25%, #F2DA36 80%, #F2DA36 100%)",
       }}
     >
       <FadeUp>
-        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-green-800 mb-10 md:mb-16">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-10 md:mb-16">
           Testimonials
         </h2>
 
@@ -73,14 +73,14 @@ export default function TestimonialsSection() {
         <div className="flex justify-center gap-4 mt-6">
           <button
             onClick={() => setCurrent(prev)}
-            className="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-green-800 font-bold text-xl"
+            className="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-[#5EA85B] font-bold text-xl"
             aria-label="Previous testimonial"
           >
             ‹
           </button>
           <button
             onClick={() => setCurrent(next)}
-            className="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-green-800 font-bold text-xl"
+            className="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-[#5EA85B] font-bold text-xl"
             aria-label="Next testimonial"
           >
             ›
@@ -146,7 +146,7 @@ export default function TestimonialsSection() {
         {/* Left arrow */}
         <button
           onClick={() => setCurrent(prev)}
-          className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg hover:bg-gray-50 flex items-center justify-center transition-colors text-green-800 font-bold text-2xl z-20"
+          className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg hover:bg-gray-50 flex items-center justify-center transition-colors text-[#5EA85B] font-bold text-2xl z-20"
           aria-label="Previous testimonial"
         >
           ‹
@@ -155,7 +155,7 @@ export default function TestimonialsSection() {
         {/* Right arrow */}
         <button
           onClick={() => setCurrent(next)}
-          className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg hover:bg-gray-50 flex items-center justify-center transition-colors text-green-800 font-bold text-2xl z-20"
+          className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg hover:bg-gray-50 flex items-center justify-center transition-colors text-[#5EA85B] font-bold text-2xl z-20"
           aria-label="Next testimonial"
         >
           ›

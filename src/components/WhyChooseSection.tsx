@@ -34,7 +34,7 @@ const pieces: Piece[] = [
   // ── Row 0: text / image / text / image / text ──────────────────────
   // Outer top edge: images get OUTWARD tabs, text pieces get INWARD notches
   {
-    row: 0, col: 0, type: "text", color: "#F5C842",
+    row: 0, col: 0, type: "text", color: "#F2DA36",
     text: "Personal attention with a 1:6 ratio, ensuring every child is seen, heard, and supported.",
     top: "notch", right: "tab", bottom: "tab", left: "flat",
   },
@@ -43,7 +43,7 @@ const pieces: Piece[] = [
     top: "tab", right: "notch", bottom: "notch", left: "notch",
   },
   {
-    row: 0, col: 2, type: "text", color: "#F28B30",
+    row: 0, col: 2, type: "text", color: "#F6892A",
     text: "A perfect blend of Montessori + Play-way methods for hands-on, joyful learning.",
     top: "notch", right: "tab", bottom: "tab", left: "tab",
   },
@@ -52,7 +52,7 @@ const pieces: Piece[] = [
     top: "tab", right: "notch", bottom: "notch", left: "notch",
   },
   {
-    row: 0, col: 4, type: "text", color: "#F5C842",
+    row: 0, col: 4, type: "text", color: "#F2DA36",
     text: "Focus on critical thinking, communication & independence from an early age.",
     top: "notch", right: "flat", bottom: "tab", left: "tab",
   },
@@ -63,7 +63,7 @@ const pieces: Piece[] = [
     top: "notch", right: "notch", bottom: "tab", left: "flat",
   },
   {
-    row: 1, col: 1, type: "text", color: "#3DBFBF",
+    row: 1, col: 1, type: "text", color: "#0FB3BC",
     text: "We nurture mind, emotions, creativity & physical growth for well-rounded development.",
     top: "tab", right: "tab", bottom: "notch", left: "tab",
   },
@@ -72,7 +72,7 @@ const pieces: Piece[] = [
     top: "notch", right: "notch", bottom: "tab", left: "notch",
   },
   {
-    row: 1, col: 3, type: "text", color: "#3DBFBF",
+    row: 1, col: 3, type: "text", color: "#0FB3BC",
     text: "Guided by passionate and professional teachers who understand early learning deeply.",
     top: "tab", right: "tab", bottom: "notch", left: "tab",
   },
@@ -168,7 +168,7 @@ export default function WhyChooseSection() {
   return (
     <section id="why-choose" className="py-20 bg-white">
       <FadeUp>
-        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-orange-500 mb-8 md:mb-12">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#F6892A] mb-8 md:mb-12">
           Why Choose Ukti
         </h2>
 
@@ -279,7 +279,7 @@ export default function WhyChooseSection() {
               key={`border-${p.row}-${p.col}`}
               d={buildPath(p)}
               fill="none"
-              stroke="#111"
+              stroke="#ffffff"
               strokeWidth="4"
               strokeLinejoin="round"
             />

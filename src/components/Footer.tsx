@@ -44,7 +44,7 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#F8D07A] px-4 md:px-20 py-10 md:py-14">
+    <footer className="bg-[#F2DA36] px-4 md:px-20 py-10 md:py-14">
       <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12">
         {/* Left: Logo + tagline */}
         <div className="col-span-2 md:col-span-1 flex flex-col items-start gap-3">
@@ -85,7 +85,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.label}
-                className="w-9 h-9 rounded-full bg-orange-500 text-white flex items-center justify-center hover:bg-orange-600 transition-colors"
+                className="w-9 h-9 rounded-full bg-[#F6892A] text-white flex items-center justify-center hover:bg-[#F6892A] transition-colors"
               >
                 {s.icon}
               </a>
@@ -95,7 +95,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="max-w-6xl mx-auto mt-8 pt-6 border-t border-amber-400/60">
+      <div className="max-w-6xl mx-auto mt-8 pt-6 border-t border-[#F2DA36]/60">
         <p className="text-gray-700 text-xs text-center">
           &copy; {new Date().getFullYear()} Ukti Early Years. All rights reserved.
         </p>

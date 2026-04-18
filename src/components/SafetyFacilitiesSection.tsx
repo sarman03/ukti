@@ -16,7 +16,7 @@ const circles = [
     cx: 130,
     cy: 130,
     r: 58,
-    fill: "#F47C26", // orange
+    fill: "#F6892A", // orange
     icon: "/facilities/safety.png",
     title: "Safe & Secure Campus",
     description:
@@ -32,7 +32,7 @@ const circles = [
     cx: 530,
     cy: 130,
     r: 58,
-    fill: "#E9B841", // amber
+    fill: "#F2DA36", // amber
     icon: "/facilities/hygiene.png",
     title: "Hygiene & Clean Environment",
     description:
@@ -48,7 +48,7 @@ const circles = [
     cx: 250,
     cy: 380,
     r: 58,
-    fill: "#3DBFBF", // teal
+    fill: "#0FB3BC", // teal
     icon: "/facilities/staff.png",
     title: "Trained & Caring Staff",
     description:
@@ -64,7 +64,7 @@ const circles = [
     cx: 670,
     cy: 380,
     r: 58,
-    fill: "#5A9E3C", // green
+    fill: "#5EA85B", // green
     icon: "/facilities/child.png",
     title: "Child-Safe Infrastructure",
     description:
@@ -91,7 +91,7 @@ export default function SafetyFacilitiesSection() {
   return (
     <section id="safety" className="py-12 md:py-20 px-4 md:px-8 bg-white">
       <FadeUp>
-        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-orange-500 mb-6 md:mb-4">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#F6892A] mb-6 md:mb-4">
           Safety &amp; Facilities
         </h2>
 

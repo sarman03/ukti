@@ -8,7 +8,7 @@ export default function DayAtUktiSection() {
     <section className="py-12 md:py-20 px-4 md:px-8 bg-white overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <FadeUp>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-center text-gray-900 mb-10 md:mb-14 leading-tight">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-10 md:mb-14 leading-tight">
             A day at
             <br />
             Ukti Early Years
@@ -106,7 +106,7 @@ export function DayAtUktiInteractive() {
                   zIndex: 10,
                 }}
               >
-                <div className="flex-shrink-0 w-7 h-7 flex items-center justify-center bg-[#F28C38] text-white rounded-full font-bold text-xs mr-3 shadow-inner">
+                <div className="flex-shrink-0 w-7 h-7 flex items-center justify-center bg-[#F6892A] text-white rounded-full font-bold text-xs mr-3 shadow-inner">
                   {step.id}
                 </div>
                 <div className="flex flex-col">

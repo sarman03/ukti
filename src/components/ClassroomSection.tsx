@@ -55,7 +55,7 @@ export default function ClassroomSection() {
     <section id="classes" className="py-12 md:py-20 px-4 md:px-8 bg-white">
       <FadeUp>
       <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-extrabold text-center text-gray-900 mb-6 md:mb-8">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-6 md:mb-8">
             Our Classroom
           </h2>
 
@@ -67,10 +67,10 @@ export default function ClassroomSection() {
               onClick={() => setActiveTab(tab)}
               className={`ripple-btn px-7 py-2.5 rounded-full font-semibold text-sm transition-colors ${
                 activeTab === tab
-                  ? "bg-orange-500 text-white shadow-sm"
+                  ? "bg-[#F6892A] text-white shadow-sm"
                   : "border-2 border-gray-800 text-gray-800 bg-white hover:bg-gray-100"
               }`}
-              style={{ "--ripple-color": activeTab === tab ? "rgba(249, 115, 22, 0.4)" : "rgba(31, 41, 55, 0.2)" } as React.CSSProperties}
+              style={{ "--ripple-color": activeTab === tab ? "rgba(246, 137, 42, 0.4)" : "rgba(31, 41, 55, 0.2)" } as React.CSSProperties}
             >
               <span className="ripple-extra absolute inset-0 rounded-full pointer-events-none" />
               <span className="relative z-10">{tab === "preschool" ? "Pre School" : "After School"}</span>
@@ -102,7 +102,7 @@ export default function ClassroomSection() {
                 )}
               </div>
               {/* Card content — white by default, amber on card hover */}
-              <div className="bg-white group-hover:bg-amber-400 transition-colors p-5">
+              <div className="bg-white group-hover:bg-[#F2DA36] transition-colors p-5">
                 <h3 className="text-lg font-extrabold text-gray-900">
                   {program.title}
                 </h3>

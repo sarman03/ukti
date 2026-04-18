@@ -20,7 +20,7 @@ export default function ContactMapsSection() {
     <section id="maps" className="py-12 md:py-20 px-4 md:px-8 bg-white">
       <div className="max-w-4xl mx-auto">
         <FadeUp>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-center text-green-700 mb-3">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-3">
             Visit Us
           </h2>
           <p className="text-center text-gray-700 mb-10 md:mb-12">
@@ -33,7 +33,7 @@ export default function ContactMapsSection() {
             <FadeUp key={loc.label} delay={i * 0.1}>
               <div>
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center">
+                  <span className="w-10 h-10 rounded-full bg-[#F6892A] text-white flex items-center justify-center">
                     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                       <circle cx="12" cy="10" r="3" />

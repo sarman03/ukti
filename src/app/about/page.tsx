@@ -27,7 +27,7 @@ export default function AboutPage() {
       <section className="bg-white min-h-screen flex items-center pt-24 md:pt-28 pb-12 md:pb-16 px-4 md:px-8">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center w-full">
           <FadeUp>
-            <h1 className="text-4xl md:text-6xl font-extrabold text-green-700 leading-tight mb-6">
+            <h1 className="text-4xl md:text-6xl font-extrabold text-[#5EA85B] leading-tight mb-6">
               Growing curious minds with independence &amp; joy
             </h1>
             <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-md">
@@ -56,11 +56,11 @@ export default function AboutPage() {
 
               {/* Top-right sparkle badge */}
               <motion.div
-                className="absolute -top-5 -right-5 w-16 h-16 rounded-full bg-yellow-300 flex items-center justify-center shadow-lg"
+                className="absolute -top-5 -right-5 w-16 h-16 rounded-full bg-[#F2DA36] flex items-center justify-center shadow-lg"
                 animate={{ y: [0, -24, 0], x: [0, 16, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               >
-                <svg className="w-7 h-7 text-yellow-700" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="w-7 h-7 text-[#5EA85B]" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2l1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6z" />
                   <path d="M19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8z" />
                 </svg>
@@ -72,7 +72,7 @@ export default function AboutPage() {
                 animate={{ y: [0, 20, 0], x: [0, -16, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
               >
-                <svg className="w-7 h-7 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="w-7 h-7 text-[#5EA85B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                 </svg>
               </motion.div>
@@ -103,7 +103,7 @@ export default function AboutPage() {
           </FadeUp>
 
           <FadeUp delay={0.1}>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-green-700 mb-6 md:mb-8">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-[#F6892A] mb-6 md:mb-8">
               Our Story
             </h2>
             <div className="space-y-5">
@@ -122,7 +122,7 @@ export default function AboutPage() {
                 },
               ].map((item) => (
                 <div key={item.heading} className="flex gap-3">
-                  <span className="mt-1.5 w-2.5 h-2.5 rounded-full bg-orange-500 flex-shrink-0" />
+                  <span className="mt-1.5 w-2.5 h-2.5 rounded-full bg-[#F6892A] flex-shrink-0" />
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">{item.heading}</h3>
                     <p className="text-gray-700 leading-relaxed">{item.body}</p>
@@ -138,7 +138,7 @@ export default function AboutPage() {
       <section className="bg-[#F4EFE6] py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-green-600 mb-10 md:mb-14">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-10 md:mb-14">
               Mission &amp; Vision
             </h2>
           </FadeUp>
@@ -147,16 +147,16 @@ export default function AboutPage() {
             {/* Mission Card */}
             <FadeUp delay={0.1}>
               <div className="relative bg-white rounded-3xl p-8 md:p-10 h-full overflow-hidden shadow-sm">
-                <span className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-green-100" aria-hidden="true" />
+                <span className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-[#5EA85B]/20" aria-hidden="true" />
                 <div className="relative">
-                  <div className="w-14 h-14 rounded-full bg-green-300/70 text-green-800 flex items-center justify-center mb-6">
+                  <div className="w-14 h-14 rounded-full bg-[#5EA85B]/70 text-[#5EA85B] flex items-center justify-center mb-6">
                     <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <circle cx="12" cy="12" r="10" />
                       <circle cx="12" cy="12" r="6" />
                       <circle cx="12" cy="12" r="2" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-extrabold text-green-600 mb-4">
+                  <h3 className="text-2xl md:text-3xl font-extrabold text-[#5EA85B] mb-4">
                     Our Mission
                   </h3>
                   <p className="text-gray-700 leading-relaxed mb-5">
@@ -165,7 +165,7 @@ export default function AboutPage() {
                     for learning.
                   </p>
                   <p className="text-gray-700 leading-relaxed text-sm">
-                    <span className="font-bold text-green-600">Why:</span>{" "}
+                    <span className="font-bold text-[#5EA85B]">Why:</span>{" "}
                     Every child deserves an education that honors their unique
                     development timeline.
                   </p>
@@ -176,15 +176,15 @@ export default function AboutPage() {
             {/* Vision Card */}
             <FadeUp delay={0.2}>
               <div className="relative bg-white rounded-3xl p-8 md:p-10 h-full overflow-hidden shadow-sm">
-                <span className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-orange-100" aria-hidden="true" />
+                <span className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-[#F6892A]/20" aria-hidden="true" />
                 <div className="relative">
-                  <div className="w-14 h-14 rounded-full bg-orange-300/70 text-orange-800 flex items-center justify-center mb-6">
+                  <div className="w-14 h-14 rounded-full bg-[#F6892A]/70 text-[#F6892A] flex items-center justify-center mb-6">
                     <svg className="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 2l1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6z" />
                       <path d="M19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8z" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-extrabold text-orange-500 mb-4">
+                  <h3 className="text-2xl md:text-3xl font-extrabold text-[#F6892A] mb-4">
                     Our Vision
                   </h3>
                   <p className="text-gray-700 leading-relaxed mb-5">
@@ -193,7 +193,7 @@ export default function AboutPage() {
                     innovation.
                   </p>
                   <p className="text-gray-700 leading-relaxed text-sm">
-                    <span className="font-bold text-orange-500">How to apply:</span>{" "}
+                    <span className="font-bold text-[#F6892A]">How to apply:</span>{" "}
                     We nurture these qualities daily through hands-on
                     exploration and respectful guidance.
                   </p>
@@ -208,7 +208,7 @@ export default function AboutPage() {
       <section className="bg-[#FAF7EC] py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-orange-500 mb-3">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#F6892A] mb-3">
               Teaching Philosophy
             </h2>
             <p className="text-center text-gray-600 mb-10 md:mb-14">
@@ -221,55 +221,55 @@ export default function AboutPage() {
               {
                 title: "Child-Led Learning",
                 body: "Children choose activities based on their interests and developmental readiness",
-                bg: "bg-green-200",
-                titleColor: "text-green-700",
-                iconBg: "bg-green-300/60",
-                iconColor: "text-green-800",
+                bg: "bg-[#5EA85B]/30",
+                titleColor: "text-[#5EA85B]",
+                iconBg: "bg-[#5EA85B]/50",
+                iconColor: "text-[#5EA85B]",
                 iconPath: "M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z",
               },
               {
                 title: "Hands-On Exploration",
                 body: "Learning through touch, manipulation, and sensory experiences",
-                bg: "bg-[#F8D07A]",
-                titleColor: "text-orange-600",
-                iconBg: "bg-orange-300/60",
-                iconColor: "text-orange-700",
+                bg: "bg-[#F2DA36]/70",
+                titleColor: "text-[#F6892A]",
+                iconBg: "bg-[#F6892A]/50",
+                iconColor: "text-[#F6892A]",
                 iconPath: "M9 11h6M12 8v6M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3l-2-2h-4l-2 2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z",
               },
               {
                 title: "Practical Life Skills",
                 body: "Building independence through real-world activities and responsibilities",
-                bg: "bg-orange-200",
-                titleColor: "text-orange-700",
-                iconBg: "bg-orange-300/60",
-                iconColor: "text-orange-800",
+                bg: "bg-[#F6892A]/25",
+                titleColor: "text-[#F6892A]",
+                iconBg: "bg-[#F6892A]/50",
+                iconColor: "text-[#F6892A]",
                 iconPath: "M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z",
               },
               {
                 title: "Respect & Empathy",
                 body: "Fostering kindness, understanding, and peaceful conflict resolution",
-                bg: "bg-green-200",
-                titleColor: "text-green-700",
-                iconBg: "bg-green-300/60",
-                iconColor: "text-green-800",
+                bg: "bg-[#0FB3BC]/25",
+                titleColor: "text-[#0FB3BC]",
+                iconBg: "bg-[#0FB3BC]/50",
+                iconColor: "text-[#0FB3BC]",
                 iconPath: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
               },
               {
                 title: "Independence",
                 body: "Encouraging self-directed activity and decision-making capabilities",
-                bg: "bg-[#F8D07A]",
-                titleColor: "text-orange-600",
-                iconBg: "bg-orange-300/60",
-                iconColor: "text-orange-700",
+                bg: "bg-[#F8D17C]/80",
+                titleColor: "text-[#F6892A]",
+                iconBg: "bg-[#F6892A]/50",
+                iconColor: "text-[#F6892A]",
                 iconPath: "M5 12h14M12 5l7 7-7 7",
               },
               {
                 title: "Natural Curiosity",
                 body: "Nurturing the innate desire to explore and understand the world",
-                bg: "bg-orange-200",
-                titleColor: "text-orange-700",
-                iconBg: "bg-orange-300/60",
-                iconColor: "text-orange-800",
+                bg: "bg-[#5EA85B]/50",
+                titleColor: "text-[#5EA85B]",
+                iconBg: "bg-[#5EA85B]/70",
+                iconColor: "text-[#5EA85B]",
                 iconPath: "M11 19a8 8 0 1 1 5.66-2.34L21 21",
               },
             ].map((card, i) => (
@@ -297,7 +297,7 @@ export default function AboutPage() {
       <section className="bg-[#F4EFE6] py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-5xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-green-600 mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-12 md:mb-16">
               Meet the Founders
             </h2>
           </FadeUp>
@@ -308,15 +308,15 @@ export default function AboutPage() {
                 name: "Founder Name 1",
                 title: "Founder & Lead Educator",
                 quote: "Every child is a natural learner",
-                nameColor: "text-green-600",
-                badgeColor: "bg-green-500",
+                nameColor: "text-[#5EA85B]",
+                badgeColor: "bg-[#5EA85B]",
               },
               {
                 name: "Founder Name 2",
                 title: "Co-Founder & Curriculum Director",
                 quote: "Education is not preparation for life, education is life itself",
-                nameColor: "text-orange-500",
-                badgeColor: "bg-orange-500",
+                nameColor: "text-[#F6892A]",
+                badgeColor: "bg-[#F6892A]",
               },
             ].map((founder, i) => (
               <FadeUp key={founder.name} delay={i * 0.1}>
@@ -357,7 +357,7 @@ export default function AboutPage() {
       <section className="bg-[#FAF7EC] py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-green-600 mb-10 md:mb-14">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#F6892A] mb-10 md:mb-14">
               Montessori Principles
             </h2>
           </FadeUp>
@@ -368,35 +368,35 @@ export default function AboutPage() {
                 title: "Prepared Environment",
                 iconPath:
                   "M3 12l9-9 9 9M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10",
-                color: "text-green-700",
+                color: "text-[#5EA85B]",
               },
               {
                 title: "Self-Directed Activity",
                 iconPath:
                   "M12 2l1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6zM19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8z",
-                color: "text-amber-500",
+                color: "text-[#F2DA36]",
               },
               {
                 title: "Mixed-Age Learning",
                 iconPath:
                   "M12 7a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-4 7a4 4 0 0 1 8 0v8H8v-8z",
-                color: "text-orange-500",
+                color: "text-[#F6892A]",
               },
               {
                 title: "Freedom Within Limits",
                 iconPath:
                   "M12 22a10 10 0 1 0-10-10M12 18a6 6 0 1 0-6-6M12 14a2 2 0 1 0-2-2",
-                color: "text-green-600",
+                color: "text-[#5EA85B]",
               },
             ].map((item, i) => (
               <FadeUp key={item.title} delay={i * 0.05}>
                 <div className="bg-white rounded-2xl p-6 md:p-7 h-full flex flex-col items-center text-center shadow-sm">
                   <div className={`w-14 h-14 mb-4 flex items-center justify-center ${item.color}`}>
-                    <svg className="w-10 h-10" viewBox="0 0 24 24" fill={item.color === "text-amber-500" ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg className="w-10 h-10" viewBox="0 0 24 24" fill={item.color === "text-[#F2DA36]" ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d={item.iconPath} />
                     </svg>
                   </div>
-                  <h3 className="text-base md:text-lg font-semibold text-green-700">
+                  <h3 className="text-base md:text-lg font-semibold text-[#5EA85B]">
                     {item.title}
                   </h3>
                 </div>
@@ -410,7 +410,7 @@ export default function AboutPage() {
       <section className="bg-[#F4EFE6] py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-green-600 mb-3">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-3">
               Our Learning Environment
             </h2>
             <p className="text-center text-gray-600 mb-10 md:mb-14">
@@ -458,7 +458,7 @@ export default function AboutPage() {
       <section className="bg-[#FAF7EC] py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-orange-500 mb-10 md:mb-14">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#F6892A] mb-10 md:mb-14">
               Why Families Trust Us
             </h2>
           </FadeUp>
@@ -468,9 +468,10 @@ export default function AboutPage() {
               {
                 title: "Safe Environment",
                 body: "Fully secure, child-proofed spaces with constant supervision",
-                titleColor: "text-green-600",
-                iconBg: "bg-green-300/70",
-                iconColor: "text-green-800",
+                bg: "bg-[#5EA85B]/25",
+                titleColor: "text-[#5EA85B]",
+                iconBg: "bg-[#5EA85B]/60",
+                iconColor: "text-[#5EA85B]",
                 icon: (
                   <path d="M12 2l8 4v6c0 5-3.5 9.5-8 10-4.5-.5-8-5-8-10V6l8-4z" />
                 ),
@@ -478,9 +479,10 @@ export default function AboutPage() {
               {
                 title: "Trained Teachers",
                 body: "Certified Montessori educators with years of experience",
-                titleColor: "text-orange-500",
-                iconBg: "bg-orange-300/70",
-                iconColor: "text-orange-800",
+                bg: "bg-[#F6892A]/25",
+                titleColor: "text-[#F6892A]",
+                iconBg: "bg-[#F6892A]/60",
+                iconColor: "text-[#F6892A]",
                 icon: (
                   <>
                     <circle cx="9" cy="8" r="3" />
@@ -493,9 +495,10 @@ export default function AboutPage() {
               {
                 title: "Personal Attention",
                 body: "Low student-teacher ratio ensures individual care",
-                titleColor: "text-orange-500",
-                iconBg: "bg-orange-300/70",
-                iconColor: "text-orange-800",
+                bg: "bg-[#0FB3BC]/25",
+                titleColor: "text-[#0FB3BC]",
+                iconBg: "bg-[#0FB3BC]/60",
+                iconColor: "text-[#0FB3BC]",
                 icon: (
                   <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                 ),
@@ -503,9 +506,10 @@ export default function AboutPage() {
               {
                 title: "Holistic Growth",
                 body: "Focus on social, emotional, physical & cognitive development",
-                titleColor: "text-green-600",
-                iconBg: "bg-green-300/70",
-                iconColor: "text-green-800",
+                bg: "bg-[#F2DA36]/60",
+                titleColor: "text-[#5EA85B]",
+                iconBg: "bg-[#5EA85B]/60",
+                iconColor: "text-[#5EA85B]",
                 icon: (
                   <>
                     <path d="M12 2l1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6z" />
@@ -515,7 +519,7 @@ export default function AboutPage() {
               },
             ].map((card, i) => (
               <FadeUp key={card.title} delay={i * 0.05}>
-                <div className="bg-white rounded-2xl p-6 md:p-8 h-full flex flex-col items-center text-center shadow-sm">
+                <div className={`${card.bg} rounded-2xl p-6 md:p-8 h-full flex flex-col items-center text-center shadow-sm`}>
                   <div className={`${card.iconBg} ${card.iconColor} w-16 h-16 rounded-full flex items-center justify-center mb-5`}>
                     <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       {card.icon}

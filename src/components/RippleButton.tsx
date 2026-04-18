@@ -17,8 +17,8 @@ interface RippleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export default function RippleButton({
   children,
-  color = "bg-orange-500",
-  rippleCss = "rgba(249, 115, 22, 0.4)",
+  color = "bg-[#F6892A]",
+  rippleCss = "rgba(246, 137, 42, 0.4)",
   href,
   className = "",
   ...rest

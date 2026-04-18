@@ -38,7 +38,7 @@ export default function LearningGoalsSection() {
     <section id="learning" className="py-20 bg-white">
       <FadeUp>
       <div className="max-w-6xl mx-auto px-4 md:px-8">
-          <h2 className="text-3xl md:text-5xl font-extrabold text-center text-green-700 mb-4 md:mb-12">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-4 md:mb-12">
             Learning goals
           </h2>
 
@@ -75,9 +75,9 @@ export default function LearningGoalsSection() {
             {goals.map((goal) => (
               <div
                 key={goal.title}
-                className="flex gap-4 items-center bg-white border border-amber-300 rounded-2xl px-5 py-5 shadow-sm"
+                className="flex gap-4 items-center bg-white border border-[#F2DA36] rounded-2xl px-5 py-5 shadow-sm"
               >
-                <div className="w-16 h-16 rounded-xl flex-shrink-0 flex items-center justify-center bg-amber-200">
+                <div className="w-16 h-16 rounded-xl flex-shrink-0 flex items-center justify-center bg-[#F2DA36]/50">
                   <Image
                     src={goal.icon}
                     alt=""

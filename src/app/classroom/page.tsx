@@ -299,7 +299,7 @@ export default function ClassroomPage() {
       <section className="py-12 md:py-20 px-4 md:px-8 bg-white">
         <div className="max-w-4xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-gray-900 mb-10 md:mb-14">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-10 md:mb-14">
               Pre School
             </h2>
           </FadeUp>
@@ -317,7 +317,7 @@ export default function ClassroomPage() {
       <section className="py-12 md:py-20 px-4 md:px-8 bg-white">
         <div className="max-w-4xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-gray-900 mb-10 md:mb-14">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#F6892A] mb-10 md:mb-14">
               After school
             </h2>
           </FadeUp>
