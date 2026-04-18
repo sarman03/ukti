@@ -107,9 +107,9 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
         aspectLabel: "Program Card — 4:3",
         maxImages: 5,
         slotLabels: [
+          "Toddlers",
           "Pre Nursery",
           "Nursery",
-          "Toddlers",
           "Storytelling Program",
           "Language & Math Program",
         ],

@@ -16,19 +16,19 @@ const programs: Record<Tab, Program[]> = {
       title: "Toddlers",
       age: "Age: 15 – 23 Months",
       description:
-        "A warm, nurturing space where little ones explore the world through play, movement, and sensory experiences.",
+        "A warm, nurturing space where little ones explore the world through play, movement, sensory experiences, and gentle storytime that sparks imagination and early language.",
     },
     {
       title: "Pre Nursery",
       age: "Age: 2 – 3 Years",
       description:
-        "A gentle introduction to learning through play, helping children build social skills, sensory awareness, and early motor development.",
+        "A structured, play-based program where children explore themes through hands-on learning, building early literacy, numeracy, creativity, independence, and strong social-emotional skills.",
     },
     {
       title: "Nursery",
       age: "Age: 3 – 4 Years",
       description:
-        "A balanced program that nurtures curiosity, creativity, and early academic foundations through hands-on learning.",
+        "A gentle introduction to learning through play, helping children build social skills, sensory awareness, and early motor development.",
     },
   ],
   afterschool: [
@@ -50,6 +50,11 @@ export default function ClassroomSection() {
   const activePrograms = programs[activeTab];
   const { images } = useSupabaseSlotImages("classroom", 5);
   const slotOffset = activeTab === "preschool" ? 0 : programs.preschool.length;
+  const classroomImages: Record<string, string> = {
+    Toddlers: "/home/classroom/toddler.jpg",
+    "Pre Nursery": "/home/classroom/pre%20nursery.jpg",
+    Nursery: "/home/classroom/nursery.jpg",
+  };
 
   return (
     <section id="classes" className="py-12 md:py-20 px-4 md:px-8 bg-white">
@@ -87,11 +92,11 @@ export default function ClassroomSection() {
           }`}
         >
           {activePrograms.map((program, idx) => {
-            const imageUrl = images[slotOffset + idx];
+            const imageUrl = classroomImages[program.title] ?? images[slotOffset + idx];
             return (
             <div
               key={program.title}
-              className="group rounded-2xl overflow-hidden shadow-md bg-white"
+              className="group rounded-2xl overflow-hidden shadow-md bg-white flex h-full flex-col"
             >
               {/* Image */}
               <div className="h-52 bg-gray-300 relative">
@@ -102,7 +107,7 @@ export default function ClassroomSection() {
                 )}
               </div>
               {/* Card content — white by default, amber on card hover */}
-              <div className="bg-white group-hover:bg-[#F2DA36] transition-colors p-5">
+              <div className="bg-white group-hover:bg-[#F2DA36] transition-colors p-5 flex-1">
                 <h3 className="text-lg font-extrabold text-gray-900">
                   {program.title}
                 </h3>

@@ -3,10 +3,13 @@
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
-import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 
 export default function CTASection() {
-  const { images } = useSupabaseSlotImages("cta", 3);
+  const images = [
+    "/home/last%20section/PHOTO-2024-09-03-14-59-18.jpg",
+    "/home/last%20section/PHOTO-2025-05-09-14-35-38.jpg",
+    "/home/last%20section/PHOTO-2024-10-12-18-49-50.jpg",
+  ];
 
   return (
     <section className="py-12 md:py-0 md:min-h-screen px-4 md:px-8 bg-white overflow-hidden flex items-center justify-center">
@@ -34,13 +37,10 @@ export default function CTASection() {
         {/* Center tagline */}
         <div className="flex flex-col items-center text-center gap-6 md:gap-8">
           <div className="leading-tight" style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}>
-            <p className="font-extrabold text-gray-900">Growing</p>
-            <p className="font-extrabold text-[#5EA85B]">curious minds,</p>
-            <p className="font-extrabold text-gray-900">
-              one{" "}
-              <span className="text-[#F6892A] italic">moment</span>
-            </p>
-            <p className="font-extrabold text-gray-900">at a time.</p>
+            <p className="font-extrabold text-[#F6892A]">Learn</p>
+            <p className="font-extrabold text-[#5EA85B]">Express</p>
+            <p className="font-extrabold text-[#0FB3BC]">Grow</p>
+            <p className="font-extrabold text-gray-900 text-[length:clamp(1.1rem,2.5vw,1.9rem)] mt-2">With Ukti Early Years</p>
           </div>
           <RippleButton>
             Enroll Your Child

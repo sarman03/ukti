@@ -44,7 +44,7 @@ const pieces: Piece[] = [
   },
   {
     row: 0, col: 2, type: "text", color: "#F6892A",
-    text: "A perfect blend of Montessori + Play-way methods for hands-on, joyful learning.",
+    text: "A perfect blend of Montessori + Play-way methods for hands-on, engaging learning.",
     top: "notch", right: "tab", bottom: "tab", left: "tab",
   },
   {
@@ -163,8 +163,17 @@ function buildPath(p: Piece): string {
 
 const SVG_W = 5 * PW; // 1100
 const SVG_H = 2 * PH; // 400
+const puzzleImages = [
+  "/home/why%20chose%20ukti/PHOTO-2026-03-22-18-10-00.jpg",
+  "/home/why%20chose%20ukti/PHOTO-2025-01-15-16-21-34.jpg",
+  "/home/why%20chose%20ukti/PHOTO-2025-01-10-19-18-37.jpg",
+  "/home/why%20chose%20ukti/PHOTO-2025-02-08-15-49-00.jpg",
+  "/home/why%20chose%20ukti/PHOTO-2025-11-07-20-46-21.jpg",
+];
 
 export default function WhyChooseSection() {
+  let imagePieceIndex = 0;
+
   return (
     <section id="why-choose" className="py-20 bg-white">
       <FadeUp>
@@ -221,21 +230,27 @@ export default function WhyChooseSection() {
             const fh = PH + TAB * 2;
 
             if (p.type === "image") {
+              const imageUrl = puzzleImages[imagePieceIndex++];
               return (
                 <g key={clipId} clipPath={`url(#${clipId})`}>
-                  {/* Grey placeholder — replace rect with <image> when real photos are ready */}
-                  <rect x={fx} y={fy} width={fw} height={fh} fill="#d1d5db" />
-                  <text
-                    x={x + PW / 2}
-                    y={y + PH / 2}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fill="#9ca3af"
-                    fontSize="11"
-                    fontFamily="Arial, sans-serif"
-                  >
-                    Image
-                  </text>
+                  {imageUrl ? (
+                    <image href={imageUrl} x={fx} y={fy} width={fw} height={fh} preserveAspectRatio="xMidYMid slice" />
+                  ) : (
+                    <>
+                      <rect x={fx} y={fy} width={fw} height={fh} fill="#d1d5db" />
+                      <text
+                        x={x + PW / 2}
+                        y={y + PH / 2}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fill="#9ca3af"
+                        fontSize="11"
+                        fontFamily="Arial, sans-serif"
+                      >
+                        Image
+                      </text>
+                    </>
+                  )}
                 </g>
               );
             }

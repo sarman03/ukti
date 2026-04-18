@@ -8,9 +8,12 @@ import FadeUp from "@/components/FadeUp";
 import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 
 export default function AboutPage() {
-  const { images: heroImages } = useSupabaseSlotImages("about", 2);
   const { images: founderImages } = useSupabaseSlotImages("about-founders", 2);
   const { images: environmentImages } = useSupabaseSlotImages("about-environment", 6);
+  const heroImages = [
+    "/about%20page/first%20section%20pic.jpg",
+    "/about%20page/second%20section.JPG",
+  ];
   const images = [
     heroImages[0],
     heroImages[1],
@@ -24,7 +27,7 @@ export default function AboutPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="bg-white min-h-screen flex items-center pt-24 md:pt-28 pb-12 md:pb-16 px-4 md:px-8">
+      <section className="bg-white min-h-screen flex items-center pt-28 md:pt-32 pb-12 md:pb-16 px-4 md:px-8">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center w-full">
           <FadeUp>
             <h1 className="text-4xl md:text-6xl font-extrabold text-[#5EA85B] leading-tight mb-6">
@@ -110,15 +113,15 @@ export default function AboutPage() {
               {[
                 {
                   heading: "The Problem",
-                  body: "Traditional learning methods often fail to nurture individual curiosity and independent thinking in young minds.",
+                  body: "Preschools had become overly structured, rushed, and often focused on outcomes rather than the child. There was little room for curiosity, creativity, or emotional connection.",
                 },
                 {
                   heading: "The Idea",
-                  body: "We envisioned a space where children could explore, discover, and learn at their own pace through child-led activities.",
+                  body: "We imagined something different—a space where children could truly feel at ease. A space where children could learn, express, and grow without inhibition. Not just a school, but a home for learning—intimate, nurturing, and deeply child-centric.",
                 },
                 {
                   heading: "The Beginning",
-                  body: "In 2018, we opened our doors with a mission to create a nurturing environment based on Montessori principles.",
+                  body: "With this vision, Ukti Early Years was born in 2021. What started as a shared belief between two educators soon became a thoughtfully designed micro preschool. Every corner of Ukti was built with intention—to create meaningful experiences, foster emotional wellbeing, and nurture a lifelong love for learning.",
                 },
               ].map((item) => (
                 <div key={item.heading} className="flex gap-3">
@@ -160,14 +163,7 @@ export default function AboutPage() {
                     Our Mission
                   </h3>
                   <p className="text-gray-700 leading-relaxed mb-5">
-                    To provide a nurturing Montessori environment where every
-                    child develops independence, confidence, and a lifelong love
-                    for learning.
-                  </p>
-                  <p className="text-gray-700 leading-relaxed text-sm">
-                    <span className="font-bold text-[#5EA85B]">Why:</span>{" "}
-                    Every child deserves an education that honors their unique
-                    development timeline.
+                    To provide a warm, engaging, and thoughtfully designed micro preschool experience that blends play-based and experiential learning.
                   </p>
                 </div>
               </div>
@@ -188,14 +184,7 @@ export default function AboutPage() {
                     Our Vision
                   </h3>
                   <p className="text-gray-700 leading-relaxed mb-5">
-                    To cultivate compassionate, independent thinkers who will
-                    positively impact the world through creativity, empathy, and
-                    innovation.
-                  </p>
-                  <p className="text-gray-700 leading-relaxed text-sm">
-                    <span className="font-bold text-[#F6892A]">How to apply:</span>{" "}
-                    We nurture these qualities daily through hands-on
-                    exploration and respectful guidance.
+                    To create a nurturing, child-centered learning environment where each child feels safe, inspired, and empowered to LEARN, EXPRESS and GROW.
                   </p>
                 </div>
               </div>
@@ -220,7 +209,7 @@ export default function AboutPage() {
             {[
               {
                 title: "Child-Led Learning",
-                body: "Children choose activities based on their interests and developmental readiness",
+                body: "Children choose experiences based on their interests and developmental readiness",
                 bg: "bg-[#5EA85B]/30",
                 titleColor: "text-[#5EA85B]",
                 iconBg: "bg-[#5EA85B]/50",
@@ -238,7 +227,7 @@ export default function AboutPage() {
               },
               {
                 title: "Practical Life Skills",
-                body: "Building independence through real-world activities and responsibilities",
+                body: "Building independence through real-world experiences and responsibilities",
                 bg: "bg-[#F6892A]/25",
                 titleColor: "text-[#F6892A]",
                 iconBg: "bg-[#F6892A]/50",

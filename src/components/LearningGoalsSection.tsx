@@ -2,37 +2,51 @@
 
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
-import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 
 const goals = [
   {
     title: "Holistic Development",
     description:
-      "Children are supported to speak, share ideas, and express themselves freely without hesitation.",
+      "Nurturing cognitive, social, emotional, and physical growth to support well-rounded development in every child.",
     icon: "/learning-goals/1.png",
   },
   {
-    title: "Environmental Awareness",
+    title: "Critical Thinking & Problem Solving",
     description:
-      "We help children connect with nature and learn simple habits of care and responsibility towards the environment.",
+      "Encouraging curiosity and independent thinking through hands-on, inquiry-based learning experiences.",
     icon: "/learning-goals/2.png",
   },
   {
-    title: "Cultural Awareness",
+    title: "Creativity & Self-Expression",
     description:
-      "We introduce children to different cultures, traditions, and perspectives, building openness and respect.",
+      "Fostering imagination through art, music, storytelling, and open-ended experiences.",
     icon: "/learning-goals/3.png",
   },
   {
-    title: "Imagination & Curiosity",
+    title: "Language & Communication Skills",
     description:
-      "We spark a love for learning by encouraging exploration, open questions, and creative thinking every day.",
+      "Building strong foundations in listening, speaking, and early literacy through rich, engaging interactions.",
     icon: "/learning-goals/4.png",
+  },
+  {
+    title: "Social & Emotional Development",
+    description:
+      "Helping children develop empathy, confidence, and positive relationships in a supportive environment.",
+    icon: "/learning-goals/1.png",
+  },
+  {
+    title: "Environmental & Cultural Awareness",
+    description:
+      "Encouraging respect for nature and appreciation of diverse cultures through meaningful, real-world experiences.",
+    icon: "/learning-goals/2.png",
   },
 ];
 
 export default function LearningGoalsSection() {
-  const { images } = useSupabaseSlotImages("learning-goals", 2);
+  const images = [
+    "/learning-goals/PHOTO-2025-05-09-14-27-34.jpg",
+    "/learning-goals/PHOTO-2024-10-28-13-26-25.jpg",
+  ];
 
   return (
     <section id="learning" className="py-20 bg-white">

@@ -9,16 +9,29 @@ import DayAtUktiSection from "@/components/DayAtUktiSection";
 import EnquiryFormSection from "@/components/EnquiryFormSection";
 import RippleButton from "@/components/RippleButton";
 import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
-import { supabase } from "@/lib/supabase";
-
-const BUCKET = "images";
 
 const preschoolPrograms = [
   {
-    title: "Pre Nursery",
-    subtitle: "Nurture curiosity and joyful learning",
+    title: "Toddlers",
+    subtitle: "A safe start to explore the world",
     description:
-      "For children aged 2-3 years, a gentle introduction to learning through play, exploration, and early social skills.",
+      "For children aged 15-23 months, a nurturing environment focused on sensory discovery, movement, and emotional comfort.",
+    points: [
+      "Weekly Thematic Experiences",
+      "Circle Time",
+      "Storytelling Adventures",
+      "Sensory Play and Messy Play",
+      "Multimedia Art",
+      "Cooking Experiences",
+      "Practical Life and Montessori Exercises",
+      "Gross Motor Sessions",
+    ],
+  },
+  {
+    title: "Pre Nursery",
+    subtitle: "Nurture curiosity and early growth",
+    description:
+      "A structured, play-based program where children explore themes through hands-on learning, building early literacy, numeracy, creativity, independence, and strong social-emotional skills.",
     points: [
       "Theme-based learning every week",
       "Circle time for bonding & communication",
@@ -31,27 +44,15 @@ const preschoolPrograms = [
     title: "Nursery",
     subtitle: "Build strong foundations for growth",
     description:
-      "For children aged 3-4 years, a structured yet playful program that develops creativity, communication, and early academics.",
+      "For children aged 3-4 years, a gentle introduction to learning through play, exploration, and early social skills.",
     points: [
-      "Phonics & early literacy skills",
-      "Creative arts & STEAM activities",
-      "Early math & logical thinking",
-      "Storytelling & expressive learning",
-      "Practical life & independence skills",
-      "Gross motor & outdoor play",
-    ],
-  },
-  {
-    title: "Toddlers",
-    subtitle: "A safe start to explore the world",
-    description:
-      "For children aged 15-23 months, a nurturing environment focused on sensory discovery, movement, and emotional comfort.",
-    points: [
-      "Sensory & messy play exploration",
-      "Music, movement & rhymes",
-      "Fine & gross motor development",
-      "Social interaction & bonding",
-      "Safe, caring environment",
+      "Thematic Learning & Experiential Exploration",
+      "Circle Time & Storytelling",
+      "Creative Arts & STEAM Learning",
+      "Early Literacy & Pre-Writing Skills",
+      "Early Math & Logical Thinking",
+      "Practical Life Skills & Montessori Exercises",
+      "Gross Motor Development & Outdoor Play",
     ],
   },
 ];
@@ -66,7 +67,7 @@ const afterschoolPrograms = [
       "Music, movement & rhythm",
       "Theatre games & role play",
       "Expressive storytelling sessions",
-      "Art & sensory-based activities",
+      "Art & sensory-based experiences",
       "Gross motor play & movement",
     ],
   },
@@ -100,6 +101,12 @@ const afterschoolPrograms = [
     ],
   },
 ];
+
+const preschoolCardImages: Record<string, string> = {
+  Toddlers: "/home/classroom/toddler.jpg",
+  "Pre Nursery": "/home/classroom/pre%20nursery.jpg",
+  Nursery: "/home/classroom/nursery.jpg",
+};
 
 function ProgramCard({
   title,
@@ -180,26 +187,15 @@ function ProgramCard({
 }
 
 function HeroCarousel() {
-  const [images, setImages] = useState<string[]>([]);
+  const images = [
+    "/classroom/hero/AKN_2671.JPG",
+    "/classroom/hero/AKN_9699.JPG",
+    "/classroom/hero/AKN_9703.JPG",
+    "/classroom/hero/AKN_9728.JPG",
+    "/classroom/hero/AKN_9732.JPG",
+    "/classroom/hero/AKN_9744.JPG",
+  ];
   const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    async function fetchImages() {
-      const { data } = await supabase.storage.from(BUCKET).list("classroom-hero", {
-        sortBy: { column: "name", order: "asc" },
-      });
-      if (data && data.length > 0) {
-        const urls = data
-          .filter((f) => !f.id?.startsWith(".") && f.name !== ".emptyFolderPlaceholder")
-          .map(
-            (f) =>
-              supabase.storage.from(BUCKET).getPublicUrl(`classroom-hero/${f.name}`).data.publicUrl
-          );
-        setImages(urls);
-      }
-    }
-    fetchImages();
-  }, []);
 
   const nextSlide = useCallback(() => {
     setCurrent((prev) => (prev + 1) % images.length);
@@ -286,9 +282,6 @@ function HeroCarousel() {
 export default function ClassroomPage() {
   const { images: cardImages } = useSupabaseSlotImages("classroom-cards", 5);
 
-  // Map card images to programs: first 3 for preschool, next 2 for afterschool
-  const allPrograms = [...preschoolPrograms, ...afterschoolPrograms];
-
   return (
     <main>
       <Navbar />
@@ -306,7 +299,11 @@ export default function ClassroomPage() {
           <div className="flex flex-col gap-8 md:gap-10">
             {preschoolPrograms.map((program, i) => (
               <FadeUp key={program.title} delay={i * 0.15}>
-                <ProgramCard {...program} imageLeft imageUrl={cardImages[i]} />
+                <ProgramCard
+                  {...program}
+                  imageLeft
+                  imageUrl={preschoolCardImages[program.title] ?? cardImages[i]}
+                />
               </FadeUp>
             ))}
           </div>

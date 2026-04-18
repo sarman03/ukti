@@ -14,7 +14,13 @@ export default function Navbar() {
   const isContact = pathname === "/contact";
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#F2DA36] px-4 md:px-20 py-3 md:py-4 flex items-center justify-between">
+    <div className="fixed top-0 left-0 right-0 z-50 flex flex-col">
+      {/* Announcement ribbon */}
+      <div className="bg-[#F6892A] text-white text-xs md:text-sm font-semibold text-center py-2 px-4 tracking-wide">
+         New Branch Opening Soon in Noida — Stay tuned for updates!
+      </div>
+
+    <nav className="bg-[#F2DA36] px-4 md:px-20 py-3 md:py-4 flex items-center justify-between">
       {/* Mobile: Logo on left */}
       <Link href="/" className="md:hidden">
         <Image
@@ -74,7 +80,7 @@ export default function Navbar() {
 
       {/* Mobile: Slide-down menu */}
       {menuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-[#F2DA36] shadow-lg flex flex-col items-center gap-4 py-6 md:hidden">
+        <div className="absolute top-full left-0 right-0 bg-[#F2DA36] shadow-lg flex flex-col items-center gap-4 py-6 md:hidden" style={{ top: "100%" }}>
           <a href="/about" onClick={() => setMenuOpen(false)} className={`font-medium text-lg ${isAbout ? "text-[#5EA85B] font-bold" : "text-gray-800"}`}>
             About
           </a>
@@ -95,5 +101,6 @@ export default function Navbar() {
         </div>
       )}
     </nav>
+    </div>
   );
 }

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
-import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 
 const stats = [
   { value: 6, suffix: "+", label: "Years of Experience", icon: "/about-us/6+.png" },
@@ -49,7 +48,7 @@ function CountUp({ end, suffix = "", duration = 1600 }: { end: number; suffix?: 
 }
 
 export default function AboutSection() {
-  const { images } = useSupabaseSlotImages("home-about", 2);
+  const images = ["/home/about/1.jpg", "/home/about/2.jpg"];
 
   return (
     <section id="about" className="bg-white pt-20 pb-12 md:pb-20 px-4 md:px-8">
@@ -67,12 +66,12 @@ export default function AboutSection() {
           </div>
 
           {/* Center text */}
-          <div className="text-center flex flex-col items-center gap-6 pt-2">
+            <div className="text-center flex flex-col items-center gap-6 pt-2">
               <h2 className="text-3xl md:text-5xl font-extrabold text-[#5EA85B]">About Us</h2>
               <p className="text-gray-600 leading-relaxed text-base">
-                Welcome to Ukti Early Years where we believe in fostering the brightest beginnings for our young
-                learners. We aspire to create an environment where children not only learn but thrive, where every
-                moment is an opportunity to sculpt curious minds and nurture boundless potential
+                <span className="font-bold text-gray-900">Mission:</span> To provide a warm, engaging, and thoughtfully designed micro preschool experience that blends play-based and experiential learning.
+                <br /><br />
+                <span className="font-bold text-gray-900">Vision:</span> To create a nurturing, child-centered learning environment where each child feels safe, inspired, and empowered to LEARN, EXPRESS and GROW.
               </p>
               <RippleButton href="#">
                 Know More

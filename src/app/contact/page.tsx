@@ -96,7 +96,7 @@ export default function ContactPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="bg-white px-6 pt-32 pb-16 md:pt-40 md:pb-20">
+      <section className="bg-white px-6 pt-36 pb-16 md:pt-44 md:pb-20">
         <div className="max-w-4xl mx-auto text-center">
           <FadeUp>
             <h1 className="text-4xl md:text-6xl font-extrabold text-[#F6892A] mb-4">
