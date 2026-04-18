@@ -4,13 +4,29 @@ import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import { useSupabaseImages } from "@/lib/useSupabaseImages";
 
+const fallbackGallery = [
+  "/gallery/PHOTO-2024-09-03-14-59-18.jpg",
+  "/gallery/PHOTO-2024-10-28-13-26-25.jpg",
+  "/gallery/PHOTO-2025-01-09-16-01-16.jpg",
+  "/gallery/PHOTO-2025-02-18-16-20-16.jpg",
+  "/gallery/PHOTO-2025-03-03-12-00-07.jpg",
+  "/gallery/PHOTO-2025-03-11-19-28-14.jpg",
+  "/gallery/PHOTO-2025-05-04-18-10-58.jpg",
+  "/gallery/PHOTO-2025-08-22-19-14-09.jpg",
+  "/gallery/PHOTO-2025-10-14-14-13-49 (1).jpg",
+  "/gallery/PHOTO-2025-10-14-14-13-49.jpg",
+  "/gallery/PHOTO-2025-11-17-13-48-59.jpg",
+  "/gallery/PHOTO-2026-01-16-20-46-40.jpg",
+];
+
 export default function GallerySection() {
-  const { images } = useSupabaseImages("gallery");
+  const { images: adminImages } = useSupabaseImages("gallery");
+  const images = adminImages.length > 0 ? adminImages : fallbackGallery;
 
   // Split images into two rows, duplicate for seamless loop
   const half = Math.ceil(images.length / 2);
-  const row1 = images.length > 0 ? images.slice(0, half) : Array(6).fill(null);
-  const row2 = images.length > 0 ? images.slice(half) : Array(6).fill(null);
+  const row1 = images.slice(0, half);
+  const row2 = images.slice(half);
 
   return (
     <section id="gallery" className="py-20 bg-white overflow-hidden">
@@ -27,11 +43,7 @@ export default function GallerySection() {
               key={i}
               className="w-40 h-40 md:w-56 md:h-56 bg-gray-300 rounded-2xl flex-shrink-0 relative overflow-hidden"
             >
-              {url ? (
-                <Image src={url} alt={`Gallery photo`} fill className="object-cover" sizes="224px" />
-              ) : (
-                <span className="absolute inset-0 flex items-center justify-center text-gray-400 text-xs font-medium">Photo {(i % 6) + 1}</span>
-              )}
+              <Image src={url} alt="Gallery photo" fill className="object-cover" sizes="224px" />
             </div>
           ))}
         </div>
@@ -45,11 +57,7 @@ export default function GallerySection() {
               key={i}
               className="w-40 h-40 md:w-56 md:h-56 bg-gray-300 rounded-2xl flex-shrink-0 relative overflow-hidden"
             >
-              {url ? (
-                <Image src={url} alt={`Gallery photo`} fill className="object-cover" sizes="224px" />
-              ) : (
-                <span className="absolute inset-0 flex items-center justify-center text-gray-400 text-xs font-medium">Photo {(i % 6) + 1}</span>
-              )}
+              <Image src={url} alt="Gallery photo" fill className="object-cover" sizes="224px" />
             </div>
           ))}
         </div>

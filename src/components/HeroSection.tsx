@@ -6,10 +6,16 @@ import Image from "next/image";
 
 const BUCKET = "images";
 
+const fallbackHeroImages = [
+  "/home/hero/1.png",
+  "/home/hero/Property 1=Frame 2.png",
+  "/home/hero/Property 1=Frame 3.png",
+  "/home/hero/Property 1=Frame 4.png",
+];
+
 export default function HeroSection() {
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<string[]>(fallbackHeroImages);
   const [current, setCurrent] = useState(0);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchImages() {
@@ -24,9 +30,8 @@ export default function HeroSection() {
             (f) =>
               supabase.storage.from(BUCKET).getPublicUrl(`hero/${f.name}`).data.publicUrl
           );
-        setImages(urls);
+        if (urls.length > 0) setImages(urls);
       }
-      setLoading(false);
     }
     fetchImages();
   }, []);
@@ -44,24 +49,6 @@ export default function HeroSection() {
     const timer = setInterval(nextSlide, 5000);
     return () => clearInterval(timer);
   }, [images.length, nextSlide]);
-
-  if (loading) {
-    return (
-      <section className="w-full h-screen bg-gray-200 flex items-center justify-center">
-        <span className="text-gray-400 text-lg font-medium">Loading...</span>
-      </section>
-    );
-  }
-
-  if (images.length === 0) {
-    return (
-      <section className="w-full h-screen bg-gray-300 flex items-center justify-center">
-        <span className="text-gray-500 text-lg font-medium">
-          Hero Image Placeholder
-        </span>
-      </section>
-    );
-  }
 
   return (
     <section className="relative w-full h-screen overflow-hidden">
