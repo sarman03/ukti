@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
+import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 
 const goals = [
   {
@@ -43,9 +44,14 @@ const goals = [
 ];
 
 export default function LearningGoalsSection() {
-  const images = [
+  const { images: adminImages } = useSupabaseSlotImages("learning-goals", 2);
+  const fallbackImages = [
     "/learning-goals/PHOTO-2025-05-09-14-27-34.jpg",
     "/learning-goals/PHOTO-2024-10-28-13-26-25.jpg",
+  ];
+  const images = [
+    adminImages[0] || fallbackImages[0],
+    adminImages[1] || fallbackImages[1],
   ];
 
   return (

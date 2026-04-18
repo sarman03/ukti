@@ -92,7 +92,7 @@ export default function ClassroomSection() {
           }`}
         >
           {activePrograms.map((program, idx) => {
-            const imageUrl = classroomImages[program.title] ?? images[slotOffset + idx];
+            const imageUrl = images[slotOffset + idx] || classroomImages[program.title];
             return (
             <div
               key={program.title}

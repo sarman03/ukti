@@ -187,7 +187,8 @@ function ProgramCard({
 }
 
 function HeroCarousel() {
-  const images = [
+  const { images: adminImages } = useSupabaseSlotImages("classroom-hero", 8);
+  const fallbackImages = [
     "/classroom/hero/AKN_2671.JPG",
     "/classroom/hero/AKN_9699.JPG",
     "/classroom/hero/AKN_9703.JPG",
@@ -195,6 +196,7 @@ function HeroCarousel() {
     "/classroom/hero/AKN_9732.JPG",
     "/classroom/hero/AKN_9744.JPG",
   ];
+  const images = adminImages.filter(Boolean).length > 0 ? adminImages.filter(Boolean) : fallbackImages;
   const [current, setCurrent] = useState(0);
 
   const nextSlide = useCallback(() => {
@@ -302,7 +304,7 @@ export default function ClassroomPage() {
                 <ProgramCard
                   {...program}
                   imageLeft
-                  imageUrl={preschoolCardImages[program.title] ?? cardImages[i]}
+                  imageUrl={cardImages[i] || preschoolCardImages[program.title]}
                 />
               </FadeUp>
             ))}

@@ -1,4 +1,5 @@
 import FadeUp from "@/components/FadeUp";
+import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 
 type Side = "tab" | "notch" | "flat";
 
@@ -172,6 +173,8 @@ const puzzleImages = [
 ];
 
 export default function WhyChooseSection() {
+  const { images: adminImages } = useSupabaseSlotImages("why-choose", 5);
+  const imageSources = adminImages.map((img, i) => img || puzzleImages[i]);
   let imagePieceIndex = 0;
 
   return (
@@ -230,7 +233,7 @@ export default function WhyChooseSection() {
             const fh = PH + TAB * 2;
 
             if (p.type === "image") {
-              const imageUrl = puzzleImages[imagePieceIndex++];
+              const imageUrl = imageSources[imagePieceIndex++];
               return (
                 <g key={clipId} clipPath={`url(#${clipId})`}>
                   {imageUrl ? (

@@ -3,12 +3,19 @@
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
+import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 
 export default function CTASection() {
-  const images = [
+  const { images: adminImages } = useSupabaseSlotImages("cta", 3);
+  const fallbackImages = [
     "/home/last%20section/PHOTO-2024-09-03-14-59-18.jpg",
     "/home/last%20section/PHOTO-2025-05-09-14-35-38.jpg",
     "/home/last%20section/PHOTO-2024-10-12-18-49-50.jpg",
+  ];
+  const images = [
+    adminImages[0] || fallbackImages[0],
+    adminImages[1] || fallbackImages[1],
+    adminImages[2] || fallbackImages[2],
   ];
 
   return (
