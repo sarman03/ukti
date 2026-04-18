@@ -243,11 +243,14 @@ function TourForm() {
           ))}
         </select>
       </div>
-      <input
-        type="text"
-        placeholder="Location"
-        className="rounded-full px-5 py-3 text-sm bg-white outline-none placeholder-gray-400 focus:ring-2 focus:ring-[#F6892A]"
-      />
+      <select
+        className="rounded-full px-5 py-3 text-sm bg-white outline-none focus:ring-2 focus:ring-[#F6892A] appearance-none text-gray-400"
+        defaultValue=""
+      >
+        <option value="" disabled>Location</option>
+        <option value="delhi" className="text-gray-800">Delhi</option>
+        <option value="noida" className="text-gray-800">Noida</option>
+      </select>
       <RippleButton type="submit" color="bg-[#F6892A]" rippleCss="rgba(246, 137, 42, 0.4)" className="mt-2 w-full">
         Book a Tour
       </RippleButton>

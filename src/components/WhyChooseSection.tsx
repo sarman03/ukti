@@ -38,7 +38,7 @@ const pieces: Piece[] = [
   // Outer top edge: images get OUTWARD tabs, text pieces get INWARD notches
   {
     row: 0, col: 0, type: "text", color: "#F2DA36",
-    text: "Personal attention with a 1:6 ratio, ensuring every child is seen, heard, and supported.",
+    text: "Micro Preschool Model – Small groups with personalised attention, 1:6 ratio",
     top: "notch", right: "tab", bottom: "tab", left: "flat",
   },
   {
@@ -47,7 +47,7 @@ const pieces: Piece[] = [
   },
   {
     row: 0, col: 2, type: "text", color: "#F6892A",
-    text: "A perfect blend of Montessori + Play-way methods for hands-on, engaging learning.",
+    text: "Play-Based, Experiential Learning – Learning through play, stories, and hands-on interventions",
     top: "notch", right: "tab", bottom: "tab", left: "tab",
   },
   {
@@ -56,7 +56,7 @@ const pieces: Piece[] = [
   },
   {
     row: 0, col: 4, type: "text", color: "#F2DA36",
-    text: "Focus on critical thinking, communication & independence from an early age.",
+    text: "Focus on Emotional Wellbeing – Building confidence and self-expression",
     top: "notch", right: "flat", bottom: "tab", left: "tab",
   },
   // ── Row 1: image / text / image / text / image ─────────────────────
@@ -66,8 +66,8 @@ const pieces: Piece[] = [
     top: "notch", right: "notch", bottom: "tab", left: "flat",
   },
   {
-    row: 1, col: 1, type: "text", color: "#0FB3BC",
-    text: "We nurture mind, emotions, creativity & physical growth for well-rounded development.",
+    row: 1, col: 1, type: "text", color: "#5EA85B",
+    text: "Structured Yet Flexible Curriculum – Balanced and age-appropriate learning approach",
     top: "tab", right: "tab", bottom: "notch", left: "tab",
   },
   {
@@ -76,7 +76,7 @@ const pieces: Piece[] = [
   },
   {
     row: 1, col: 3, type: "text", color: "#0FB3BC",
-    text: "Guided by passionate and professional teachers who understand early learning deeply.",
+    text: "Safe, Warm & Home-Like Environment – A secure and nurturing space",
     top: "tab", right: "tab", bottom: "notch", left: "tab",
   },
   {

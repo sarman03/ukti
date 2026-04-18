@@ -5,83 +5,83 @@
 import FadeUp from "@/components/FadeUp";
 
 const W = 920;
-const H = 600;
+const H = 620;
 
-// Circle definitions
-// Top row: text appears to the RIGHT of the circle (horizontal layout)
-// Bottom row: text appears BELOW the circle (vertical layout, centered)
+// TL(160,130) → BL(280,420) → TR(640,130) → BR(760,420)
+// Both outer diagonals have identical offset (+120, +290) — perfectly parallel
 const circles = [
   {
     id: "tl",
-    cx: 130,
+    cx: 160,
     cy: 130,
     r: 58,
-    fill: "#F6892A", // orange
+    fill: "#F6892A",
     icon: "/facilities/safety.png",
     title: "Safe & Secure Campus",
     description:
       "Fully monitored premises with restricted entry and child-safe infrastructure to ensure complete security.",
-    textX: 200,
+    textX: 232,
     textY: 78,
-    textWidth: 240,
+    textWidth: 260,
     textHeight: 130,
     textAlign: "left" as const,
   },
   {
     id: "tr",
-    cx: 530,
+    cx: 640,
     cy: 130,
     r: 58,
-    fill: "#F2DA36", // amber
+    fill: "#F2DA36",
     icon: "/facilities/hygiene.png",
     title: "Hygiene & Clean Environment",
     description:
       "Daily cleaning routines and sanitized play areas, classrooms, and washrooms for a healthy space.",
-    textX: 600,
+    textX: 712,
     textY: 78,
-    textWidth: 280,
+    textWidth: 200,
     textHeight: 130,
     textAlign: "left" as const,
   },
   {
     id: "bl",
-    cx: 250,
-    cy: 380,
+    cx: 280,
+    cy: 420,
     r: 58,
-    fill: "#0FB3BC", // teal
+    fill: "#0FB3BC",
     icon: "/facilities/staff.png",
     title: "Trained & Caring Staff",
     description:
       "Experienced educators and support staff who are trained in child care, safety, and emergency handling.",
-    textX: 130,
-    textY: 455,
+    textX: 160,
+    textY: 492,
     textWidth: 240,
     textHeight: 130,
     textAlign: "center" as const,
   },
   {
     id: "br",
-    cx: 670,
-    cy: 380,
+    cx: 760,
+    cy: 420,
     r: 58,
-    fill: "#5EA85B", // green
+    fill: "#5EA85B",
     icon: "/facilities/child.png",
     title: "Child-Safe Infrastructure",
     description:
       "Furniture, toys, and spaces designed with rounded edges, non-toxic materials, and safety-first layouts.",
-    textX: 550,
-    textY: 455,
+    textX: 640,
+    textY: 492,
     textWidth: 240,
     textHeight: 130,
     textAlign: "center" as const,
   },
 ];
 
-// Lines connecting the 4 circles in a zig-zag: TL → BL → TR → BR
+// Zigzag: TL→BL (parallel diagonal), BL→TR (crossing), TR→BR (parallel diagonal)
+// Both outer lines have identical slope (+120, +290) — symmetric
 const lines = [
-  { x1: 130, y1: 130, x2: 250, y2: 380 }, // TL → BL
-  { x1: 250, y1: 380, x2: 530, y2: 130 }, // BL → TR
-  { x1: 530, y1: 130, x2: 670, y2: 380 }, // TR → BR
+  { x1: 160, y1: 130, x2: 280, y2: 420 }, // TL → BL
+  { x1: 280, y1: 420, x2: 640, y2: 130 }, // BL → TR
+  { x1: 640, y1: 130, x2: 760, y2: 420 }, // TR → BR
 ];
 
 // Icon image dimensions inside each circle

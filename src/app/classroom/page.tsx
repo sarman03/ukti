@@ -31,7 +31,7 @@ const preschoolPrograms = [
     title: "Pre Nursery",
     subtitle: "Nurture curiosity and early growth",
     description:
-      "A structured, play-based program where children explore themes through hands-on learning, building early literacy, numeracy, creativity, independence, and strong social-emotional skills.",
+      "For children aged 3-4 years, a gentle introduction to learning through play, exploration, and early social skills.",
     points: [
       "Theme-based learning every week",
       "Circle time for bonding & communication",
@@ -44,7 +44,7 @@ const preschoolPrograms = [
     title: "Nursery",
     subtitle: "Build strong foundations for growth",
     description:
-      "For children aged 3-4 years, a gentle introduction to learning through play, exploration, and early social skills.",
+      "A structured, play-based program where children explore themes through hands-on learning, building early literacy, numeracy, creativity, independence, and strong social-emotional skills.",
     points: [
       "Thematic Learning & Experiential Exploration",
       "Circle Time & Storytelling",
@@ -129,7 +129,7 @@ function ProgramCard({
     <div className={`bg-[#F8D17C] rounded-[3rem] md:rounded-[150px] p-5 ${imageLeft ? "md:p-10" : "md:py-10 md:pl-24 md:pr-10"} flex flex-col md:flex-row gap-5 md:gap-6 items-center text-center md:text-left`}>
       {/* Image */}
       <div
-        className={`w-full md:w-80 h-44 md:h-72 bg-gray-300 rounded-[2rem] md:rounded-[120px] flex-shrink-0 overflow-hidden relative flex items-center justify-center ${
+        className={`w-full md:w-80 h-56 md:h-[400px] bg-gray-300 rounded-[2rem] md:rounded-[120px] flex-shrink-0 overflow-hidden relative flex items-center justify-center ${
           imageLeft ? "order-1" : "order-1 md:order-2"
         }`}
       >
@@ -248,9 +248,10 @@ function HeroCarousel() {
 
       {/* Text content */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
-        <h1 className="text-3xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-          Love, learning &amp;<br />
-          Laughter Every Day
+        <h1 className="text-4xl md:text-7xl font-extrabold leading-tight mb-6">
+          <span className="text-[#F6892A]">Learn</span><br />
+          <span className="text-[#5EA85B]">Express</span><br />
+          <span className="text-[#0FB3BC]">Grow</span>
         </h1>
         <RippleButton href="#contact" className="px-8 py-3">
           Book a tour

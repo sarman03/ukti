@@ -75,9 +75,11 @@ export default function AboutSection() {
             <div className="text-center flex flex-col items-center gap-6 pt-2">
               <h2 className="text-3xl md:text-5xl font-extrabold text-[#5EA85B]">About Us</h2>
               <p className="text-gray-600 leading-relaxed text-base">
-                <span className="font-bold text-gray-900">Mission:</span> To provide a warm, engaging, and thoughtfully designed micro preschool experience that blends play-based and experiential learning.
+                At Ukti Early Years, a thoughtfully designed micro preschool, where we offer a warm, intimate environment where every child receives personalised attention and care.
                 <br /><br />
-                <span className="font-bold text-gray-900">Vision:</span> To create a nurturing, child-centered learning environment where each child feels safe, inspired, and empowered to LEARN, EXPRESS and GROW.
+                Through hands-on exploration, play-based learning, and meaningful interactions, we nurture confident, expressive, and independent learners.
+                <br /><br />
+                More than just a preschool, Ukti is a home for learning—a close-knit community where children feel safe, valued, and inspired every day.
               </p>
               <RippleButton href="#">
                 Know More
