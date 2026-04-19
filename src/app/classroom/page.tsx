@@ -249,9 +249,9 @@ function HeroCarousel() {
       {/* Text content */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
         <h1 className="text-4xl md:text-7xl font-extrabold leading-tight mb-6">
-          <span className="text-[#F6892A]">Learn</span><br />
-          <span className="text-[#5EA85B]">Express</span><br />
-          <span className="text-[#0FB3BC]">Grow</span>
+          <span className="text-white">Learn</span><br />
+          <span className="text-white">Express</span><br />
+          <span className="text-white">Grow</span>
         </h1>
         <RippleButton href="#contact" className="px-8 py-3">
           Book a tour

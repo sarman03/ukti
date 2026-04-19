@@ -50,7 +50,7 @@ export default function Footer() {
         <div className="col-span-2 md:col-span-1 flex flex-col items-start gap-3">
           <Link href="/">
             <Image
-              src="/logo/Ukti _ Logo 1.png"
+              src="/logo/Ukti _ Logo.png"
               alt="Ukti Early Years"
               width={88}
               height={92}

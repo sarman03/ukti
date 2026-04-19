@@ -19,10 +19,11 @@ export default function AboutPage() {
     aboutImages[0] || fallbackHeroImages[0],
     aboutImages[1] || fallbackHeroImages[1],
   ];
+  const nikitaFounderImage = "/about%20page/founders/WhatsApp%20Image%202026-04-19%20at%2000.05.49.jpeg";
   const images = [
     heroImages[0],
     heroImages[1],
-    founderImages[0],
+    nikitaFounderImage,
     founderImages[1],
     ...environmentImages,
   ];
@@ -36,7 +37,7 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center w-full">
           <FadeUp>
             <h1 className="text-4xl md:text-6xl font-extrabold text-[#5EA85B] leading-tight mb-6">
-              Growing curious minds with independence &amp; joy
+              Explore the concept of micro preschool, with Ukti Early
             </h1>
             <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-md">
               Montessori-based preschool where children learn at their own pace.
@@ -299,16 +300,22 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 md:gap-16 max-w-3xl mx-auto">
             {[
               {
-                name: "Founder Name 1",
-                title: "Founder & Lead Educator",
-                quote: "Every child is a natural learner",
+                name: "Nikita Sharma",
+                title: "Founder",
+                bio: [
+                  "Nikita Sharma, founder of Ukti, is a transformative force in early childhood education with 8 years of experience blending innovation, care, and a deep commitment to nurturing young minds. Her journey began as a preschool teacher, where she developed a strong belief in the power of early learning—an insight that led her to create Ukti as a space where children can truly learn, express, and grow without limits.",
+                  "Through her learner-centric approach, she has positively impacted children’s lives while championing more holistic, flexible teaching practices. She envisions an education system that is accessible, empathetic, and creatively empowering for every child.",
+                ],
                 nameColor: "text-[#5EA85B]",
                 badgeColor: "bg-[#5EA85B]",
               },
               {
-                name: "Founder Name 2",
-                title: "Co-Founder & Curriculum Director",
-                quote: "Education is not preparation for life, education is life itself",
+                name: "Adeeba Arif",
+                title: "Co-Founder",
+                bio: [
+                  "Adeeba Arif, co-founder of Ukti, brings 10 years of experience in early childhood education and a deep commitment to creating nurturing, child-centric learning environments that honor each child’s potential. Her extensive work as a preschool teacher across reputed institutions shaped her understanding of young learners and inspired her, alongside Nikita Sharma, to build Ukti as a space where children can learn freely beyond rigid structures.",
+                  "At Ukti, she focuses on holistic development through play, exploration, and guided discovery, making learning joyful and meaningful while continuing to challenge conventional methods with a thoughtful, child-focused vision of education.",
+                ],
                 nameColor: "text-[#F6892A]",
                 badgeColor: "bg-[#F6892A]",
               },
@@ -338,8 +345,12 @@ export default function AboutPage() {
                   <h3 className={`text-xl md:text-2xl font-extrabold ${founder.nameColor} mb-1`}>
                     {founder.name}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-3">{founder.title}</p>
-                  <p className="text-gray-700 italic">&ldquo;{founder.quote}&rdquo;</p>
+                  <p className="text-gray-600 text-sm mb-4">{founder.title}</p>
+                  <div className="space-y-3 text-gray-700 text-sm leading-relaxed text-left">
+                    {founder.bio.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
                 </div>
               </FadeUp>
             ))}

@@ -24,7 +24,7 @@ export default function Navbar() {
       {/* Mobile: Logo on left */}
       <Link href="/" className="md:hidden">
         <Image
-          src="/logo/Ukti _ Logo 1.png"
+          src="/logo/Ukti _ Logo.png"
           alt="Ukti Early Years"
           width={88}
           height={92}
@@ -49,7 +49,7 @@ export default function Navbar() {
       {/* Center: Logo (desktop only) */}
       <Link href="/" className="hidden md:block absolute left-1/2 -translate-x-1/2">
         <Image
-          src="/logo/Ukti _ Logo 1.png"
+          src="/logo/Ukti _ Logo.png"
           alt="Ukti Early Years"
           width={88}
           height={92}

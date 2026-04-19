@@ -89,7 +89,7 @@ export default function AboutSection() {
           {/* Right column: large logo at top, image offset lower */}
           <div className="flex flex-col items-center">
             <Image
-              src="/logo/Ukti _ Logo 1.png"
+              src="/logo/Ukti _ Logo.png"
               alt="Ukti Early Years"
               width={280}
               height={294}

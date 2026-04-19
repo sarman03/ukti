@@ -19,7 +19,7 @@ const circles = [
     icon: "/facilities/safety.png",
     title: "Safe & Secure Campus",
     description:
-      "Fully monitored premises with restricted entry and child-safe infrastructure to ensure complete security.",
+      "Fully monitored CCTV premises with restricted entry and child-safe infrastructure to ensure complete security.",
     textX: 232,
     textY: 78,
     textWidth: 260,

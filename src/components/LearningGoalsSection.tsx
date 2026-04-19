@@ -65,7 +65,7 @@ export default function LearningGoalsSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-12 items-center">
           {/* Left: kite-tilted main image with smaller overlap image at top-right */}
           <div className="flex justify-center mt-10 md:mt-0">
-            <div className="relative w-48 h-64 md:w-80 md:h-[520px]">
+            <div className="relative w-48 h-64 md:w-[22rem] md:h-[520px]">
               {/* Main image — heavily tilted like a kite */}
               <div
                 className="absolute inset-0 bg-gray-300 rounded-2xl shadow-lg overflow-hidden animate-swing-slow"
@@ -79,10 +79,10 @@ export default function LearningGoalsSection() {
 
               {/* Smaller image overlapping the top-right corner */}
               <div
-                className="absolute -top-8 -right-4 w-20 h-20 md:-top-14 md:-right-6 md:w-32 md:h-32 bg-gray-400 rounded-xl shadow-lg overflow-hidden z-10 animate-swing-slow-reverse"
+                className="absolute -top-12 -right-6 w-28 h-28 md:-top-20 md:-right-10 md:w-48 md:h-48 bg-gray-400 rounded-xl shadow-lg overflow-hidden z-10 animate-swing-slow-reverse"
               >
                 {images[1] ? (
-                  <Image src={images[1]} alt="Learning" fill className="object-cover" sizes="128px" />
+                  <Image src={images[1]} alt="Learning" fill className="object-cover" sizes="(max-width: 768px) 112px, 192px" />
                 ) : (
                   <span className="absolute inset-0 flex items-center justify-center text-gray-600 text-xs">Image</span>
                 )}

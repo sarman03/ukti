@@ -19,7 +19,7 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
         aspectLabel: "Hero — 16:9 full screen",
         fallbackImages: [
           "/home/hero/1.png",
-          "/home/hero/Property 1=Frame 2.png",
+          // "/home/hero/Property 1=Frame 2.png",
           "/home/hero/Property 1=Frame 3.png",
           "/home/hero/Property 1=Frame 4.png",
         ],
