@@ -28,7 +28,7 @@ const contactDetails = [
   },
   {
     label: "Address",
-    value: "Delhi  •  Noida",
+    value: "Delhi\nNoida",
     href: "#maps",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -62,29 +62,11 @@ const socials = [
     ),
   },
   {
-    label: "Facebook",
-    href: "https://facebook.com/uktiearlyyears",
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/ukti-early-years/",
     icon: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.89h-2.34v6.99A10 10 0 0 0 22 12z" />
-      </svg>
-    ),
-  },
-  {
-    label: "YouTube",
-    href: "https://youtube.com/@uktiearlyyears",
-    icon: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
-      </svg>
-    ),
-  },
-  {
-    label: "WhatsApp",
-    href: "https://wa.me/919876543210",
-    icon: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M20.5 3.5A11.8 11.8 0 0 0 12 0a11.9 11.9 0 0 0-10.2 18l-1.7 6 6.2-1.6a11.9 11.9 0 0 0 5.7 1.4h.1A11.9 11.9 0 0 0 24 12a11.8 11.8 0 0 0-3.5-8.5zM12 21.4a9.4 9.4 0 0 1-4.8-1.3l-.4-.2-3.7 1 1-3.6-.2-.4A9.5 9.5 0 1 1 21.5 12 9.4 9.4 0 0 1 12 21.4zm5.2-7.1c-.3-.1-1.7-.8-1.9-.9s-.4-.1-.6.1-.7.9-.8 1-.3.2-.6.1a7.7 7.7 0 0 1-2.3-1.4 8.7 8.7 0 0 1-1.6-2c-.2-.3 0-.4.1-.6l.4-.5c.1-.1.1-.2.2-.4s0-.3 0-.4-.6-1.4-.8-1.9-.4-.5-.6-.5h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 12 12 0 0 0 4.6 4 5 5 0 0 0 3 .6 2.8 2.8 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.6-.3z" />
+        <path d="M6.94 8.5A1.56 1.56 0 1 1 6.94 5.4a1.56 1.56 0 0 1 0 3.1zM8.3 18.6H5.58V9.8H8.3v8.8zm4.35-8.8h-2.6v8.8h2.72v-4.62c0-2.58 3.36-2.82 3.36 0v4.62h2.73v-5.56c0-4.33-4.9-4.17-6.2-2.04V9.8z" />
       </svg>
     ),
   },
@@ -96,7 +78,7 @@ export default function ContactPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="bg-white px-6 pt-36 pb-16 md:pt-44 md:pb-20">
+      <section className="bg-white px-6 pt-36 pb-6 md:pt-44 md:pb-8">
         <div className="max-w-4xl mx-auto text-center">
           <FadeUp>
             <h1 className="text-4xl md:text-6xl font-extrabold text-[#F6892A] mb-4">
@@ -111,7 +93,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact details + socials */}
-      <section className="pt-16 md:pt-20 pb-8 md:pb-10 px-4 md:px-8 bg-white">
+      <section className="pt-4 md:pt-6 pb-8 md:pb-10 px-4 md:px-8 bg-white">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
             {contactDetails.map((item, i) => {

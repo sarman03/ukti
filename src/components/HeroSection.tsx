@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const heroImages = [
   "/home/hero/1.png",
-  "/home/hero/Property 1=Frame 2.png",
+  // "/home/hero/Property 1=Frame 2.png",
   "/home/hero/Property 1=Frame 3.png",
   "/home/hero/Property 1=Frame 4.png",
 ];

@@ -50,10 +50,14 @@ export default function ClassroomSection() {
   const activePrograms = programs[activeTab];
   const { images } = useSupabaseSlotImages("classroom", 5);
   const slotOffset = activeTab === "preschool" ? 0 : programs.preschool.length;
-  const classroomImages: Record<string, string> = {
+  const preschoolCardImages: Record<string, string> = {
     Toddlers: "/home/classroom/toddler.jpg",
     "Pre Nursery": "/home/classroom/pre%20nursery.jpg",
     Nursery: "/home/classroom/nursery.jpg",
+  };
+  const afterschoolCardImages: Record<string, string> = {
+    "Storytelling Program": "/home/classroom/story-telling.jpg",
+    "Language & Math Program": "/home/classroom/lang-math.jpg",
   };
 
   return (
@@ -92,7 +96,11 @@ export default function ClassroomSection() {
           }`}
         >
           {activePrograms.map((program, idx) => {
-            const imageUrl = images[slotOffset + idx] || classroomImages[program.title];
+            const slotImage = images[slotOffset + idx];
+            const imageUrl =
+              activeTab === "afterschool"
+                ? afterschoolCardImages[program.title] || slotImage
+                : slotImage || preschoolCardImages[program.title];
             return (
             <div
               key={program.title}

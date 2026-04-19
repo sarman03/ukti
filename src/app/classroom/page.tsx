@@ -108,6 +108,11 @@ const preschoolCardImages: Record<string, string> = {
   Nursery: "/home/classroom/nursery.jpg",
 };
 
+const afterschoolCardImages: Record<string, string> = {
+  "Storytelling Program": "/home/classroom/story-telling.jpg",
+  "Language & Math Program": "/home/classroom/lang-math.jpg",
+};
+
 function ProgramCard({
   title,
   subtitle,
@@ -319,7 +324,10 @@ export default function ClassroomPage() {
           <div className="flex flex-col gap-8 md:gap-10">
             {afterschoolPrograms.map((program, i) => (
               <FadeUp key={program.title} delay={i * 0.15}>
-                <ProgramCard {...program} imageUrl={cardImages[preschoolPrograms.length + i]} />
+                <ProgramCard
+                  {...program}
+                  imageUrl={afterschoolCardImages[program.title] || cardImages[preschoolPrograms.length + i]}
+                />
               </FadeUp>
             ))}
           </div>

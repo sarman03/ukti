@@ -20,12 +20,24 @@ export default function AboutPage() {
     aboutImages[1] || fallbackHeroImages[1],
   ];
   const nikitaFounderImage = "/about%20page/founders/WhatsApp%20Image%202026-04-19%20at%2000.05.49.jpeg";
+  const fallbackEnvironmentImages = [
+    "/about%20page/images/creative%20.jpg",           // Creative Arts Corner
+    "/about%20page/images/play.jpg",                   // Play & Discovery
+    null,                                               // Montessori Materials - placeholder
+    "/about%20page/images/learning%20togethere.jpg",  // Learning Together
+    "/about%20page/images/outdoor%20adventures.jpg",  // Outdoor Adventures
+  ];
   const images = [
     heroImages[0],
     heroImages[1],
     nikitaFounderImage,
     founderImages[1],
-    ...environmentImages,
+    environmentImages[0] || fallbackEnvironmentImages[0],
+    environmentImages[1] || fallbackEnvironmentImages[1],
+    environmentImages[2],
+    environmentImages[3] || fallbackEnvironmentImages[3],
+    environmentImages[4] || fallbackEnvironmentImages[4],
+    environmentImages[5],
   ];
 
   return (
