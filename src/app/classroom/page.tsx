@@ -237,18 +237,20 @@ function HeroCarousel() {
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/50" />
 
-      {/* Decorative icons - top right (desktop only) */}
-      <div className="hidden md:flex flex-col absolute top-24 right-0 lg:right-2 z-10 pointer-events-none">
-        <Image src="/classroom/Layer 1.png" alt="" width={120} height={120} className="w-24 lg:w-28 h-auto" />
-        <Image src="/classroom/Layer 3.png" alt="" width={120} height={120} className="w-24 lg:w-28 h-auto -mt-6" />
-        <Image src="/classroom/icon 16 1.png" alt="" width={120} height={120} className="w-24 lg:w-28 h-auto -mt-6" />
+      {/* Decorative puzzle pieces - left side (desktop only) */}
+      <div className="hidden md:flex flex-col absolute bottom-0 -left-6 lg:-left-4 z-10 pointer-events-none">
+        <Image src="/classroom/hero-assets/ukti classes page@3x.png" alt="" width={140} height={140} className="w-28 lg:w-36 h-auto" style={{ transform: "rotate(-8deg)" }} />
+        <Image src="/classroom/hero-assets/Asset 3@3x.png" alt="" width={110} height={110} className="w-20 lg:w-24 h-auto -mt-5" style={{ transform: "rotate(6deg)" }} />
+        <Image src="/classroom/hero-assets/Asset 4@3x.png" alt="" width={110} height={110} className="w-20 lg:w-24 h-auto -mt-5" style={{ transform: "rotate(-4deg)" }} />
+        <Image src="/classroom/hero-assets/Asset 2@3x.png" alt="" width={140} height={140} className="w-28 lg:w-36 h-auto -mt-4" style={{ transform: "rotate(5deg)" }} />
       </div>
 
-      {/* Decorative icons - bottom left (desktop only) */}
-      <div className="hidden md:flex flex-col absolute bottom-16 left-0 lg:left-2 z-10 pointer-events-none">
-        <Image src="/classroom/Layer 1.png" alt="" width={120} height={120} className="w-24 lg:w-28 h-auto" />
-        <Image src="/classroom/Layer 3.png" alt="" width={120} height={120} className="w-24 lg:w-28 h-auto -mt-6" />
-        <Image src="/classroom/icon 16 1.png" alt="" width={120} height={120} className="w-24 lg:w-28 h-auto -mt-6" />
+      {/* Decorative puzzle pieces - right side (desktop only) */}
+      <div className="hidden md:flex flex-col absolute top-20 -right-6 lg:-right-4 z-10 pointer-events-none items-end">
+        <Image src="/classroom/hero-assets/ukti classes page@3x.png" alt="" width={140} height={140} className="w-28 lg:w-36 h-auto" style={{ transform: "rotate(8deg)" }} />
+        <Image src="/classroom/hero-assets/Asset 3@3x.png" alt="" width={110} height={110} className="w-20 lg:w-24 h-auto -mt-5" style={{ transform: "rotate(-6deg)" }} />
+        <Image src="/classroom/hero-assets/Asset 4@3x.png" alt="" width={110} height={110} className="w-20 lg:w-24 h-auto -mt-5" style={{ transform: "rotate(4deg)" }} />
+        <Image src="/classroom/hero-assets/Asset 2@3x.png" alt="" width={140} height={140} className="w-28 lg:w-36 h-auto -mt-4" style={{ transform: "rotate(-5deg)" }} />
       </div>
 
       {/* Text content */}

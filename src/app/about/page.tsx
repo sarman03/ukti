@@ -338,7 +338,7 @@ export default function AboutPage() {
                     <div className="w-full h-full rounded-full bg-gray-300 overflow-hidden flex items-center justify-center border-4 border-white shadow-lg ring-1 ring-black/5">
                       {images[i + 2] ? (
                         <Image
-                          src={images[i + 2]}
+                          src={images[i + 2]!}
                           alt={founder.name}
                           width={192}
                           height={192}
@@ -448,7 +448,7 @@ export default function AboutPage() {
                 <div className="relative w-full aspect-[5/4] rounded-2xl overflow-hidden bg-gray-300 group">
                   {images[i + 4] ? (
                     <Image
-                      src={images[i + 4]}
+                      src={images[i + 4]!}
                       alt={label}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
