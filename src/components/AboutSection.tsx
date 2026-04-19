@@ -57,9 +57,9 @@ export default function AboutSection() {
   ];
 
   return (
-    <section id="about" className="bg-white pt-20 pb-12 md:pb-20 px-4 md:px-8">
+    <section id="about" className="bg-white pt-20 pb-12 md:pb-20 px-2 md:px-4">
       <FadeUp>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Main content grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 items-start gap-8 mb-10 md:mb-16">
           {/* Left column: image at top */}
@@ -72,7 +72,7 @@ export default function AboutSection() {
           </div>
 
           {/* Center text */}
-            <div className="text-center flex flex-col items-center gap-6 pt-2">
+            <div className="text-center flex flex-col items-center gap-6">
               <h2 className="text-3xl md:text-5xl font-extrabold text-[#5EA85B]">About Us</h2>
               <p className="text-gray-600 leading-relaxed text-base">
                 At Ukti Early Years, a thoughtfully designed micro preschool, where we offer a warm, intimate environment where every child receives personalised attention and care.
@@ -87,7 +87,7 @@ export default function AboutSection() {
           </div>
 
           {/* Right column: large logo at top, image offset lower */}
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center md:-mt-12">
             <Image
               src="/logo/Ukti _ Logo.png"
               alt="Ukti Early Years"

@@ -121,6 +121,7 @@ function ProgramCard({
   sections,
   imageLeft = false,
   imageUrl,
+  imageHeight = "md:h-[400px]",
 }: {
   title: string;
   subtitle: string;
@@ -129,12 +130,13 @@ function ProgramCard({
   sections?: { heading: string; points: string[] }[];
   imageLeft?: boolean;
   imageUrl?: string;
+  imageHeight?: string;
 }) {
   return (
     <div className={`bg-[#F8D17C] rounded-[3rem] md:rounded-[150px] p-5 ${imageLeft ? "md:p-10" : "md:py-10 md:pl-24 md:pr-10"} flex flex-col md:flex-row gap-5 md:gap-6 items-center text-center md:text-left`}>
       {/* Image */}
       <div
-        className={`w-full md:w-80 h-56 md:h-[400px] bg-gray-300 rounded-[2rem] md:rounded-[120px] flex-shrink-0 overflow-hidden relative flex items-center justify-center ${
+        className={`w-full md:w-80 h-56 ${imageHeight} bg-gray-300 rounded-[2rem] md:rounded-[120px] flex-shrink-0 overflow-hidden relative flex items-center justify-center ${
           imageLeft ? "order-1" : "order-1 md:order-2"
         }`}
       >
@@ -195,12 +197,22 @@ function HeroCarousel() {
   const { images: adminImages } = useSupabaseImages("classroom-hero");
   const fallbackImages = [
     "/home/classroom/Rectangle 18.png",
+    "/classroom/hero/AKN_9699.JPG",
+    "/classroom/hero/AKN_9703.JPG",
+    "/classroom/hero/AKN_9728.JPG",
+    "/classroom/hero/AKN_9732.JPG",
+    "/classroom/hero/AKN_9744.JPG",
+    "/classroom/hero/AKN_2671.JPG",
   ];
   const images = adminImages.length > 0 ? adminImages : fallbackImages;
   const [current, setCurrent] = useState(0);
 
   const nextSlide = useCallback(() => {
     setCurrent((prev) => (prev + 1) % images.length);
+  }, [images.length]);
+
+  const prevSlide = useCallback(() => {
+    setCurrent((prev) => (prev - 1 + images.length) % images.length);
   }, [images.length]);
 
   useEffect(() => {
@@ -264,6 +276,18 @@ function HeroCarousel() {
           Book a tour
         </RippleButton>
       </div>
+
+      {/* Prev/Next arrows */}
+      {images.length > 1 && (
+        <>
+          <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors z-10" aria-label="Previous slide">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4L6 10L12 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </button>
+          <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors z-10" aria-label="Next slide">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 4L14 10L8 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </button>
+        </>
+      )}
 
       {/* Dot indicators */}
       {images.length > 1 && (
@@ -329,6 +353,7 @@ export default function ClassroomPage() {
                 <ProgramCard
                   {...program}
                   imageUrl={afterschoolCardImages[program.title] || cardImages[preschoolPrograms.length + i]}
+                  imageHeight={program.title === "Language & Math Program" ? "md:h-[600px]" : "md:h-[400px]"}
                 />
               </FadeUp>
             ))}

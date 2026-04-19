@@ -1,7 +1,4 @@
-// Single SVG layout: 4 colored circles at fixed positions, connected by diagonal
-// lines. Text is rendered via <foreignObject> next to each circle.
-// The SVG uses viewBox so it scales responsively.
-
+import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 
 const W = 920;
@@ -89,7 +86,7 @@ const ICON_SIZE = 64;
 
 export default function SafetyFacilitiesSection() {
   return (
-    <section id="safety" className="py-12 md:py-20 px-4 md:px-8 bg-white">
+    <section id="safety" className="pt-12 md:pt-20 pb-6 md:pb-10 px-4 md:px-8 bg-white">
       <FadeUp>
         <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#F6892A] mb-6 md:mb-4">
           Safety &amp; Facilities
@@ -110,8 +107,13 @@ export default function SafetyFacilitiesSection() {
         ))}
       </div>
 
-      {/* Desktop SVG diagram */}
-      <div className="hidden md:block max-w-5xl mx-auto">
+      {/* Desktop image */}
+      <div className="hidden md:block max-w-5xl mx-auto pt-12">
+        <Image src="/home/Group 13.png" alt="Safety and Facilities" width={1200} height={700} className="w-full h-auto" />
+      </div>
+
+      {/* Desktop SVG diagram (kept for reference) */}
+      <div className="hidden max-w-5xl mx-auto">
         <svg
           viewBox={`0 0 ${W} ${H}`}
           width="100%"
