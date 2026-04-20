@@ -6,6 +6,56 @@ import RippleButton from "@/components/RippleButton";
 
 const DAYS = ["S", "M", "T", "W", "T", "F", "S"];
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const WHATSAPP_NUMBERS = {
+  delhi: "919599376953",
+  noida: "918796946469",
+} as const;
+
+type Branch = keyof typeof WHATSAPP_NUMBERS;
+const NAME_REGEX = /^[A-Za-z][A-Za-z\s.'-]{1,49}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function openWhatsAppMessage(branch: Branch, message: string) {
+  const url = `https://wa.me/${WHATSAPP_NUMBERS[branch]}?text=${encodeURIComponent(message)}`;
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function normalizePhoneInput(value: string) {
+  return value.replace(/\D/g, "").slice(0, 10);
+}
+
+function validateName(label: string, value: string) {
+  if (!value) return `${label} is required.`;
+  if (!NAME_REGEX.test(value)) return `Please enter a valid ${label.toLowerCase()}.`;
+  return null;
+}
+
+function validateAge(value: string) {
+  if (!value) return "Age is required.";
+  const ageNum = Number(value);
+  if (!Number.isInteger(ageNum) || ageNum < 1 || ageNum > 10) {
+    return "Please enter a valid age between 1 and 10.";
+  }
+  return null;
+}
+
+function validateContactNumber(value: string) {
+  if (!value) return "Contact number is required.";
+  if (!/^\d{10}$/.test(value)) return "Please enter a valid 10-digit contact number.";
+  return null;
+}
+
+function validateEmail(value: string) {
+  if (!value) return "Email address is required.";
+  if (!EMAIL_REGEX.test(value)) return "Please enter a valid email address.";
+  return null;
+}
+
+function validateQuery(value: string) {
+  if (!value) return "Query is required.";
+  if (value.length < 10) return "Please enter a more detailed query (at least 10 characters).";
+  return null;
+}
 
 function DatePicker({ value, onChange }: { value: string; onChange: (val: string) => void }) {
   const today = new Date();
@@ -190,8 +240,13 @@ export default function EnquiryFormSection() {
 }
 
 function TourForm() {
+  const [childName, setChildName] = useState("");
+  const [age, setAge] = useState("");
+  const [parentName, setParentName] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+  const [location, setLocation] = useState<Branch | "">("");
 
   function getTimeSlots(dateStr: string): string[] {
     if (!dateStr) return [];
@@ -205,29 +260,92 @@ function TourForm() {
     setSelectedTime("");
   }
 
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const cleanedChildName = childName.trim();
+    const cleanedParentName = parentName.trim();
+    const cleanedAge = age.trim();
+    const cleanedContactNumber = normalizePhoneInput(contactNumber);
+
+    const validationError =
+      validateName("Child name", cleanedChildName) ??
+      validateAge(cleanedAge) ??
+      validateName("Parent name", cleanedParentName) ??
+      validateContactNumber(cleanedContactNumber);
+    if (validationError) {
+      window.alert(validationError);
+      return;
+    }
+    if (!selectedDate) {
+      window.alert("Please select a date of visit.");
+      return;
+    }
+    if (!selectedTime) {
+      window.alert("Please select a time slot.");
+      return;
+    }
+    if (!location) {
+      window.alert("Please select a location.");
+      return;
+    }
+    const message = [
+      "Book a Tour Enquiry",
+      "",
+      `Branch: ${location === "delhi" ? "Delhi" : "Noida"}`,
+      `Child Name: ${cleanedChildName}`,
+      `Age: ${cleanedAge}`,
+      `Parent Name: ${cleanedParentName}`,
+      `Contact Number: ${cleanedContactNumber}`,
+      `Date of Visit: ${selectedDate}`,
+      `Time Slot: ${selectedTime}`,
+    ].join("\n");
+    openWhatsAppMessage(location, message);
+  }
+
   const timeSlots = getTimeSlots(selectedDate);
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <input
           type="text"
           placeholder="Child's Name"
+          value={childName}
+          onChange={(e) => setChildName(e.target.value)}
+          maxLength={50}
+          autoComplete="name"
+          required
           className="rounded-full px-5 py-3 text-sm bg-white outline-none placeholder-gray-400 focus:ring-2 focus:ring-[#F6892A]"
         />
         <input
           type="text"
           placeholder="Age"
+          value={age}
+          onChange={(e) => setAge(e.target.value.replace(/\D/g, "").slice(0, 2))}
+          inputMode="numeric"
+          maxLength={2}
+          required
           className="rounded-full px-5 py-3 text-sm bg-white outline-none placeholder-gray-400 focus:ring-2 focus:ring-[#F6892A]"
         />
         <input
           type="text"
           placeholder="Parent's name"
+          value={parentName}
+          onChange={(e) => setParentName(e.target.value)}
+          maxLength={50}
+          autoComplete="name"
+          required
           className="rounded-full px-5 py-3 text-sm bg-white outline-none placeholder-gray-400 focus:ring-2 focus:ring-[#F6892A]"
         />
         <input
           type="tel"
           placeholder="Contact number"
+          value={contactNumber}
+          onChange={(e) => setContactNumber(normalizePhoneInput(e.target.value))}
+          inputMode="numeric"
+          maxLength={10}
+          autoComplete="tel"
+          required
           className="rounded-full px-5 py-3 text-sm bg-white outline-none placeholder-gray-400 focus:ring-2 focus:ring-[#F6892A]"
         />
         <DatePicker value={selectedDate} onChange={handleDateChange} />
@@ -244,8 +362,10 @@ function TourForm() {
         </select>
       </div>
       <select
-        className="rounded-full px-5 py-3 text-sm bg-white outline-none focus:ring-2 focus:ring-[#F6892A] appearance-none text-gray-400"
-        defaultValue=""
+        className={`rounded-full px-5 py-3 text-sm bg-white outline-none focus:ring-2 focus:ring-[#F6892A] appearance-none ${location ? "text-gray-800" : "text-gray-400"}`}
+        value={location}
+        onChange={(e) => setLocation(e.target.value as Branch)}
+        required
       >
         <option value="" disabled>Location</option>
         <option value="delhi" className="text-gray-800">Delhi</option>
@@ -259,37 +379,111 @@ function TourForm() {
 }
 
 function AdmissionForm() {
+  const [childName, setChildName] = useState("");
+  const [age, setAge] = useState("");
+  const [parentName, setParentName] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [branch, setBranch] = useState<Branch | "">("");
+  const [query, setQuery] = useState("");
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const cleanedChildName = childName.trim();
+    const cleanedParentName = parentName.trim();
+    const cleanedAge = age.trim();
+    const cleanedContactNumber = normalizePhoneInput(contactNumber);
+    const cleanedEmail = email.trim();
+    const cleanedQuery = query.trim();
+
+    const validationError =
+      validateName("Child name", cleanedChildName) ??
+      validateAge(cleanedAge) ??
+      validateName("Parent name", cleanedParentName) ??
+      validateContactNumber(cleanedContactNumber) ??
+      validateEmail(cleanedEmail) ??
+      validateQuery(cleanedQuery);
+    if (validationError) {
+      window.alert(validationError);
+      return;
+    }
+    if (!branch) {
+      window.alert("Please select a preferred branch.");
+      return;
+    }
+    const message = [
+      "Admission Enquiry",
+      "",
+      `Preferred Branch: ${branch === "delhi" ? "Delhi" : "Noida"}`,
+      `Child Name: ${cleanedChildName}`,
+      `Age: ${cleanedAge}`,
+      `Parent Name: ${cleanedParentName}`,
+      `Contact Number: ${cleanedContactNumber}`,
+      `Email: ${cleanedEmail}`,
+      `Query: ${cleanedQuery}`,
+    ].join("\n");
+    openWhatsAppMessage(branch, message);
+  }
+
   return (
-    <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <input
           type="text"
           placeholder="Child's Name"
+          value={childName}
+          onChange={(e) => setChildName(e.target.value)}
+          maxLength={50}
+          autoComplete="name"
+          required
           className="rounded-full px-5 py-3 text-sm bg-white outline-none placeholder-gray-400 focus:ring-2 focus:ring-[#F6892A]"
         />
         <input
           type="text"
           placeholder="Age"
+          value={age}
+          onChange={(e) => setAge(e.target.value.replace(/\D/g, "").slice(0, 2))}
+          inputMode="numeric"
+          maxLength={2}
+          required
           className="rounded-full px-5 py-3 text-sm bg-white outline-none placeholder-gray-400 focus:ring-2 focus:ring-[#F6892A]"
         />
         <input
           type="text"
           placeholder="Parent's Name"
+          value={parentName}
+          onChange={(e) => setParentName(e.target.value)}
+          maxLength={50}
+          autoComplete="name"
+          required
           className="rounded-full px-5 py-3 text-sm bg-white outline-none placeholder-gray-400 focus:ring-2 focus:ring-[#F6892A]"
         />
         <input
           type="tel"
           placeholder="Contact Number"
+          value={contactNumber}
+          onChange={(e) => setContactNumber(normalizePhoneInput(e.target.value))}
+          inputMode="numeric"
+          maxLength={10}
+          autoComplete="tel"
+          required
           className="rounded-full px-5 py-3 text-sm bg-white outline-none placeholder-gray-400 focus:ring-2 focus:ring-[#F6892A]"
         />
         <input
           type="email"
           placeholder="Email Address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          maxLength={100}
+          autoComplete="email"
+          required
           className="rounded-full px-5 py-3 text-sm bg-white outline-none placeholder-gray-400 focus:ring-2 focus:ring-[#F6892A]"
         />
         <select
-          className="rounded-full px-5 py-3 text-sm bg-white outline-none text-gray-400 focus:ring-2 focus:ring-[#F6892A]"
-          defaultValue=""
+          className={`rounded-full px-5 py-3 text-sm bg-white outline-none focus:ring-2 focus:ring-[#F6892A] ${branch ? "text-gray-800" : "text-gray-400"}`}
+          value={branch}
+          onChange={(e) => setBranch(e.target.value as Branch)}
+          required
         >
           <option value="" disabled>
             Preferred Branch
@@ -301,6 +495,11 @@ function AdmissionForm() {
       <textarea
         placeholder="Your message or query"
         rows={3}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        minLength={10}
+        maxLength={500}
+        required
         className="rounded-2xl px-5 py-3 text-sm bg-white outline-none placeholder-gray-400 resize-none focus:ring-2 focus:ring-[#F6892A]"
       />
       <RippleButton type="submit" color="bg-[#F6892A]" rippleCss="rgba(246, 137, 42, 0.4)" className="mt-2 w-full">

@@ -17,7 +17,7 @@ export default function Navbar() {
     <div className="fixed top-0 left-0 right-0 z-50 flex flex-col">
       {/* Announcement ribbon */}
       <div className="bg-[#F6892A] text-white text-xs md:text-sm font-semibold text-center py-2 px-4 tracking-wide">
-         New Branch Now Open in Noida!
+         New branch opened in sector 108, Noida !
       </div>
 
     <nav className="bg-[#F2DA36] px-4 md:px-20 py-3 md:py-4 flex items-center justify-between">

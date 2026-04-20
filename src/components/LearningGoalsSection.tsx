@@ -62,16 +62,16 @@ export default function LearningGoalsSection() {
             Learning goals
           </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-12 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-12 items-stretch">
           {/* Left: kite-tilted main image with smaller overlap image at top-right */}
-          <div className="flex justify-center mt-10 md:mt-0">
-            <div className="relative w-48 h-64 md:w-[22rem] md:h-[520px]">
+          <div className="flex justify-center md:justify-start items-center h-full mt-10 md:mt-6 md:-ml-4">
+            <div className="relative w-48 h-64 md:w-[24rem] md:h-[540px]">
               {/* Main image — heavily tilted like a kite */}
               <div
                 className="absolute inset-0 bg-gray-300 rounded-2xl shadow-lg overflow-hidden animate-swing-slow"
               >
                 {images[0] ? (
-                  <Image src={images[0]} alt="Learning goals" fill className="object-cover" sizes="400px" />
+                  <Image src={images[0]} alt="Learning goals" fill className="object-cover" sizes="(max-width: 768px) 192px, 384px" />
                 ) : (
                   <span className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm">Image Placeholder</span>
                 )}

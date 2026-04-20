@@ -1,24 +1,34 @@
 import FadeUp from "@/components/FadeUp";
 
-const locations = [
+type ContactLocation = {
+  label: string;
+  address: string;
+  embedSrc?: string;
+  mapsHref?: string;
+  placeholder?: string;
+};
+
+const locations: ContactLocation[] = [
   {
     label: "Delhi",
     address: "Ukti Early Years, Delhi",
-    placeholder: "bg-gray-300",
-    // Replace placeholder div with an iframe when ready:
-    // embedSrc: "https://www.google.com/maps/embed?pb=...",
+    embedSrc: "https://www.google.com/maps?q=28.5538228,77.2329972&z=17&output=embed",
+    mapsHref:
+      "https://www.google.com/maps/place/Ukti+Early+Years/@28.5538228,77.2329972,17z/",
   },
   {
     label: "Noida",
     address: "Ukti Early Years, Noida",
-    placeholder: "bg-[#8b8178]",
+    embedSrc: "https://www.google.com/maps?q=28.528498,77.378998&z=17&output=embed",
+    mapsHref:
+      "https://www.google.com/maps/dir/28.6314,77.222342/28.528498,77.378998/@28.578116,77.1358341,11z/data=!3m1!4b1!4m6!4m5!1m1!4e1!1m1!4e1!3e0",
   },
 ];
 
 export default function ContactMapsSection() {
   return (
     <section id="maps" className="py-12 md:py-20 px-4 md:px-8 bg-white">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <FadeUp>
           <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-3">
             Visit Us
@@ -46,13 +56,38 @@ export default function ContactMapsSection() {
                     <p className="text-sm text-gray-600">{loc.address}</p>
                   </div>
                 </div>
-                <div
-                  className={`${loc.placeholder} w-full h-72 md:h-96 rounded-2xl overflow-hidden flex items-center justify-center`}
-                >
-                  <span className="text-white/70 text-sm font-medium">
-                    Map Placeholder — {loc.label}
-                  </span>
-                </div>
+                {loc.embedSrc ? (
+                  <div className="w-full h-72 md:h-96 rounded-2xl overflow-hidden border border-gray-200">
+                    <iframe
+                      title={`${loc.label} map`}
+                      src={loc.embedSrc}
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      loading="lazy"
+                      allowFullScreen
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className={`${loc.placeholder ?? "bg-gray-300"} w-full h-72 md:h-96 rounded-2xl overflow-hidden flex items-center justify-center`}
+                  >
+                    <span className="text-white/70 text-sm font-medium">
+                      Map Placeholder — {loc.label}
+                    </span>
+                  </div>
+                )}
+                {loc.mapsHref ? (
+                  <a
+                    href={loc.mapsHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-3 text-sm font-semibold text-[#F6892A] hover:underline"
+                  >
+                    Open in Google Maps
+                  </a>
+                ) : null}
               </div>
             </FadeUp>
           ))}

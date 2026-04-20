@@ -50,11 +50,11 @@ export default function AboutPage() {
       <section className="bg-white min-h-screen flex items-center pt-28 md:pt-32 pb-12 md:pb-16 px-4 md:px-8">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center w-full">
           <FadeUp>
-            <h1 className="text-4xl md:text-6xl font-extrabold text-[#5EA85B] leading-tight mb-6">
+            <h1 className="text-3xl md:text-5xl font-extrabold text-[#0FB3BC] leading-tight mb-6">
               Explore the concept of micro preschool, with Ukti Early Years
             </h1>
             <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-md">
-              Montessori-based preschool where children learn at their own pace.
+              A preschool with a blend of Montessori and Play way where children can LEARN, EXPRESS and GROW at their own pace.
             </p>
           </FadeUp>
 
@@ -126,7 +126,7 @@ export default function AboutPage() {
           </FadeUp>
 
           <FadeUp delay={0.1}>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#F6892A] mb-6 md:mb-8">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-[#0FB3BC] mb-6 md:mb-8">
               Our Story
             </h2>
             <div className="space-y-5">
@@ -161,7 +161,7 @@ export default function AboutPage() {
       <section className="bg-[#F4EFE6] py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-10 md:mb-14">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#0FB3BC] mb-10 md:mb-14">
               Mission &amp; Vision
             </h2>
           </FadeUp>
@@ -217,7 +217,7 @@ export default function AboutPage() {
       <section className="bg-[#FAF7EC] py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#F6892A] mb-3">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#0FB3BC] mb-3">
               Teaching Philosophy
             </h2>
             <p className="text-center text-gray-600 mb-10 md:mb-14">
@@ -258,7 +258,7 @@ export default function AboutPage() {
                 title: "Respect & Empathy",
                 body: "Fostering kindness, understanding, and peaceful conflict resolution",
                 bg: "bg-[#0FB3BC]/25",
-                titleColor: "text-[#0FB3BC]",
+                titleColor: "text-[#F6892A]",
                 iconBg: "bg-[#0FB3BC]/50",
                 iconColor: "text-[#0FB3BC]",
                 iconPath: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
@@ -267,7 +267,7 @@ export default function AboutPage() {
                 title: "Independence",
                 body: "Encouraging self-directed activity and decision-making capabilities",
                 bg: "bg-[#F8D17C]/80",
-                titleColor: "text-[#F6892A]",
+                titleColor: "text-[#5EA85B]",
                 iconBg: "bg-[#F6892A]/50",
                 iconColor: "text-[#F6892A]",
                 iconPath: "M5 12h14M12 5l7 7-7 7",
@@ -276,7 +276,7 @@ export default function AboutPage() {
                 title: "Natural Curiosity",
                 body: "Nurturing the innate desire to explore and understand the world",
                 bg: "bg-[#5EA85B]/50",
-                titleColor: "text-[#5EA85B]",
+                titleColor: "text-[#0FB3BC]",
                 iconBg: "bg-[#5EA85B]/70",
                 iconColor: "text-[#5EA85B]",
                 iconPath: "M11 19a8 8 0 1 1 5.66-2.34L21 21",
@@ -306,7 +306,7 @@ export default function AboutPage() {
       <section className="bg-[#F4EFE6] py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-5xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#0FB3BC] mb-12 md:mb-16">
               Meet the Founders
             </h2>
           </FadeUp>
@@ -316,20 +316,12 @@ export default function AboutPage() {
               {
                 name: "Nikita Sharma",
                 title: "Founder",
-                bio: [
-                  "Nikita Sharma, founder of Ukti, is a transformative force in early childhood education with 8 years of experience blending innovation, care, and a deep commitment to nurturing young minds. Her journey began as a preschool teacher, where she developed a strong belief in the power of early learning—an insight that led her to create Ukti as a space where children can truly learn, express, and grow without limits.",
-                  "Through her learner-centric approach, she has positively impacted children’s lives while championing more holistic, flexible teaching practices. She envisions an education system that is accessible, empathetic, and creatively empowering for every child.",
-                ],
                 nameColor: "text-[#5EA85B]",
                 badgeColor: "bg-[#5EA85B]",
               },
               {
                 name: "Adeeba Arif",
                 title: "Co-Founder",
-                bio: [
-                  "Adeeba Arif, co-founder of Ukti, brings 10 years of experience in early childhood education and a deep commitment to creating nurturing, child-centric learning environments that honor each child’s potential. Her extensive work as a preschool teacher across reputed institutions shaped her understanding of young learners and inspired her, alongside Nikita Sharma, to build Ukti as a space where children can learn freely beyond rigid structures.",
-                  "At Ukti, she focuses on holistic development through play, exploration, and guided discovery, making learning joyful and meaningful while continuing to challenge conventional methods with a thoughtful, child-focused vision of education.",
-                ],
                 nameColor: "text-[#F6892A]",
                 badgeColor: "bg-[#F6892A]",
               },
@@ -359,69 +351,16 @@ export default function AboutPage() {
                   <h3 className={`text-xl md:text-2xl font-extrabold ${founder.nameColor} mb-1`}>
                     {founder.name}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-4">{founder.title}</p>
-                  <div className="space-y-3 text-gray-700 text-sm leading-relaxed text-left">
-                    {founder.bio.map((paragraph) => (
-                      <p key={paragraph}>{paragraph}</p>
-                    ))}
-                  </div>
+                  <p className="text-gray-600 text-sm">{founder.title}</p>
                 </div>
               </FadeUp>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Montessori Principles */}
-      <section className="bg-[#FAF7EC] py-12 md:py-20 px-4 md:px-8">
-        <div className="max-w-6xl mx-auto">
-          <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#F6892A] mb-10 md:mb-14">
-              Montessori Principles
-            </h2>
+          <FadeUp delay={0.15}>
+            <p className="text-gray-700 text-sm md:text-base leading-relaxed text-center max-w-2xl mx-auto mt-10 md:mt-12">
+              Nikita Sharma and Adeeba Arif stand at the forefront of transformative early childhood education as the founders of Ukti Early Years. With years of experience in the field, their journey reflects a powerful blend of innovation, care, and a deep passion for nurturing young minds. Both began their paths as preschool educators, where they closely understood the needs of young learners and the gaps within traditional early education systems. United by a shared belief in the potential of early childhood learning, they envisioned a space where children could truly learn, express, and grow without bounds. What started as a professional alignment soon grew into a strong friendship built on trust, shared values, and a common vision. It was this connection of like-minded thinking and deep commitment to child-centric learning that paved the way for Ukti Early Years. Together, Nikita and Adeeba have created a nurturing, learner-focused environment that goes beyond conventional methods. Their approach encourages holistic development, emotional wellbeing, and creative exploration, and they continue to build an education system that is empathetic, accessible, and empowering for every child. Ukti is not just their venture; it is a reflection of their journey, their belief, and their shared dream for a better start to every child&apos;s learning experience.
+            </p>
           </FadeUp>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
-            {[
-              {
-                title: "Prepared Environment",
-                iconPath:
-                  "M3 12l9-9 9 9M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10",
-                color: "text-[#5EA85B]",
-              },
-              {
-                title: "Self-Directed Activity",
-                iconPath:
-                  "M12 2l1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6zM19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8z",
-                color: "text-[#F2DA36]",
-              },
-              {
-                title: "Mixed-Age Learning",
-                iconPath:
-                  "M12 7a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-4 7a4 4 0 0 1 8 0v8H8v-8z",
-                color: "text-[#F6892A]",
-              },
-              {
-                title: "Freedom Within Limits",
-                iconPath:
-                  "M12 22a10 10 0 1 0-10-10M12 18a6 6 0 1 0-6-6M12 14a2 2 0 1 0-2-2",
-                color: "text-[#5EA85B]",
-              },
-            ].map((item, i) => (
-              <FadeUp key={item.title} delay={i * 0.05}>
-                <div className="bg-white rounded-2xl p-6 md:p-7 h-full flex flex-col items-center text-center shadow-sm">
-                  <div className={`w-14 h-14 mb-4 flex items-center justify-center ${item.color}`}>
-                    <svg className="w-10 h-10" viewBox="0 0 24 24" fill={item.color === "text-[#F2DA36]" ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d={item.iconPath} />
-                    </svg>
-                  </div>
-                  <h3 className="text-base md:text-lg font-semibold text-[#5EA85B]">
-                    {item.title}
-                  </h3>
-                </div>
-              </FadeUp>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -429,7 +368,7 @@ export default function AboutPage() {
       <section className="bg-[#F4EFE6] py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-3">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#0FB3BC] mb-3">
               Our Learning Environment
             </h2>
             <p className="text-center text-gray-600 mb-10 md:mb-14">
@@ -477,7 +416,7 @@ export default function AboutPage() {
       <section className="bg-[#FAF7EC] py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#F6892A] mb-10 md:mb-14">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#0FB3BC] mb-10 md:mb-14">
               Why Families Trust Us
             </h2>
           </FadeUp>
@@ -515,7 +454,7 @@ export default function AboutPage() {
                 title: "Personal Attention",
                 body: "Low student-teacher ratio ensures individual care",
                 bg: "bg-[#0FB3BC]/25",
-                titleColor: "text-[#0FB3BC]",
+                titleColor: "text-[#5EA85B]",
                 iconBg: "bg-[#0FB3BC]/60",
                 iconColor: "text-[#0FB3BC]",
                 icon: (
@@ -526,7 +465,7 @@ export default function AboutPage() {
                 title: "Holistic Growth",
                 body: "Focus on social, emotional, physical & cognitive development",
                 bg: "bg-[#F2DA36]/60",
-                titleColor: "text-[#5EA85B]",
+                titleColor: "text-[#0FB3BC]",
                 iconBg: "bg-[#5EA85B]/60",
                 iconColor: "text-[#5EA85B]",
                 icon: (
