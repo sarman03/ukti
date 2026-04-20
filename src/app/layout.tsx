@@ -12,8 +12,12 @@ export const metadata: Metadata = {
   title: "Ukti Early Years",
   description: "Fostering the brightest beginnings for young learners.",
   icons: {
-    icon: "/logo/Ukti _ Logo.png",
-    apple: "/logo/Ukti _ Logo.png",
+    icon: [
+      { url: "/logo/Ukti-favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/logo/Ukti-favicon.png", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: "/logo/Ukti-favicon.png",
+    apple: "/logo/Ukti-favicon.png",
   },
 };
 

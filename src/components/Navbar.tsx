@@ -26,10 +26,10 @@ export default function Navbar() {
         <Image
           src="/logo/Ukti _ Logo.png"
           alt="Ukti Early Years"
-          width={88}
-          height={92}
+          width={120}
+          height={125}
           priority
-          className="w-12 h-auto"
+          className="w-16 h-auto"
         />
       </Link>
 
@@ -51,9 +51,10 @@ export default function Navbar() {
         <Image
           src="/logo/Ukti _ Logo.png"
           alt="Ukti Early Years"
-          width={88}
-          height={92}
+          width={120}
+          height={125}
           priority
+          className="w-24 h-auto"
         />
       </Link>
 

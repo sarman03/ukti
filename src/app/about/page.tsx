@@ -9,7 +9,6 @@ import { useSupabaseImages, useSupabaseSlotImages } from "@/lib/useSupabaseImage
 
 export default function AboutPage() {
   const { images: aboutImages } = useSupabaseImages("about");
-  const { images: founderImages } = useSupabaseSlotImages("about-founders", 2);
   const { images: environmentImages } = useSupabaseSlotImages("about-environment", 6);
   const fallbackHeroImages = [
     "/about%20page/first%20section%20pic.jpg",
@@ -19,7 +18,10 @@ export default function AboutPage() {
     aboutImages[0] || fallbackHeroImages[0],
     aboutImages[1] || fallbackHeroImages[1],
   ];
-  const nikitaFounderImage = "/about%20page/founders/WhatsApp%20Image%202026-04-19%20at%2000.05.49.jpeg";
+  const founderDisplayImages = [
+    "/about%20page/founders/founder%201.jpeg",
+    "/about%20page/founders/founder%202.jpeg",
+  ];
   const fallbackEnvironmentImages = [
     "/about%20page/images/creative%20.jpg",           // Creative Arts Corner
     "/about%20page/images/play.jpg",                   // Play & Discovery
@@ -30,8 +32,8 @@ export default function AboutPage() {
   const images = [
     heroImages[0],
     heroImages[1],
-    nikitaFounderImage,
-    founderImages[1],
+    founderDisplayImages[0],
+    founderDisplayImages[1],
     environmentImages[0] || fallbackEnvironmentImages[0],
     environmentImages[1] || fallbackEnvironmentImages[1],
     environmentImages[2],
@@ -49,7 +51,7 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center w-full">
           <FadeUp>
             <h1 className="text-4xl md:text-6xl font-extrabold text-[#5EA85B] leading-tight mb-6">
-              Explore the concept of micro preschool, with Ukti Early
+              Explore the concept of micro preschool, with Ukti Early Years
             </h1>
             <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-md">
               Montessori-based preschool where children learn at their own pace.
