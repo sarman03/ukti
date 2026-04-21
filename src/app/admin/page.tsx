@@ -2,6 +2,21 @@
 
 import { useEffect, useState } from "react";
 import SectionImageManager from "./SectionImageManager";
+import {
+  ABOUT_ENVIRONMENT_FALLBACK_IMAGES,
+  ABOUT_FOUNDERS_FALLBACK_IMAGES,
+  ABOUT_HERO_FALLBACK_IMAGES,
+  CLASSROOM_CARD_FALLBACK_IMAGES,
+  CLASSROOM_HERO_WEB_FALLBACK_IMAGES,
+  CLASSROOM_HERO_MOBILE_FALLBACK_IMAGES,
+  CTA_FALLBACK_IMAGES,
+  GALLERY_FALLBACK_IMAGES,
+  HOME_ABOUT_FALLBACK_IMAGES,
+  HOME_HERO_WEB_FALLBACK_IMAGES,
+  HOME_HERO_MOBILE_FALLBACK_IMAGES,
+  LEARNING_GOALS_FALLBACK_IMAGES,
+  WHY_CHOOSE_FALLBACK_IMAGES,
+} from "@/lib/imageDefaults";
 
 const AUTH_KEY = "ukti-admin-auth";
 
@@ -13,16 +28,18 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
     label: "Home",
     sections: [
       {
-        folder: "hero",
-        title: "Hero Section",
+        folder: "hero-web",
+        title: "Hero Section — Desktop",
         aspect: 16 / 9,
-        aspectLabel: "Hero — 16:9 full screen",
-        fallbackImages: [
-          "/home/hero/1.png",
-          // "/home/hero/Property 1=Frame 2.png",
-          "/home/hero/Property 1=Frame 3.png",
-          "/home/hero/Property 1=Frame 4.png",
-        ],
+        aspectLabel: "Desktop Hero — 16:9 landscape",
+        fallbackImages: HOME_HERO_WEB_FALLBACK_IMAGES,
+      },
+      {
+        folder: "hero-mobile",
+        title: "Hero Section — Mobile",
+        aspect: 9 / 16,
+        aspectLabel: "Mobile Hero — 9:16 portrait",
+        fallbackImages: HOME_HERO_MOBILE_FALLBACK_IMAGES,
       },
       {
         folder: "home-about",
@@ -31,7 +48,7 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
         aspectLabel: "About — 5:4",
         maxImages: 2,
         slotLabels: ["Left image (top)", "Right image (bottom)"],
-        fallbackImages: ["/home/about/1.jpg", "/home/about/2.jpg"],
+        fallbackImages: HOME_ABOUT_FALLBACK_IMAGES,
       },
       {
         folder: "why-choose",
@@ -46,13 +63,7 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
           "Bottom row — 3rd piece",
           "Bottom row — 5th piece",
         ],
-        fallbackImages: [
-          "/home/why%20chose%20ukti/PHOTO-2026-03-22-18-10-00.jpg",
-          "/home/why%20chose%20ukti/PHOTO-2025-01-15-16-21-34.jpg",
-          "/home/why%20chose%20ukti/PHOTO-2025-01-10-19-18-37.jpg",
-          "/home/why%20chose%20ukti/PHOTO-2025-02-08-15-49-00.jpg",
-          "/home/why%20chose%20ukti/PHOTO-2025-11-07-20-46-21.jpg",
-        ],
+        fallbackImages: WHY_CHOOSE_FALLBACK_IMAGES,
       },
       {
         folder: "classroom",
@@ -67,33 +78,14 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
           "Storytelling Program (After School)",
           "Language & Math Program (After School)",
         ],
-        fallbackImages: [
-          "/home/classroom/toddler.jpg",
-          "/home/classroom/pre%20nursery.jpg",
-          "/home/classroom/nursery.jpg",
-          "",
-          "",
-        ],
+        fallbackImages: CLASSROOM_CARD_FALLBACK_IMAGES,
       },
       {
         folder: "gallery",
         title: "Gallery",
         aspect: 1,
         aspectLabel: "Gallery — 1:1 square",
-        fallbackImages: [
-          "/gallery/PHOTO-2024-09-03-14-59-18.jpg",
-          "/gallery/PHOTO-2024-10-28-13-26-25.jpg",
-          "/gallery/PHOTO-2025-01-09-16-01-16.jpg",
-          "/gallery/PHOTO-2025-02-18-16-20-16.jpg",
-          "/gallery/PHOTO-2025-03-03-12-00-07.jpg",
-          "/gallery/PHOTO-2025-03-11-19-28-14.jpg",
-          "/gallery/PHOTO-2025-05-04-18-10-58.jpg",
-          "/gallery/PHOTO-2025-08-22-19-14-09.jpg",
-          "/gallery/PHOTO-2025-10-14-14-13-49 (1).jpg",
-          "/gallery/PHOTO-2025-10-14-14-13-49.jpg",
-          "/gallery/PHOTO-2025-11-17-13-48-59.jpg",
-          "/gallery/PHOTO-2026-01-16-20-46-40.jpg",
-        ],
+        fallbackImages: GALLERY_FALLBACK_IMAGES,
       },
       {
         folder: "learning-goals",
@@ -105,10 +97,7 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
           "Main image (large, tilted)",
           "Overlay image (small, top-right corner)",
         ],
-        fallbackImages: [
-          "/learning-goals/PHOTO-2025-05-09-14-27-34.jpg",
-          "/learning-goals/PHOTO-2024-10-28-13-26-25.jpg",
-        ],
+        fallbackImages: LEARNING_GOALS_FALLBACK_IMAGES,
       },
       {
         folder: "testimonials",
@@ -127,11 +116,7 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
           "Left bottom (wide)",
           "Right (square)",
         ],
-        fallbackImages: [
-          "/home/last%20section/PHOTO-2024-09-03-14-59-18.jpg",
-          "/home/last%20section/PHOTO-2025-05-09-14-35-38.jpg",
-          "/home/last%20section/PHOTO-2024-10-12-18-49-50.jpg",
-        ],
+        fallbackImages: CTA_FALLBACK_IMAGES,
       },
     ],
   },
@@ -139,13 +124,18 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
     label: "Classroom",
     sections: [
       {
-        folder: "classroom-hero",
-        title: "Hero Banner",
+        folder: "classroom-hero-web",
+        title: "Hero Banner — Desktop",
         aspect: 16 / 9,
-        aspectLabel: "Classroom Hero — 16:9 full screen",
-        fallbackImages: [
-          "/home/classroom/Rectangle 18.png",
-        ],
+        aspectLabel: "Desktop Hero — 16:9 landscape",
+        fallbackImages: CLASSROOM_HERO_WEB_FALLBACK_IMAGES,
+      },
+      {
+        folder: "classroom-hero-mobile",
+        title: "Hero Banner — Mobile",
+        aspect: 9 / 16,
+        aspectLabel: "Mobile Hero — 9:16 portrait",
+        fallbackImages: CLASSROOM_HERO_MOBILE_FALLBACK_IMAGES,
       },
       {
         folder: "classroom-cards",
@@ -160,13 +150,7 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
           "Storytelling Program",
           "Language & Math Program",
         ],
-        fallbackImages: [
-          "/home/classroom/toddler.jpg",
-          "/home/classroom/pre%20nursery.jpg",
-          "/home/classroom/nursery.jpg",
-          "",
-          "",
-        ],
+        fallbackImages: CLASSROOM_CARD_FALLBACK_IMAGES,
       },
     ],
   },
@@ -180,10 +164,7 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
         aspectLabel: "About — 5:4",
         maxImages: 2,
         slotLabels: ["Hero image", "Our Story image"],
-        fallbackImages: [
-          "/about%20page/first%20section%20pic.jpg",
-          "/about%20page/second%20section.JPG",
-        ],
+        fallbackImages: ABOUT_HERO_FALLBACK_IMAGES,
       },
       {
         folder: "about-founders",
@@ -192,6 +173,7 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
         aspectLabel: "Founder photo — 1:1 square",
         maxImages: 2,
         slotLabels: ["Founder 1 photo", "Founder 2 photo"],
+        fallbackImages: ABOUT_FOUNDERS_FALLBACK_IMAGES,
       },
       {
         folder: "about-environment",
@@ -207,6 +189,7 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
           "Outdoor Adventures",
           "Our Community",
         ],
+        fallbackImages: ABOUT_ENVIRONMENT_FALLBACK_IMAGES,
       },
     ],
   },

@@ -5,6 +5,18 @@ import { supabase } from "@/lib/supabase";
 import Image from "next/image";
 import ImageCropModal from "@/components/ImageCropModal";
 
+async function normalizeFile(file: File): Promise<File> {
+  const isHeic =
+    file.type === "image/heic" ||
+    file.type === "image/heif" ||
+    /\.heic$/i.test(file.name) ||
+    /\.heif$/i.test(file.name);
+  if (!isHeic) return file;
+  const heic2any = (await import("heic2any")).default;
+  const blob = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.92 }) as Blob;
+  return new File([blob], file.name.replace(/\.[^.]+$/, ".jpg"), { type: "image/jpeg" });
+}
+
 const BUCKET = "images";
 
 interface SectionImageManagerProps {
@@ -22,7 +34,12 @@ interface SectionImageManagerProps {
 type SlotFile = { name: string; url: string } | null;
 
 function parseSlotIndex(name: string): number | null {
-  const m = name.match(/^slot-(\d+)-/);
+  const m = name.match(/^slot-(\d+)-\d+\.webp$/);
+  return m ? parseInt(m[1], 10) : null;
+}
+
+function parseRemovedSlotIndex(name: string): number | null {
+  const m = name.match(/^slot-(\d+)-removed\.flag$/);
   return m ? parseInt(m[1], 10) : null;
 }
 
@@ -39,8 +56,12 @@ export default function SectionImageManager({
   const slotCount = slotLabels?.length ?? 0;
 
   const [images, setImages] = useState<{ name: string; url: string }[]>([]);
+  const [allCleared, setAllCleared] = useState(false);
   const [slots, setSlots] = useState<SlotFile[]>(
     slotMode ? Array(slotCount).fill(null) : []
+  );
+  const [removedSlots, setRemovedSlots] = useState<boolean[]>(
+    slotMode ? Array(slotCount).fill(false) : []
   );
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -62,21 +83,37 @@ export default function SectionImageManager({
     }
 
     const files = (data || [])
-      .filter((f) => !f.id?.startsWith(".") && f.name !== ".emptyFolderPlaceholder")
-      .map((f) => ({
-        name: f.name,
-        url: supabase.storage.from(BUCKET).getPublicUrl(`${folder}/${f.name}`).data.publicUrl,
-      }));
+      .filter((f) => !f.id?.startsWith(".") && f.name !== ".emptyFolderPlaceholder");
 
     if (slotMode) {
       const next: SlotFile[] = Array(slotCount).fill(null);
+      const nextRemoved: boolean[] = Array(slotCount).fill(false);
       for (const f of files) {
+        const removedIndex = parseRemovedSlotIndex(f.name);
+        if (removedIndex !== null && removedIndex >= 0 && removedIndex < slotCount) {
+          nextRemoved[removedIndex] = true;
+          continue;
+        }
         const i = parseSlotIndex(f.name);
-        if (i !== null && i >= 0 && i < slotCount) next[i] = f;
+        if (i !== null && i >= 0 && i < slotCount) {
+          next[i] = {
+            name: f.name,
+            url: supabase.storage.from(BUCKET).getPublicUrl(`${folder}/${f.name}`).data.publicUrl,
+          };
+        }
       }
       setSlots(next);
+      setRemovedSlots(nextRemoved);
     } else {
-      setImages(files);
+      const hasCleared = files.some((f) => f.name === "all-removed.flag");
+      const imageFiles = files.filter((f) => !f.name.endsWith(".flag"));
+      setAllCleared(hasCleared && imageFiles.length === 0);
+      setImages(
+        imageFiles.map((f) => ({
+          name: f.name,
+          url: supabase.storage.from(BUCKET).getPublicUrl(`${folder}/${f.name}`).data.publicUrl,
+        }))
+      );
     }
     setLoading(false);
   }, [folder, slotMode, slotCount]);
@@ -85,14 +122,17 @@ export default function SectionImageManager({
     fetchImages();
   }, [fetchImages]);
 
-  function openCrop(file: File, opts?: { replaceOld?: string; slotIndex?: number }) {
+  async function openCrop(file: File, opts?: { replaceOld?: string; slotIndex?: number }) {
+    setUploading(true);
+    const normalized = await normalizeFile(file).catch(() => file);
+    setUploading(false);
     const reader = new FileReader();
     reader.onload = () => {
       setCropSrc(reader.result as string);
       setReplaceTarget(opts?.replaceOld ?? null);
       setTargetSlot(opts?.slotIndex ?? null);
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(normalized);
   }
 
   function closeCrop() {
@@ -110,6 +150,12 @@ export default function SectionImageManager({
     try {
       if (oldReplace) {
         await supabase.storage.from(BUCKET).remove([`${folder}/${oldReplace}`]);
+      }
+      if (slotIndex !== null) {
+        await supabase.storage.from(BUCKET).remove([`${folder}/slot-${slotIndex}-removed.flag`]);
+      }
+      if (slotIndex === null) {
+        await supabase.storage.from(BUCKET).remove([`${folder}/all-removed.flag`]);
       }
 
       const fileName =
@@ -145,8 +191,60 @@ export default function SectionImageManager({
     }
   }
 
+  async function handleDeleteSlot(slot: SlotFile, slotIndex: number, hasLocalFallback: boolean) {
+    if (!confirm("Delete this image?")) return;
+    setUploading(true);
+
+    try {
+      if (slot) {
+        const { error } = await supabase.storage.from(BUCKET).remove([`${folder}/${slot.name}`]);
+        if (error) throw new Error(error.message);
+
+        if (hasLocalFallback) {
+          await supabase.storage.from(BUCKET).remove([`${folder}/slot-${slotIndex}-removed.flag`]);
+        }
+      } else if (hasLocalFallback) {
+        const marker = new Blob(["removed"], { type: "text/plain" });
+        const { error } = await supabase.storage
+          .from(BUCKET)
+          .upload(`${folder}/slot-${slotIndex}-removed.flag`, marker, {
+            contentType: "text/plain",
+            upsert: true,
+          });
+        if (error) throw new Error(error.message);
+      }
+
+      await fetchImages();
+    } catch (err) {
+      alert("Delete failed: " + (err as Error).message);
+    }
+
+    setUploading(false);
+  }
+
+  async function handleClearFallbacks() {
+    if (!confirm("Remove all default images? The section will show no images until you upload new ones.")) return;
+    setUploading(true);
+    try {
+      const marker = new Blob(["removed"], { type: "text/plain" });
+      const { error } = await supabase.storage
+        .from(BUCKET)
+        .upload(`${folder}/all-removed.flag`, marker, { contentType: "text/plain", upsert: true });
+      if (error) throw new Error(error.message);
+      await fetchImages();
+    } catch (err) {
+      alert("Failed: " + (err as Error).message);
+    }
+    setUploading(false);
+  }
+
   const atLimit = !slotMode && maxImages > 0 && images.length >= maxImages;
-  const filledCount = slotMode ? slots.filter(Boolean).length : images.length;
+  const filledCount = slotMode
+    ? slots.reduce((count, slot, i) => {
+        const hasFallback = !!fallbackImages?.[i] && !removedSlots[i];
+        return count + (slot || hasFallback ? 1 : 0);
+      }, 0)
+    : images.length;
   const totalCount = slotMode ? slotCount : images.length;
 
   return (
@@ -162,7 +260,11 @@ export default function SectionImageManager({
               ? "..."
               : slotMode
                 ? `${filledCount}/${totalCount} filled`
-                : `${images.length} image${images.length !== 1 ? "s" : ""}`}
+                : allCleared
+                  ? "0 images"
+                  : images.length === 0 && fallbackImages && fallbackImages.length > 0
+                    ? `${fallbackImages.length} default${fallbackImages.length !== 1 ? "s" : ""}`
+                    : `${images.length} image${images.length !== 1 ? "s" : ""}`}
           </span>
         </div>
         <svg
@@ -182,10 +284,14 @@ export default function SectionImageManager({
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {slotLabels!.map((label, i) => {
                   const slot = slots[i];
+                  const fallback = fallbackImages?.[i] || "";
+                  const hasLocalFallback = !!fallback;
+                  const hasFallback = hasLocalFallback && !removedSlots[i];
+                  const hasVisual = !!slot || hasFallback;
                   return (
                     <div
                       key={i}
-                      className="rounded-lg border border-gray-200 overflow-hidden"
+                      className="group rounded-lg border border-gray-200 overflow-hidden"
                     >
                       <div className="bg-blue-50 border-b border-blue-100 px-2.5 py-2 text-xs font-semibold text-blue-900">
                         {i + 1}. {label}
@@ -199,10 +305,10 @@ export default function SectionImageManager({
                             className="object-cover"
                             sizes="(max-width: 768px) 50vw, 25vw"
                           />
-                        ) : fallbackImages?.[i] ? (
+                        ) : hasFallback ? (
                           <>
                             <Image
-                              src={fallbackImages[i]}
+                              src={fallback}
                               alt={label}
                               fill
                               className="object-cover opacity-80"
@@ -217,31 +323,35 @@ export default function SectionImageManager({
                             No image
                           </div>
                         )}
-                      </div>
-                      <div className="p-2">
-                        {slot ? (
-                          <div className="flex gap-1.5">
-                            <label className="flex-1 bg-amber-100 text-amber-700 py-1 rounded text-xs font-medium hover:bg-amber-200 transition-colors text-center cursor-pointer">
+                        {hasVisual && (
+                          <div className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 p-3">
+                            <label className="bg-white text-gray-800 px-3 py-1.5 rounded text-xs font-semibold hover:bg-gray-100 transition-colors text-center cursor-pointer">
                               Replace
                               <input
                                 type="file"
                                 accept="image/*"
                                 onChange={(e) => {
                                   const file = e.target.files?.[0];
-                                  if (file) openCrop(file, { replaceOld: slot.name, slotIndex: i });
+                                  if (file) {
+                                    openCrop(file, slot ? { replaceOld: slot.name, slotIndex: i } : { slotIndex: i });
+                                  }
                                   e.target.value = "";
                                 }}
+                                disabled={uploading}
                                 className="hidden"
                               />
                             </label>
                             <button
-                              onClick={() => handleDelete(slot.name)}
-                              className="flex-1 bg-red-100 text-red-700 py-1 rounded text-xs font-medium hover:bg-red-200 transition-colors"
+                              onClick={() => handleDeleteSlot(slot, i, hasLocalFallback)}
+                              className="bg-red-100 text-red-700 px-3 py-1.5 rounded text-xs font-semibold hover:bg-red-200 transition-colors"
                             >
                               Delete
                             </button>
                           </div>
-                        ) : (
+                        )}
+                      </div>
+                      <div className="p-2">
+                        {!hasVisual && (
                           <label className="block bg-blue-600 text-white py-1.5 rounded text-xs font-medium hover:bg-blue-700 transition-colors text-center cursor-pointer">
                             {uploading ? "Uploading..." : "Upload"}
                             <input
@@ -291,14 +401,23 @@ export default function SectionImageManager({
 
               {loading ? (
                 <p className="text-gray-400 text-sm">Loading...</p>
-              ) : images.length === 0 && fallbackImages && fallbackImages.length > 0 ? (
+              ) : images.length === 0 && !allCleared && fallbackImages && fallbackImages.length > 0 ? (
                 <div>
-                  <p className="text-xs text-amber-600 font-semibold mb-3 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                    Currently showing default images — upload to replace them.
-                  </p>
+                  <div className="flex items-center justify-between mb-3 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                    <p className="text-xs text-amber-600 font-semibold">
+                      Currently showing default images — upload to replace, or delete to clear them.
+                    </p>
+                    <button
+                      onClick={handleClearFallbacks}
+                      disabled={uploading}
+                      className="ml-3 text-xs bg-red-100 text-red-700 px-2.5 py-1 rounded font-semibold hover:bg-red-200 transition-colors flex-shrink-0"
+                    >
+                      Clear all
+                    </button>
+                  </div>
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {fallbackImages.map((src, i) => (
-                      <div key={i} className="rounded-lg border border-amber-200 overflow-hidden">
+                      <div key={i} className="group rounded-lg border border-amber-200 overflow-hidden">
                         <div className="relative aspect-video bg-gray-100">
                           <Image
                             src={src}
@@ -310,6 +429,29 @@ export default function SectionImageManager({
                           <span className="absolute top-1 left-1 bg-amber-400 text-white text-[10px] font-bold px-1.5 py-0.5 rounded leading-tight">
                             Default
                           </span>
+                          <div className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 p-3">
+                            <label className="bg-white text-gray-800 px-3 py-1.5 rounded text-xs font-semibold hover:bg-gray-100 transition-colors text-center cursor-pointer">
+                              Replace
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) openCrop(file);
+                                  e.target.value = "";
+                                }}
+                                disabled={uploading}
+                                className="hidden"
+                              />
+                            </label>
+                            <button
+                              onClick={handleClearFallbacks}
+                              disabled={uploading}
+                              className="bg-red-100 text-red-700 px-3 py-1.5 rounded text-xs font-semibold hover:bg-red-200 transition-colors"
+                            >
+                              Delete
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -317,7 +459,7 @@ export default function SectionImageManager({
                 </div>
               ) : images.length === 0 ? (
                 <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
-                  <p className="text-gray-400 text-sm">No images yet</p>
+                  <p className="text-gray-400 text-sm">No images</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

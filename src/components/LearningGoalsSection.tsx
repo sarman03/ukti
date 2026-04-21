@@ -3,6 +3,7 @@
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
+import { LEARNING_GOALS_FALLBACK_IMAGES } from "@/lib/imageDefaults";
 
 const goals = [
   {
@@ -44,14 +45,10 @@ const goals = [
 ];
 
 export default function LearningGoalsSection() {
-  const { images: adminImages } = useSupabaseSlotImages("learning-goals", 2);
-  const fallbackImages = [
-    "/learning-goals/PHOTO-2025-05-09-14-27-34.jpg",
-    "/learning-goals/PHOTO-2024-10-28-13-26-25.jpg",
-  ];
+  const { images: adminImages, removed } = useSupabaseSlotImages("learning-goals", 2);
   const images = [
-    adminImages[0] || fallbackImages[0],
-    adminImages[1] || fallbackImages[1],
+    removed[0] ? adminImages[0] : adminImages[0] || LEARNING_GOALS_FALLBACK_IMAGES[0],
+    removed[1] ? adminImages[1] : adminImages[1] || LEARNING_GOALS_FALLBACK_IMAGES[1],
   ];
 
   return (

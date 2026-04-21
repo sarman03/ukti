@@ -5,41 +5,36 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FadeUp from "@/components/FadeUp";
-import { useSupabaseImages, useSupabaseSlotImages } from "@/lib/useSupabaseImages";
+import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
+import {
+  ABOUT_ENVIRONMENT_FALLBACK_IMAGES,
+  ABOUT_FOUNDERS_FALLBACK_IMAGES,
+  ABOUT_HERO_FALLBACK_IMAGES,
+} from "@/lib/imageDefaults";
 
 export default function AboutPage() {
-  const { images: aboutImages } = useSupabaseImages("about");
-  const { images: environmentImages } = useSupabaseSlotImages("about-environment", 6);
-  const fallbackHeroImages = [
-    "/about%20page/first%20section%20pic.jpg",
-    "/about%20page/second%20section.JPG",
-  ];
+  const { images: aboutImages, removed: removedAboutImages } = useSupabaseSlotImages("about", 2);
+  const { images: founderImages, removed: removedFounderImages } = useSupabaseSlotImages("about-founders", 2);
+  const { images: environmentImages, removed: removedEnvironmentImages } = useSupabaseSlotImages("about-environment", 6);
   const heroImages = [
-    aboutImages[0] || fallbackHeroImages[0],
-    aboutImages[1] || fallbackHeroImages[1],
+    removedAboutImages[0] ? aboutImages[0] : aboutImages[0] || ABOUT_HERO_FALLBACK_IMAGES[0],
+    removedAboutImages[1] ? aboutImages[1] : aboutImages[1] || ABOUT_HERO_FALLBACK_IMAGES[1],
   ];
   const founderDisplayImages = [
-    "/about%20page/founders/founder%201.jpeg",
-    "/about%20page/founders/founder%202.jpeg",
-  ];
-  const fallbackEnvironmentImages = [
-    "/about%20page/images/creative%20.jpg",           // Creative Arts Corner
-    "/about%20page/images/play.jpg",                   // Play & Discovery
-    null,                                               // Montessori Materials - placeholder
-    "/about%20page/images/learning%20togethere.jpg",  // Learning Together
-    "/about%20page/images/outdoor%20adventures.jpg",  // Outdoor Adventures
+    removedFounderImages[0] ? founderImages[0] : founderImages[0] || ABOUT_FOUNDERS_FALLBACK_IMAGES[0],
+    removedFounderImages[1] ? founderImages[1] : founderImages[1] || ABOUT_FOUNDERS_FALLBACK_IMAGES[1],
   ];
   const images = [
     heroImages[0],
     heroImages[1],
     founderDisplayImages[0],
     founderDisplayImages[1],
-    environmentImages[0] || fallbackEnvironmentImages[0],
-    environmentImages[1] || fallbackEnvironmentImages[1],
-    environmentImages[2],
-    environmentImages[3] || fallbackEnvironmentImages[3],
-    environmentImages[4] || fallbackEnvironmentImages[4],
-    environmentImages[5],
+    removedEnvironmentImages[0] ? environmentImages[0] : environmentImages[0] || ABOUT_ENVIRONMENT_FALLBACK_IMAGES[0],
+    removedEnvironmentImages[1] ? environmentImages[1] : environmentImages[1] || ABOUT_ENVIRONMENT_FALLBACK_IMAGES[1],
+    removedEnvironmentImages[2] ? environmentImages[2] : environmentImages[2] || ABOUT_ENVIRONMENT_FALLBACK_IMAGES[2],
+    removedEnvironmentImages[3] ? environmentImages[3] : environmentImages[3] || ABOUT_ENVIRONMENT_FALLBACK_IMAGES[3],
+    removedEnvironmentImages[4] ? environmentImages[4] : environmentImages[4] || ABOUT_ENVIRONMENT_FALLBACK_IMAGES[4],
+    removedEnvironmentImages[5] ? environmentImages[5] : environmentImages[5] || ABOUT_ENVIRONMENT_FALLBACK_IMAGES[5],
   ];
 
   return (

@@ -2,53 +2,67 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-
-const heroImages = [
-  "/home/hero/1.png",
-  // "/home/hero/Property 1=Frame 2.png",
-  "/home/hero/Property 1=Frame 3.png",
-  "/home/hero/Property 1=Frame 4.png",
-];
+import { useSupabaseImages } from "@/lib/useSupabaseImages";
+import { HOME_HERO_WEB_FALLBACK_IMAGES, HOME_HERO_MOBILE_FALLBACK_IMAGES } from "@/lib/imageDefaults";
 
 export default function HeroSection() {
-  const [images] = useState<string[]>(heroImages);
+  const { images: webAdmin, cleared: webCleared } = useSupabaseImages("hero-web");
+  const { images: mobileAdmin, cleared: mobileCleared } = useSupabaseImages("hero-mobile");
+
+  const webImages = webCleared ? [] : webAdmin.length > 0 ? webAdmin : HOME_HERO_WEB_FALLBACK_IMAGES;
+  const mobileImages = mobileCleared ? [] : mobileAdmin.length > 0 ? mobileAdmin : HOME_HERO_MOBILE_FALLBACK_IMAGES;
+
+  const maxLength = Math.max(webImages.length, mobileImages.length, 1);
   const [current, setCurrent] = useState(0);
 
   const nextSlide = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % images.length);
-  }, [images.length]);
+    setCurrent((prev) => (prev + 1) % maxLength);
+  }, [maxLength]);
 
   const prevSlide = useCallback(() => {
-    setCurrent((prev) => (prev - 1 + images.length) % images.length);
-  }, [images.length]);
+    setCurrent((prev) => (prev - 1 + maxLength) % maxLength);
+  }, [maxLength]);
 
   useEffect(() => {
-    if (images.length <= 1) return;
+    if (maxLength <= 1) return;
     const timer = setInterval(nextSlide, 5000);
     return () => clearInterval(timer);
-  }, [images.length, nextSlide]);
+  }, [maxLength, nextSlide]);
+
+  const webIdx = webImages.length > 0 ? current % webImages.length : -1;
+  const mobileIdx = mobileImages.length > 0 ? current % mobileImages.length : -1;
+
+  if (webImages.length === 0 && mobileImages.length === 0) {
+    return <section className="relative w-full h-screen bg-gray-200" />;
+  }
 
   return (
     <section className="relative w-full h-screen overflow-hidden">
-      {images.map((url, index) => (
+      {/* Desktop images (md and up) */}
+      {webImages.length > 0 ? webImages.map((url, index) => (
         <div
-          key={url}
-          className={`absolute inset-0 transition-opacity duration-[2000ms] ease-in-out ${
-            index === current ? "opacity-100" : "opacity-0"
+          key={`web-${url}`}
+          className={`absolute inset-0 hidden md:block transition-opacity duration-[2000ms] ease-in-out ${
+            index === webIdx ? "opacity-100" : "opacity-0"
           }`}
         >
-          <Image
-            src={url}
-            alt={`Hero image ${index + 1}`}
-            fill
-            className="object-cover"
-            sizes="100vw"
-            priority={index === 0}
-          />
+          <Image src={url} alt={`Hero image ${index + 1}`} fill className="object-cover" sizes="100vw" priority={index === 0} />
         </div>
-      ))}
+      )) : <div className="absolute inset-0 hidden md:block bg-gray-200" />}
 
-      {images.length > 1 && (
+      {/* Mobile images (below md) */}
+      {mobileImages.length > 0 ? mobileImages.map((url, index) => (
+        <div
+          key={`mobile-${url}`}
+          className={`absolute inset-0 block md:hidden transition-opacity duration-[2000ms] ease-in-out ${
+            index === mobileIdx ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <Image src={url} alt={`Hero image ${index + 1}`} fill className="object-cover" sizes="100vw" priority={index === 0} />
+        </div>
+      )) : <div className="absolute inset-0 block md:hidden bg-gray-200" />}
+
+      {maxLength > 1 && (
         <>
           <button
             onClick={prevSlide}
@@ -70,7 +84,7 @@ export default function HeroSection() {
           </button>
 
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-            {images.map((_, index) => (
+            {Array.from({ length: maxLength }).map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrent(index)}

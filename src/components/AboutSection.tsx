@@ -5,6 +5,7 @@ import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
 import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
+import { HOME_ABOUT_FALLBACK_IMAGES } from "@/lib/imageDefaults";
 
 const stats = [
   { value: 6, suffix: "+", label: "Years of Experience", icon: "/about-us/6+.png" },
@@ -49,11 +50,10 @@ function CountUp({ end, suffix = "", duration = 1600 }: { end: number; suffix?: 
 }
 
 export default function AboutSection() {
-  const { images: adminImages } = useSupabaseSlotImages("home-about", 2);
-  const fallbackImages = ["/home/about/1.jpg", "/home/about/2.jpg"];
+  const { images: adminImages, removed } = useSupabaseSlotImages("home-about", 2);
   const images = [
-    adminImages[0] || fallbackImages[0],
-    adminImages[1] || fallbackImages[1],
+    removed[0] ? adminImages[0] : adminImages[0] || HOME_ABOUT_FALLBACK_IMAGES[0],
+    removed[1] ? adminImages[1] : adminImages[1] || HOME_ABOUT_FALLBACK_IMAGES[1],
   ];
 
   return (

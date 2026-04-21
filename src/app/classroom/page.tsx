@@ -9,6 +9,11 @@ import DayAtUktiSection from "@/components/DayAtUktiSection";
 import EnquiryFormSection from "@/components/EnquiryFormSection";
 import RippleButton from "@/components/RippleButton";
 import { useSupabaseImages, useSupabaseSlotImages } from "@/lib/useSupabaseImages";
+import {
+  CLASSROOM_CARD_FALLBACK_IMAGES,
+  CLASSROOM_HERO_WEB_FALLBACK_IMAGES,
+  CLASSROOM_HERO_MOBILE_FALLBACK_IMAGES,
+} from "@/lib/imageDefaults";
 
 const preschoolPrograms = [
   {
@@ -102,17 +107,6 @@ const afterschoolPrograms = [
   },
 ];
 
-const preschoolCardImages: Record<string, string> = {
-  Toddlers: "/home/classroom/toddler.jpg",
-  "Pre Nursery": "/home/classroom/pre%20nursery.jpg",
-  Nursery: "/home/classroom/nursery.jpg",
-};
-
-const afterschoolCardImages: Record<string, string> = {
-  "Storytelling Program": "/home/classroom/story-telling.jpg",
-  "Language & Math Program": "/home/classroom/lang-math.jpg",
-};
-
 function ProgramCard({
   title,
   subtitle,
@@ -194,59 +188,57 @@ function ProgramCard({
 }
 
 function HeroCarousel() {
-  const { images: adminImages } = useSupabaseImages("classroom-hero");
-  const fallbackImages = [
-    
-    "/classroom/hero/AKN_9699.JPG",
-    "/home/classroom/Rectangle 18.png",
-    // "/classroom/hero/AKN_9703.JPG",
-    "/classroom/hero/AKN_9728.JPG",
-    "/classroom/hero/AKN_2671.JPG",
-    // "/classroom/hero/AKN_9732.JPG",
-    "/classroom/hero/AKN_9744.JPG",
-    
-  ];
-  const images = adminImages.length > 0 ? adminImages : fallbackImages;
+  const { images: webAdmin, cleared: webCleared } = useSupabaseImages("classroom-hero-web");
+  const { images: mobileAdmin, cleared: mobileCleared } = useSupabaseImages("classroom-hero-mobile");
+
+  const webImages = webCleared ? [] : webAdmin.length > 0 ? webAdmin : CLASSROOM_HERO_WEB_FALLBACK_IMAGES;
+  const mobileImages = mobileCleared ? [] : mobileAdmin.length > 0 ? mobileAdmin : CLASSROOM_HERO_MOBILE_FALLBACK_IMAGES;
+
+  const maxLength = Math.max(webImages.length, mobileImages.length, 1);
   const [current, setCurrent] = useState(0);
 
   const nextSlide = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % images.length);
-  }, [images.length]);
+    setCurrent((prev) => (prev + 1) % maxLength);
+  }, [maxLength]);
 
   const prevSlide = useCallback(() => {
-    setCurrent((prev) => (prev - 1 + images.length) % images.length);
-  }, [images.length]);
+    setCurrent((prev) => (prev - 1 + maxLength) % maxLength);
+  }, [maxLength]);
 
   useEffect(() => {
-    if (images.length <= 1) return;
+    if (maxLength <= 1) return;
     const timer = setInterval(nextSlide, 5000);
     return () => clearInterval(timer);
-  }, [images.length, nextSlide]);
+  }, [maxLength, nextSlide]);
+
+  const webIdx = webImages.length > 0 ? current % webImages.length : -1;
+  const mobileIdx = mobileImages.length > 0 ? current % mobileImages.length : -1;
 
   return (
     <section className="relative w-full h-screen overflow-hidden">
-      {/* Images with fade transition */}
-      {images.length > 0 ? (
-        images.map((url, index) => (
-          <div
-            key={url}
-            className={`absolute inset-0 transition-opacity duration-[2000ms] ease-in-out ${
-              index === current ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <Image
-              src={url}
-              alt={`Classroom hero ${index + 1}`}
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority={index === 0}
-            />
-          </div>
-        ))
-      ) : (
-        <div className="absolute inset-0 bg-gray-400" />
-      )}
+      {/* Desktop images (md and up) */}
+      {webImages.length > 0 ? webImages.map((url, index) => (
+        <div
+          key={`web-${url}`}
+          className={`absolute inset-0 hidden md:block transition-opacity duration-[2000ms] ease-in-out ${
+            index === webIdx ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <Image src={url} alt={`Classroom hero ${index + 1}`} fill className="object-cover" sizes="100vw" priority={index === 0} />
+        </div>
+      )) : <div className="absolute inset-0 hidden md:block bg-gray-400" />}
+
+      {/* Mobile images (below md) */}
+      {mobileImages.length > 0 ? mobileImages.map((url, index) => (
+        <div
+          key={`mobile-${url}`}
+          className={`absolute inset-0 block md:hidden transition-opacity duration-[2000ms] ease-in-out ${
+            index === mobileIdx ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <Image src={url} alt={`Classroom hero ${index + 1}`} fill className="object-cover" sizes="100vw" priority={index === 0} />
+        </div>
+      )) : <div className="absolute inset-0 block md:hidden bg-gray-400" />}
 
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/50" />
@@ -280,7 +272,7 @@ function HeroCarousel() {
       </div>
 
       {/* Prev/Next arrows */}
-      {images.length > 1 && (
+      {maxLength > 1 && (
         <>
           <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors z-10" aria-label="Previous slide">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4L6 10L12 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -292,9 +284,9 @@ function HeroCarousel() {
       )}
 
       {/* Dot indicators */}
-      {images.length > 1 && (
+      {maxLength > 1 && (
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-          {images.map((_, index) => (
+          {Array.from({ length: maxLength }).map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrent(index)}
@@ -311,7 +303,7 @@ function HeroCarousel() {
 }
 
 export default function ClassroomPage() {
-  const { images: cardImages } = useSupabaseSlotImages("classroom-cards", 5);
+  const { images: cardImages, removed: removedCardSlots } = useSupabaseSlotImages("classroom-cards", 5);
 
   return (
     <main>
@@ -333,7 +325,7 @@ export default function ClassroomPage() {
                 <ProgramCard
                   {...program}
                   imageLeft
-                  imageUrl={cardImages[i] || preschoolCardImages[program.title]}
+                  imageUrl={removedCardSlots[i] ? cardImages[i] : cardImages[i] || CLASSROOM_CARD_FALLBACK_IMAGES[i]}
                 />
               </FadeUp>
             ))}
@@ -354,7 +346,11 @@ export default function ClassroomPage() {
               <FadeUp key={program.title} delay={i * 0.15}>
                 <ProgramCard
                   {...program}
-                  imageUrl={afterschoolCardImages[program.title] || cardImages[preschoolPrograms.length + i]}
+                  imageUrl={
+                    removedCardSlots[preschoolPrograms.length + i]
+                      ? cardImages[preschoolPrograms.length + i]
+                      : cardImages[preschoolPrograms.length + i] || CLASSROOM_CARD_FALLBACK_IMAGES[preschoolPrograms.length + i]
+                  }
                   imageHeight={program.title === "Language & Math Program" ? "md:h-[600px]" : "md:h-[400px]"}
                 />
               </FadeUp>

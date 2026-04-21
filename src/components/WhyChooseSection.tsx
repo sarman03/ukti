@@ -2,6 +2,7 @@
 
 import FadeUp from "@/components/FadeUp";
 import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
+import { WHY_CHOOSE_FALLBACK_IMAGES } from "@/lib/imageDefaults";
 
 type Side = "tab" | "notch" | "flat";
 
@@ -166,17 +167,9 @@ function buildPath(p: Piece): string {
 
 const SVG_W = 5 * PW; // 1100
 const SVG_H = 2 * PH; // 400
-const puzzleImages = [
-  "/home/why%20chose%20ukti/PHOTO-2026-03-22-18-10-00.jpg",
-  "/home/why%20chose%20ukti/PHOTO-2025-01-15-16-21-34.jpg",
-  "/home/why%20chose%20ukti/PHOTO-2025-01-10-19-18-37.jpg",
-  "/home/why%20chose%20ukti/PHOTO-2025-02-08-15-49-00.jpg",
-  "/home/why%20chose%20ukti/PHOTO-2025-11-07-20-46-21.jpg",
-];
-
 export default function WhyChooseSection() {
-  const { images: adminImages } = useSupabaseSlotImages("why-choose", 5);
-  const imageSources = adminImages.map((img, i) => img || puzzleImages[i]);
+  const { images: adminImages, removed } = useSupabaseSlotImages("why-choose", 5);
+  const imageSources = adminImages.map((img, i) => (removed[i] ? img : img || WHY_CHOOSE_FALLBACK_IMAGES[i]));
   let imagePieceIndex = 0;
 
   return (

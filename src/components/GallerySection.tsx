@@ -3,25 +3,11 @@
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import { useSupabaseImages } from "@/lib/useSupabaseImages";
-
-const fallbackGallery = [
-  "/gallery/PHOTO-2024-09-03-14-59-18.jpg",
-  "/gallery/PHOTO-2024-10-28-13-26-25.jpg",
-  "/gallery/PHOTO-2025-01-09-16-01-16.jpg",
-  "/gallery/PHOTO-2025-02-18-16-20-16.jpg",
-  "/gallery/PHOTO-2025-03-03-12-00-07.jpg",
-  "/gallery/PHOTO-2025-03-11-19-28-14.jpg",
-  "/gallery/PHOTO-2025-05-04-18-10-58.jpg",
-  "/gallery/PHOTO-2025-08-22-19-14-09.jpg",
-  "/gallery/PHOTO-2025-10-14-14-13-49 (1).jpg",
-  "/gallery/PHOTO-2025-10-14-14-13-49.jpg",
-  "/gallery/PHOTO-2025-11-17-13-48-59.jpg",
-  "/gallery/PHOTO-2026-01-16-20-46-40.jpg",
-];
+import { GALLERY_FALLBACK_IMAGES } from "@/lib/imageDefaults";
 
 export default function GallerySection() {
-  const { images: adminImages } = useSupabaseImages("gallery");
-  const images = adminImages.length > 0 ? adminImages : fallbackGallery;
+  const { images: adminImages, cleared } = useSupabaseImages("gallery");
+  const images = cleared ? [] : adminImages.length > 0 ? adminImages : GALLERY_FALLBACK_IMAGES;
 
   // Split images into two rows, duplicate for seamless loop
   const half = Math.ceil(images.length / 2);

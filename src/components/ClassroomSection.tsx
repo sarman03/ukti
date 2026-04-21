@@ -5,6 +5,7 @@ import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
 import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
+import { CLASSROOM_CARD_FALLBACK_IMAGES } from "@/lib/imageDefaults";
 
 type Tab = "preschool" | "afterschool";
 
@@ -48,17 +49,8 @@ const programs: Record<Tab, Program[]> = {
 export default function ClassroomSection() {
   const [activeTab, setActiveTab] = useState<Tab>("preschool");
   const activePrograms = programs[activeTab];
-  const { images } = useSupabaseSlotImages("classroom", 5);
+  const { images, removed } = useSupabaseSlotImages("classroom", 5);
   const slotOffset = activeTab === "preschool" ? 0 : programs.preschool.length;
-  const preschoolCardImages: Record<string, string> = {
-    Toddlers: "/home/classroom/toddler.jpg",
-    "Pre Nursery": "/home/classroom/pre%20nursery.jpg",
-    Nursery: "/home/classroom/nursery.jpg",
-  };
-  const afterschoolCardImages: Record<string, string> = {
-    "Storytelling Program": "/home/classroom/story-telling.jpg",
-    "Language & Math Program": "/home/classroom/lang-math.jpg",
-  };
 
   return (
     <section id="classes" className="py-12 md:py-20 px-4 md:px-8 bg-white">
@@ -96,11 +88,14 @@ export default function ClassroomSection() {
           }`}
         >
           {activePrograms.map((program, idx) => {
-            const slotImage = images[slotOffset + idx];
+            const slotIndex = slotOffset + idx;
+            const slotImage = images[slotIndex];
+            const slotRemoved = removed[slotIndex];
+            const fallback = CLASSROOM_CARD_FALLBACK_IMAGES[slotIndex];
             const imageUrl =
-              activeTab === "afterschool"
-                ? afterschoolCardImages[program.title] || slotImage
-                : slotImage || preschoolCardImages[program.title];
+              slotRemoved
+                ? slotImage
+                : slotImage || fallback;
             return (
             <div
               key={program.title}
