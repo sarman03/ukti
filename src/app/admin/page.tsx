@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import SectionImageManager from "./SectionImageManager";
+import SectionVideoManager from "./SectionVideoManager";
 import {
   ABOUT_ENVIRONMENT_FALLBACK_IMAGES,
   ABOUT_FOUNDERS_FALLBACK_IMAGES,
@@ -23,7 +24,11 @@ const AUTH_KEY = "ukti-admin-auth";
 const ADMIN_EMAIL = "admin@ukti.in";
 const ADMIN_PASSWORD = "ukti@2026";
 
-const pages: { label: string; sections: Array<{ folder: string; title: string; aspect: number; aspectLabel: string; maxImages?: number; slotLabels?: string[]; fallbackImages?: string[] }> }[] = [
+type Section =
+  | { type?: never; folder: string; title: string; aspect: number; aspectLabel: string; maxImages?: number; slotLabels?: string[]; fallbackImages?: string[] }
+  | { type: "video"; folder: string; title: string; fallbackVideos?: string[] };
+
+const pages: { label: string; sections: Section[] }[] = [
   {
     label: "Home",
     sections: [
@@ -100,10 +105,13 @@ const pages: { label: string; sections: Array<{ folder: string; title: string; a
         fallbackImages: LEARNING_GOALS_FALLBACK_IMAGES,
       },
       {
+        type: "video",
         folder: "testimonials",
         title: "Testimonials",
-        aspect: 1,
-        aspectLabel: "Testimonial — 1:1 square",
+        fallbackVideos: [
+          "/home/testimonials/Video-68-opt.mp4",
+          "/home/testimonials/VIDEO-2026-02-17-12-40-09.mp4",
+        ],
       },
       {
         folder: "cta",
@@ -300,9 +308,13 @@ export default function AdminPage() {
               {page.label}
             </h2>
             <div className="space-y-4">
-              {page.sections.map((s) => (
-                <SectionImageManager key={s.folder} {...s} />
-              ))}
+              {page.sections.map((s) =>
+                s.type === "video" ? (
+                  <SectionVideoManager key={s.folder} folder={s.folder} title={s.title} fallbackVideos={s.fallbackVideos} />
+                ) : (
+                  <SectionImageManager key={s.folder} {...s} />
+                )
+              )}
             </div>
           </section>
         ))}
