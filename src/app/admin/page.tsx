@@ -111,6 +111,11 @@ const pages: { label: string; sections: Section[] }[] = [
         fallbackVideos: [
           "/home/testimonials/Video-68-opt.mp4",
           "/home/testimonials/VIDEO-2026-02-17-12-40-09.mp4",
+          "/home/testimonials/video-3-opt.mp4",
+          "/home/testimonials/video-4-opt.mp4",
+          "/home/testimonials/video-5-opt.mp4",
+          "/home/testimonials/video-6-opt.mp4",
+          "/home/testimonials/video-7-opt.mp4",
         ],
       },
       {

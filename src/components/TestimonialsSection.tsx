@@ -7,11 +7,21 @@ import { useSupabaseImages } from "@/lib/useSupabaseImages";
 const FALLBACK_VIDEOS = [
   "/home/testimonials/Video-68-opt.mp4",
   "/home/testimonials/VIDEO-2026-02-17-12-40-09.mp4",
+  "/home/testimonials/video-3-opt.mp4",
+  "/home/testimonials/video-4-opt.mp4",
+  "/home/testimonials/video-5-opt.mp4",
+  "/home/testimonials/video-6-opt.mp4",
+  "/home/testimonials/video-7-opt.mp4",
 ];
 
 const FALLBACK_POSTERS = [
   "/home/testimonials/poster-1.jpg",
   "/home/testimonials/poster-2.jpg",
+  "/home/testimonials/poster-3.jpg",
+  "/home/testimonials/poster-4.jpg",
+  "/home/testimonials/poster-5.jpg",
+  "/home/testimonials/poster-6.jpg",
+  "/home/testimonials/poster-7.jpg",
 ];
 
 function TestimonialVideo({
@@ -82,8 +92,8 @@ export default function TestimonialsSection() {
 
   const [current, setCurrent] = useState(0);
 
-  const prevIdx = current > 0 ? current - 1 : null;
-  const nextIdx = current < videos.length - 1 ? current + 1 : null;
+  const prevIdx = videos.length > 1 ? (current - 1 + videos.length) % videos.length : null;
+  const nextIdx = videos.length > 1 ? (current + 1) % videos.length : null;
 
   return (
     <section
@@ -199,8 +209,7 @@ export default function TestimonialsSection() {
                 <>
                   <button
                     onClick={() => prevIdx !== null && setCurrent(prevIdx)}
-                    disabled={prevIdx === null}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/80 shadow flex items-center justify-center hover:bg-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/80 shadow flex items-center justify-center hover:bg-white transition-colors"
                     aria-label="Previous video"
                   >
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -209,8 +218,7 @@ export default function TestimonialsSection() {
                   </button>
                   <button
                     onClick={() => nextIdx !== null && setCurrent(nextIdx)}
-                    disabled={nextIdx === null}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/80 shadow flex items-center justify-center hover:bg-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/80 shadow flex items-center justify-center hover:bg-white transition-colors"
                     aria-label="Next video"
                   >
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
