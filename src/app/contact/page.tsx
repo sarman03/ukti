@@ -1,8 +1,24 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import EnquiryFormSection from "@/components/EnquiryFormSection";
 import ContactMapsSection from "@/components/ContactMapsSection";
 import FadeUp from "@/components/FadeUp";
+
+export const metadata: Metadata = {
+  title: "Contact & Admissions – Book a Tour or Enquire",
+  description:
+    "Get in touch with Ukti Early Years. Book a school tour, submit an admission enquiry, or reach us at our Delhi or Noida branches. Call: Delhi +91 95993 76953 | Noida +91 87969 46469.",
+  openGraph: {
+    title: "Contact Ukti Early Years | Admissions in Delhi & Noida",
+    description:
+      "Book a tour or submit an admission enquiry at Ukti Early Years. We are open Mon–Fri 1:30–3:30 PM and Saturday 11 AM–2 PM. Delhi and Noida branches.",
+    url: "https://www.uktiearlyyears.com/contact",
+  },
+  alternates: {
+    canonical: "https://www.uktiearlyyears.com/contact",
+  },
+};
 
 const contactDetails = [
   {
