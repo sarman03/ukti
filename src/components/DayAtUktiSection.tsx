@@ -16,7 +16,7 @@ export default function DayAtUktiSection() {
         </FadeUp>
 
         <FadeUp>
-          <div className="relative w-full aspect-[7/6] overflow-hidden">
+          <div className="relative w-full aspect-[4/5] md:aspect-[7/6] overflow-hidden">
             <Image
               src="/classroom/snake.png"
               alt="A day at Ukti Early Years"

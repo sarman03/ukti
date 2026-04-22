@@ -6,7 +6,7 @@ import { useSupabaseImages } from "@/lib/useSupabaseImages";
 
 const FALLBACK_VIDEOS = [
   "/home/testimonials/Video-68-opt.mp4",
-  "/home/testimonials/VIDEO-2026-02-17-12-40-09.mp4",
+  // "/home/testimonials/VIDEO-2026-02-17-12-40-09.mp4",
   "/home/testimonials/video-3-opt.mp4",
   "/home/testimonials/video-4-opt.mp4",
   "/home/testimonials/video-5-opt.mp4",
@@ -94,6 +94,8 @@ export default function TestimonialsSection() {
 
   const prevIdx = videos.length > 1 ? (current - 1 + videos.length) % videos.length : null;
   const nextIdx = videos.length > 1 ? (current + 1) % videos.length : null;
+  const goToPrev = () => prevIdx !== null && setCurrent(prevIdx);
+  const goToNext = () => nextIdx !== null && setCurrent(nextIdx);
 
   return (
     <section
@@ -112,12 +114,36 @@ export default function TestimonialsSection() {
           <>
             {/* Mobile — carousel */}
             <div className="md:hidden px-4">
-              <TestimonialVideo
-                key={current}
-                src={videos[current]}
-                poster={posters[current]}
-                className="mx-auto aspect-[9/16] w-full max-w-sm"
-              />
+              <div className="relative mx-auto w-full max-w-sm">
+                <TestimonialVideo
+                  key={current}
+                  src={videos[current]}
+                  poster={posters[current]}
+                  className="aspect-[9/16] w-full"
+                />
+                {videos.length > 1 && (
+                  <>
+                    <button
+                      onClick={goToPrev}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/85 shadow flex items-center justify-center active:scale-95 transition-transform"
+                      aria-label="Previous video"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M12 4L6 10L12 16" stroke="#374151" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={goToNext}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/85 shadow flex items-center justify-center active:scale-95 transition-transform"
+                      aria-label="Next video"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M8 4L14 10L8 16" stroke="#374151" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                  </>
+                )}
+              </div>
               {videos.length > 1 && (
                 <div className="flex justify-center gap-2 mt-4">
                   {videos.map((_, i) => (
@@ -208,7 +234,7 @@ export default function TestimonialsSection() {
               {videos.length > 1 && (
                 <>
                   <button
-                    onClick={() => prevIdx !== null && setCurrent(prevIdx)}
+                    onClick={goToPrev}
                     className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/80 shadow flex items-center justify-center hover:bg-white transition-colors"
                     aria-label="Previous video"
                   >
@@ -217,7 +243,7 @@ export default function TestimonialsSection() {
                     </svg>
                   </button>
                   <button
-                    onClick={() => nextIdx !== null && setCurrent(nextIdx)}
+                    onClick={goToNext}
                     className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/80 shadow flex items-center justify-center hover:bg-white transition-colors"
                     aria-label="Next video"
                   >

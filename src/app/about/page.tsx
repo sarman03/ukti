@@ -187,15 +187,15 @@ export default function AboutPage() {
             {/* Vision Card */}
             <FadeUp delay={0.2}>
               <div className="relative bg-white rounded-3xl p-8 md:p-10 h-full overflow-hidden shadow-sm">
-                <span className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-[#F6892A]/20" aria-hidden="true" />
+                <span className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-[#0FB3BC]/20" aria-hidden="true" />
                 <div className="relative">
-                  <div className="w-14 h-14 rounded-full bg-[#F6892A]/70 text-[#F6892A] flex items-center justify-center mb-6">
+                  <div className="w-14 h-14 rounded-full bg-[#0FB3BC]/70 text-[#0FB3BC] flex items-center justify-center mb-6">
                     <svg className="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 2l1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6z" />
                       <path d="M19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8z" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-extrabold text-[#F6892A] mb-4">
+                  <h3 className="text-2xl md:text-3xl font-extrabold text-[#0FB3BC] mb-4">
                     Our Vision
                   </h3>
                   <p className="text-gray-700 leading-relaxed mb-5">
@@ -317,8 +317,8 @@ export default function AboutPage() {
               {
                 name: "Adeeba Arif",
                 title: "Co-Founder",
-                nameColor: "text-[#F6892A]",
-                badgeColor: "bg-[#F6892A]",
+                nameColor: "text-[#0FB3BC]",
+                badgeColor: "bg-[#0FB3BC]",
               },
             ].map((founder, i) => (
               <FadeUp key={founder.name} delay={i * 0.1}>
