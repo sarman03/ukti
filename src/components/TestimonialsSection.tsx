@@ -16,7 +16,7 @@ const FALLBACK_VIDEOS = [
 
 const FALLBACK_POSTERS = [
   "/home/testimonials/poster-1.jpg",
-  "/home/testimonials/poster-2.jpg",
+  // "/home/testimonials/poster-2.jpg",
   "/home/testimonials/poster-3.jpg",
   "/home/testimonials/poster-4.jpg",
   "/home/testimonials/poster-5.jpg",

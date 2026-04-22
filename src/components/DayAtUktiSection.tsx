@@ -3,6 +3,25 @@
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 
+const mobileSteps = [
+  { id: 1, text: "Warm Welcome & Setting In" },
+  { id: 2, text: "Free Play & Exploration" },
+  { id: 3, text: "Music & Movement" },
+  { id: 4, text: "Storytelling Circle" },
+  { id: 5, text: "Sensory & Messy Play" },
+  { id: 6, text: "Snack & Social Time" },
+  { id: 7, text: "Fine Motor & Montessori Work Cycle" },
+  { id: 8, text: "Language & Early Math Exploration", subtext: "(by Pre nursery and Nursery)" },
+  { id: 9, text: "Calm Closure & Dispersal" },
+];
+
+const mobileStepColors = [
+  "bg-[#FFF3E8] border-[#F6892A]/30",
+  "bg-[#EEF8E9] border-[#5EA85B]/30",
+  "bg-[#EEF7FD] border-[#8FC6E8]/40",
+  "bg-[#FFF8DD] border-[#F8D17C]",
+];
+
 export default function DayAtUktiSection() {
   return (
     <section className="py-12 md:py-20 px-4 md:px-8 bg-white overflow-hidden">
@@ -16,15 +35,36 @@ export default function DayAtUktiSection() {
         </FadeUp>
 
         <FadeUp>
-          <div className="relative w-full aspect-[4/5] md:aspect-[7/6] overflow-hidden">
+          <div className="hidden md:block relative w-full aspect-[7/6] overflow-hidden">
             <Image
               src="/classroom/snake.png"
               alt="A day at Ukti Early Years"
               fill
               className="object-contain"
-              sizes="(max-width: 768px) 100vw, 900px"
+              sizes="900px"
               priority
             />
+          </div>
+
+          <div className="md:hidden max-w-xl mx-auto space-y-3">
+            {mobileSteps.map((step, index) => (
+              <div
+                key={step.id}
+                className={`flex gap-3 items-start rounded-2xl border px-4 py-3 ${mobileStepColors[index % mobileStepColors.length]}`}
+              >
+                <div className="flex-shrink-0 w-7 h-7 mt-0.5 flex items-center justify-center bg-[#F6892A] text-white rounded-full font-bold text-xs">
+                  {step.id}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-[#4A4A4A] leading-snug">
+                    {step.text}
+                  </p>
+                  {step.subtext ? (
+                    <p className="text-xs text-[#6D6D6D] mt-0.5">{step.subtext}</p>
+                  ) : null}
+                </div>
+              </div>
+            ))}
           </div>
         </FadeUp>
       </div>
