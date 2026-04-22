@@ -8,10 +8,10 @@ export const metadata: Metadata = {
     title: "Preschool Programs | Ukti Early Years Delhi & Noida",
     description:
       "Toddlers (15–23 months), Pre Nursery, Nursery and after-school programs with Montessori and play-based learning for children aged 15 months to 5 years. Delhi & Noida.",
-    url: "https://www.uktiearlyyears.com/classroom",
+    url: "https://www.uktiearlyyears.in/classroom",
   },
   alternates: {
-    canonical: "https://www.uktiearlyyears.com/classroom",
+    canonical: "https://www.uktiearlyyears.in/classroom",
   },
 };
 

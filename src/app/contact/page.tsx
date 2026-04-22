@@ -13,10 +13,10 @@ export const metadata: Metadata = {
     title: "Contact Ukti Early Years | Admissions in Delhi & Noida",
     description:
       "Book a tour or submit an admission enquiry at Ukti Early Years. We are open Mon–Fri 1:30–3:30 PM and Saturday 11 AM–2 PM. Delhi and Noida branches.",
-    url: "https://www.uktiearlyyears.com/contact",
+    url: "https://www.uktiearlyyears.in/contact",
   },
   alternates: {
-    canonical: "https://www.uktiearlyyears.com/contact",
+    canonical: "https://www.uktiearlyyears.in/contact",
   },
 };
 
@@ -32,8 +32,8 @@ const contactDetails = [
   },
   {
     label: "Email",
-    value: "hello@uktiearlyyears.com",
-    href: "mailto:hello@uktiearlyyears.com",
+    value: "hello@uktiearlyyears.in",
+    href: "mailto:hello@uktiearlyyears.in",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />

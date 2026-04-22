@@ -8,10 +8,10 @@ export const metadata: Metadata = {
     title: "About Ukti Early Years | Micro Preschool Delhi & Noida",
     description:
       "Founded in 2021, Ukti Early Years is a micro preschool blending Montessori and play-based learning. Meet our founders and discover what makes us different.",
-    url: "https://www.uktiearlyyears.com/about",
+    url: "https://www.uktiearlyyears.in/about",
   },
   alternates: {
-    canonical: "https://www.uktiearlyyears.com/about",
+    canonical: "https://www.uktiearlyyears.in/about",
   },
 };
 

@@ -1,4 +1,4 @@
-const SITE_URL = "https://www.uktiearlyyears.com";
+const SITE_URL = "https://www.uktiearlyyears.in";
 
 const schema = {
   "@context": "https://schema.org",
@@ -12,7 +12,7 @@ const schema = {
         "@type": "ImageObject",
         url: `${SITE_URL}/logo/Ukti _ Logo.png`,
       },
-      email: "hello@uktiearlyyears.com",
+      email: "hello@uktiearlyyears.in",
       sameAs: [
         "https://instagram.com/uktiearlyyears",
         "https://www.linkedin.com/company/ukti-early-years/",
@@ -42,7 +42,7 @@ const schema = {
         "Ukti Early Years is a micro preschool in Delhi offering play-based, Montessori-inspired early childhood education for toddlers and preschoolers aged 15 months to 5 years.",
       url: SITE_URL,
       telephone: "+91-95993-76953",
-      email: "hello@uktiearlyyears.com",
+      email: "hello@uktiearlyyears.in",
       foundingDate: "2021",
       address: {
         "@type": "PostalAddress",
@@ -79,7 +79,7 @@ const schema = {
         "Ukti Early Years is a micro preschool in Noida offering play-based, Montessori-inspired early childhood education for toddlers and preschoolers aged 15 months to 5 years.",
       url: SITE_URL,
       telephone: "+91-87969-46469",
-      email: "hello@uktiearlyyears.com",
+      email: "hello@uktiearlyyears.in",
       foundingDate: "2021",
       address: {
         "@type": "PostalAddress",

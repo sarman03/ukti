@@ -10,7 +10,7 @@ const baloo = Baloo_2({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-const SITE_URL = "https://www.uktiearlyyears.com";
+const SITE_URL = "https://www.uktiearlyyears.in";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
