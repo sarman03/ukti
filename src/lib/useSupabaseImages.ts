@@ -5,9 +5,12 @@ import { supabase } from "./supabase";
 
 const BUCKET = "images";
 
-export function useSupabaseImages(folder: string) {
+export function useSupabaseImages(folder: string, fallbackCount = 0) {
   const [images, setImages] = useState<string[]>([]);
   const [cleared, setCleared] = useState(false);
+  const [removedFallbacks, setRemovedFallbacks] = useState<boolean[]>(
+    () => Array(fallbackCount).fill(false)
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -16,7 +19,14 @@ export function useSupabaseImages(folder: string) {
         sortBy: { column: "name", order: "asc" },
       });
 
+      const nextRemoved: boolean[] = Array(fallbackCount).fill(false);
       if (data && data.length > 0) {
+        for (const f of data) {
+          const m = f.name.match(/^fallback-(\d+)-removed\.flag$/);
+          if (!m) continue;
+          const i = parseInt(m[1], 10);
+          if (i >= 0 && i < nextRemoved.length) nextRemoved[i] = true;
+        }
         const hasCleared = data.some((f) => f.name === "all-removed.flag");
         const urls = data
           .filter(
@@ -32,12 +42,13 @@ export function useSupabaseImages(folder: string) {
         setImages(urls);
         setCleared(hasCleared && urls.length === 0);
       }
+      setRemovedFallbacks(nextRemoved);
       setLoading(false);
     }
     fetch();
-  }, [folder]);
+  }, [folder, fallbackCount]);
 
-  return { images, cleared, loading };
+  return { images, cleared, loading, removedFallbacks };
 }
 
 /**

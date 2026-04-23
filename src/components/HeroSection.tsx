@@ -6,11 +6,21 @@ import { useSupabaseImages } from "@/lib/useSupabaseImages";
 import { HOME_HERO_WEB_FALLBACK_IMAGES, HOME_HERO_MOBILE_FALLBACK_IMAGES } from "@/lib/imageDefaults";
 
 export default function HeroSection() {
-  const { images: webAdmin, cleared: webCleared } = useSupabaseImages("hero-web");
-  const { images: mobileAdmin, cleared: mobileCleared } = useSupabaseImages("hero-mobile");
+  const {
+    images: webAdmin,
+    cleared: webCleared,
+    removedFallbacks: webRemovedFallbacks,
+  } = useSupabaseImages("hero-web", HOME_HERO_WEB_FALLBACK_IMAGES.length);
+  const {
+    images: mobileAdmin,
+    cleared: mobileCleared,
+    removedFallbacks: mobileRemovedFallbacks,
+  } = useSupabaseImages("hero-mobile", HOME_HERO_MOBILE_FALLBACK_IMAGES.length);
 
-  const webImages = webCleared ? [] : webAdmin.length > 0 ? webAdmin : HOME_HERO_WEB_FALLBACK_IMAGES;
-  const mobileImages = mobileCleared ? [] : mobileAdmin.length > 0 ? mobileAdmin : HOME_HERO_MOBILE_FALLBACK_IMAGES;
+  const webFallbacks = HOME_HERO_WEB_FALLBACK_IMAGES.filter((_, i) => !webRemovedFallbacks[i]);
+  const mobileFallbacks = HOME_HERO_MOBILE_FALLBACK_IMAGES.filter((_, i) => !mobileRemovedFallbacks[i]);
+  const webImages = webCleared ? [] : webAdmin.length > 0 ? webAdmin : webFallbacks;
+  const mobileImages = mobileCleared ? [] : mobileAdmin.length > 0 ? mobileAdmin : mobileFallbacks;
 
   const maxLength = Math.max(webImages.length, mobileImages.length, 1);
   const [current, setCurrent] = useState(0);

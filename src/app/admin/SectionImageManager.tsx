@@ -57,6 +57,7 @@ export default function SectionImageManager({
 
   const [images, setImages] = useState<{ name: string; url: string }[]>([]);
   const [allCleared, setAllCleared] = useState(false);
+  const [removedFallbacks, setRemovedFallbacks] = useState<boolean[]>([]);
   const [slots, setSlots] = useState<SlotFile[]>(
     slotMode ? Array(slotCount).fill(null) : []
   );
@@ -105,9 +106,17 @@ export default function SectionImageManager({
       setSlots(next);
       setRemovedSlots(nextRemoved);
     } else {
+      const nextRemoved = Array(fallbackImages?.length ?? 0).fill(false);
+      for (const f of files) {
+        const m = f.name.match(/^fallback-(\d+)-removed\.flag$/);
+        if (!m) continue;
+        const idx = parseInt(m[1], 10);
+        if (idx >= 0 && idx < nextRemoved.length) nextRemoved[idx] = true;
+      }
       const hasCleared = files.some((f) => f.name === "all-removed.flag");
       const imageFiles = files.filter((f) => !f.name.endsWith(".flag"));
       setAllCleared(hasCleared && imageFiles.length === 0);
+      setRemovedFallbacks(nextRemoved);
       setImages(
         imageFiles.map((f) => ({
           name: f.name,
@@ -116,7 +125,7 @@ export default function SectionImageManager({
       );
     }
     setLoading(false);
-  }, [folder, slotMode, slotCount]);
+  }, [folder, slotMode, slotCount, fallbackImages?.length]);
 
   useEffect(() => {
     fetchImages();
@@ -238,7 +247,45 @@ export default function SectionImageManager({
     setUploading(false);
   }
 
+  async function handleDeleteFallback(index: number) {
+    if (!confirm("Delete this default image?")) return;
+    setUploading(true);
+    try {
+      const marker = new Blob(["removed"], { type: "text/plain" });
+      const { error } = await supabase.storage
+        .from(BUCKET)
+        .upload(`${folder}/fallback-${index}-removed.flag`, marker, {
+          contentType: "text/plain",
+          upsert: true,
+        });
+      if (error) throw new Error(error.message);
+      await fetchImages();
+    } catch (err) {
+      alert("Delete failed: " + (err as Error).message);
+    }
+    setUploading(false);
+  }
+
+  async function handleRestoreFallbacks() {
+    if (!fallbackImages?.length) return;
+    setUploading(true);
+    try {
+      const toRemove = [
+        `${folder}/all-removed.flag`,
+        ...fallbackImages.map((_, i) => `${folder}/fallback-${i}-removed.flag`),
+      ];
+      await supabase.storage.from(BUCKET).remove(toRemove);
+      await fetchImages();
+    } catch (err) {
+      alert("Failed: " + (err as Error).message);
+    }
+    setUploading(false);
+  }
+
   const atLimit = !slotMode && maxImages > 0 && images.length >= maxImages;
+  const visibleFallbacks = (fallbackImages ?? [])
+    .map((src, i) => ({ src, index: i }))
+    .filter(({ index }) => !removedFallbacks[index]);
   const filledCount = slotMode
     ? slots.reduce((count, slot, i) => {
         const hasFallback = !!fallbackImages?.[i] && !removedSlots[i];
@@ -263,7 +310,7 @@ export default function SectionImageManager({
                 : allCleared
                   ? "0 images"
                   : images.length === 0 && fallbackImages && fallbackImages.length > 0
-                    ? `${fallbackImages.length} default${fallbackImages.length !== 1 ? "s" : ""}`
+                    ? `${visibleFallbacks.length} default${visibleFallbacks.length !== 1 ? "s" : ""}`
                     : `${images.length} image${images.length !== 1 ? "s" : ""}`}
           </span>
         </div>
@@ -401,11 +448,11 @@ export default function SectionImageManager({
 
               {loading ? (
                 <p className="text-gray-400 text-sm">Loading...</p>
-              ) : images.length === 0 && !allCleared && fallbackImages && fallbackImages.length > 0 ? (
+              ) : images.length === 0 && !allCleared && visibleFallbacks.length > 0 ? (
                 <div>
                   <div className="flex items-center justify-between mb-3 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
                     <p className="text-xs text-amber-600 font-semibold">
-                      Currently showing default images — upload to replace, or delete to clear them.
+                      Currently showing default images — upload your own, remove one by one, or clear all.
                     </p>
                     <button
                       onClick={handleClearFallbacks}
@@ -416,12 +463,12 @@ export default function SectionImageManager({
                     </button>
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {fallbackImages.map((src, i) => (
-                      <div key={i} className="group rounded-lg border border-amber-200 overflow-hidden">
+                    {visibleFallbacks.map(({ src, index }) => (
+                      <div key={index} className="group rounded-lg border border-amber-200 overflow-hidden">
                         <div className="relative aspect-video bg-gray-100">
                           <Image
                             src={src}
-                            alt={`Default ${i + 1}`}
+                            alt={`Default ${index + 1}`}
                             fill
                             className="object-cover opacity-80"
                             sizes="(max-width: 768px) 50vw, 25vw"
@@ -445,7 +492,7 @@ export default function SectionImageManager({
                               />
                             </label>
                             <button
-                              onClick={handleClearFallbacks}
+                              onClick={() => handleDeleteFallback(index)}
                               disabled={uploading}
                               className="bg-red-100 text-red-700 px-3 py-1.5 rounded text-xs font-semibold hover:bg-red-200 transition-colors"
                             >
@@ -456,6 +503,19 @@ export default function SectionImageManager({
                       </div>
                     ))}
                   </div>
+                </div>
+              ) : images.length === 0 && !slotMode && fallbackImages && fallbackImages.length > 0 && (allCleared || removedFallbacks.some(Boolean)) ? (
+                <div className="border border-amber-200 bg-amber-50 rounded-lg p-4 flex items-center justify-between gap-3">
+                  <p className="text-sm text-amber-700 font-medium">
+                    Default images are currently hidden.
+                  </p>
+                  <button
+                    onClick={handleRestoreFallbacks}
+                    disabled={uploading}
+                    className="text-xs bg-amber-100 text-amber-800 px-3 py-1.5 rounded font-semibold hover:bg-amber-200 transition-colors"
+                  >
+                    Restore defaults
+                  </button>
                 </div>
               ) : images.length === 0 ? (
                 <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
