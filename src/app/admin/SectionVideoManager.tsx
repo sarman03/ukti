@@ -18,6 +18,7 @@ export default function SectionVideoManager({
 }: SectionVideoManagerProps) {
   const [videos, setVideos] = useState<{ name: string; url: string }[]>([]);
   const [allCleared, setAllCleared] = useState(false);
+  const [removedFallbacks, setRemovedFallbacks] = useState<boolean[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
@@ -32,9 +33,17 @@ export default function SectionVideoManager({
       (f) => !f.id?.startsWith(".") && f.name !== ".emptyFolderPlaceholder"
     );
     const hasCleared = files.some((f) => f.name === "all-removed.flag");
+    const nextRemoved = Array(fallbackVideos?.length ?? 0).fill(false);
+    for (const f of files) {
+      const m = f.name.match(/^fallback-(\d+)-removed\.flag$/);
+      if (!m) continue;
+      const idx = parseInt(m[1], 10);
+      if (idx >= 0 && idx < nextRemoved.length) nextRemoved[idx] = true;
+    }
     const videoFiles = files.filter((f) => !f.name.endsWith(".flag"));
 
     setAllCleared(hasCleared && videoFiles.length === 0);
+    setRemovedFallbacks(nextRemoved);
     setVideos(
       videoFiles.map((f) => ({
         name: f.name,
@@ -42,7 +51,7 @@ export default function SectionVideoManager({
       }))
     );
     setLoading(false);
-  }, [folder]);
+  }, [folder, fallbackVideos]);
 
   useEffect(() => { fetchVideos(); }, [fetchVideos]);
 
@@ -101,13 +110,57 @@ export default function SectionVideoManager({
     setUploading(false);
   }
 
-  const showFallbacks = !allCleared && videos.length === 0 && !!fallbackVideos?.length;
+  async function handleDeleteFallback(index: number) {
+    if (!confirm("Delete this default video?")) return;
+    setUploading(true);
+    try {
+      const marker = new Blob(["removed"], { type: "text/plain" });
+      const { error } = await supabase.storage
+        .from(BUCKET)
+        .upload(`${folder}/fallback-${index}-removed.flag`, marker, {
+          contentType: "text/plain",
+          upsert: true,
+        });
+      if (error) throw new Error(error.message);
+      await fetchVideos();
+    } catch (err) {
+      alert("Delete failed: " + (err as Error).message);
+    }
+    setUploading(false);
+  }
+
+  async function handleRestoreDefaults() {
+    if (!fallbackVideos?.length) return;
+    setUploading(true);
+    try {
+      const toRemove = [
+        `${folder}/all-removed.flag`,
+        ...fallbackVideos.map((_, i) => `${folder}/fallback-${i}-removed.flag`),
+      ];
+      await supabase.storage.from(BUCKET).remove(toRemove);
+      await fetchVideos();
+    } catch (err) {
+      alert("Restore failed: " + (err as Error).message);
+    }
+    setUploading(false);
+  }
+
+  const visibleFallbacks = (fallbackVideos ?? [])
+    .map((src, i) => ({ src, index: i }))
+    .filter(({ index }) => !removedFallbacks[index]);
+  const showFallbacks = !allCleared && videos.length === 0 && visibleFallbacks.length > 0;
+  const filledCount = allCleared
+    ? 0
+    : videos.length > 0
+      ? videos.length
+      : showFallbacks
+        ? visibleFallbacks.length
+        : 0;
+  const totalCount = fallbackVideos?.length ?? filledCount;
   const badge = loading
     ? "..."
-    : allCleared
-      ? "0 videos"
-      : showFallbacks
-        ? `${fallbackVideos!.length} default${fallbackVideos!.length !== 1 ? "s" : ""}`
+    : totalCount > 0
+        ? `${filledCount}/${totalCount} filled`
         : `${videos.length} video${videos.length !== 1 ? "s" : ""}`;
 
   return (
@@ -154,7 +207,7 @@ export default function SectionVideoManager({
             <div>
               <div className="flex items-center justify-between mb-3 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
                 <p className="text-xs text-amber-600 font-semibold">
-                  Currently showing default videos — upload to replace, or delete to clear them.
+                  Currently showing default videos — upload your own, remove one by one, or clear all.
                 </p>
                 <button
                   onClick={handleClearFallbacks}
@@ -165,33 +218,46 @@ export default function SectionVideoManager({
                 </button>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {fallbackVideos!.map((src, i) => (
-                  <div key={i} className="group rounded-lg border border-amber-200 overflow-hidden">
+                {visibleFallbacks.map(({ src, index }) => (
+                  <div key={index} className="rounded-lg border border-amber-200 overflow-hidden">
                     <div className="relative aspect-[9/16] bg-gray-900">
                       <video
                         src={src}
-                        className="absolute inset-0 w-full h-full object-cover opacity-80"
+                        className="absolute inset-0 w-full h-full object-cover"
                         preload="metadata"
+                        controls
                         playsInline
-                        muted
                       />
                       <span className="absolute top-1 left-1 bg-amber-400 text-white text-[10px] font-bold px-1.5 py-0.5 rounded leading-tight z-10">
                         Default
                       </span>
-                      <div className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10">
-                        <button
-                          onClick={handleClearFallbacks}
-                          disabled={uploading}
-                          className="bg-red-100 text-red-700 px-3 py-1.5 rounded text-xs font-semibold hover:bg-red-200 transition-colors"
-                        >
-                          Delete
-                        </button>
-                      </div>
                     </div>
-                    <div className="p-2 text-xs text-gray-500 truncate">{src.split("/").pop()}</div>
+                    <div className="p-2 flex items-center gap-2">
+                      <p className="text-xs text-gray-500 truncate flex-1">{src.split("/").pop()}</p>
+                      <button
+                        onClick={() => handleDeleteFallback(index)}
+                        disabled={uploading}
+                        className="bg-red-100 text-red-700 px-2.5 py-1 rounded text-xs font-semibold hover:bg-red-200 transition-colors"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
+            </div>
+          ) : videos.length === 0 && allCleared && (fallbackVideos?.length ?? 0) > 0 ? (
+            <div className="border border-amber-200 bg-amber-50 rounded-lg p-4 flex items-center justify-between gap-3">
+              <p className="text-sm text-amber-700 font-medium">
+                All default videos are currently hidden.
+              </p>
+              <button
+                onClick={handleRestoreDefaults}
+                disabled={uploading}
+                className="text-xs bg-amber-100 text-amber-800 px-3 py-1.5 rounded font-semibold hover:bg-amber-200 transition-colors"
+              >
+                Restore defaults
+              </button>
             </div>
           ) : videos.length === 0 ? (
             <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
@@ -206,8 +272,8 @@ export default function SectionVideoManager({
                       src={video.url}
                       className="absolute inset-0 w-full h-full object-cover"
                       preload="metadata"
+                      controls
                       playsInline
-                      muted
                     />
                   </div>
                   <div className="p-2">

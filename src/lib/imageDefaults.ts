@@ -60,6 +60,26 @@ export const CTA_FALLBACK_IMAGES = [
   "/home/last%20section/PHOTO-2024-10-12-18-49-50.jpg",
 ];
 
+export const TESTIMONIAL_FALLBACK_VIDEOS = [
+  "/home/testimonials/Video-68-opt.mp4",
+  "/home/testimonials/VIDEO-2026-02-17-12-40-09.mp4",
+  "/home/testimonials/video-3-opt.mp4",
+  "/home/testimonials/video-4-opt.mp4",
+  "/home/testimonials/video-5-opt.mp4",
+  "/home/testimonials/video-6-opt.mp4",
+  "/home/testimonials/video-7-opt.mp4",
+];
+
+export const TESTIMONIAL_FALLBACK_POSTERS = [
+  "/home/testimonials/poster-1.jpg",
+  "/home/testimonials/poster-2.jpg",
+  "/home/testimonials/poster-3.jpg",
+  "/home/testimonials/poster-4.jpg",
+  "/home/testimonials/poster-5.jpg",
+  "/home/testimonials/poster-6.jpg",
+  "/home/testimonials/poster-7.jpg",
+];
+
 export const CLASSROOM_HERO_WEB_FALLBACK_IMAGES = [
   "/classroom/hero/web/AKN_9701.JPG",
   "/classroom/hero/web/AKN_9744.JPG",

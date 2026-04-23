@@ -1,28 +1,16 @@
 "use client";
 
-import { type KeyboardEvent, useRef, useState } from "react";
+import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 import FadeUp from "@/components/FadeUp";
 import { useSupabaseImages } from "@/lib/useSupabaseImages";
+import {
+  TESTIMONIAL_FALLBACK_POSTERS,
+  TESTIMONIAL_FALLBACK_VIDEOS,
+} from "@/lib/imageDefaults";
+import { supabase } from "@/lib/supabase";
 
-const FALLBACK_VIDEOS = [
-  "/home/testimonials/Video-68-opt.mp4",
-  // "/home/testimonials/VIDEO-2026-02-17-12-40-09.mp4",
-  "/home/testimonials/video-3-opt.mp4",
-  "/home/testimonials/video-4-opt.mp4",
-  "/home/testimonials/video-5-opt.mp4",
-  "/home/testimonials/video-6-opt.mp4",
-  "/home/testimonials/video-7-opt.mp4",
-];
-
-const FALLBACK_POSTERS = [
-  "/home/testimonials/poster-1.jpg",
-  // "/home/testimonials/poster-2.jpg",
-  "/home/testimonials/poster-3.jpg",
-  "/home/testimonials/poster-4.jpg",
-  "/home/testimonials/poster-5.jpg",
-  "/home/testimonials/poster-6.jpg",
-  "/home/testimonials/poster-7.jpg",
-];
+const TESTIMONIAL_FOLDER = "testimonials";
+const BUCKET = "images";
 
 function TestimonialVideo({
   src,
@@ -86,14 +74,52 @@ function TestimonialVideo({
 }
 
 export default function TestimonialsSection() {
-  const { images: supabaseVideos, cleared } = useSupabaseImages("testimonials");
-  const videos = cleared ? [] : supabaseVideos.length > 0 ? supabaseVideos : FALLBACK_VIDEOS;
-  const posters = supabaseVideos.length > 0 ? [] : FALLBACK_POSTERS;
+  const { images: supabaseVideos, cleared } = useSupabaseImages(TESTIMONIAL_FOLDER);
+  const [removedFallbacks, setRemovedFallbacks] = useState<boolean[]>(
+    () => Array(TESTIMONIAL_FALLBACK_VIDEOS.length).fill(false)
+  );
+
+  useEffect(() => {
+    let active = true;
+    async function fetchRemovedFallbacks() {
+      const { data } = await supabase.storage.from(BUCKET).list(TESTIMONIAL_FOLDER, {
+        sortBy: { column: "name", order: "asc" },
+      });
+      if (!active || !data) return;
+      const nextRemoved = Array(TESTIMONIAL_FALLBACK_VIDEOS.length).fill(false);
+      for (const f of data) {
+        const m = f.name.match(/^fallback-(\d+)-removed\.flag$/);
+        if (!m) continue;
+        const index = parseInt(m[1], 10);
+        if (index >= 0 && index < nextRemoved.length) nextRemoved[index] = true;
+      }
+      setRemovedFallbacks(nextRemoved);
+    }
+    void fetchRemovedFallbacks();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const fallbackItems = TESTIMONIAL_FALLBACK_VIDEOS.map((video, i) => ({
+    video,
+    poster: TESTIMONIAL_FALLBACK_POSTERS[i],
+    index: i,
+  })).filter(({ index }) => !removedFallbacks[index]);
+
+  const videos = cleared
+    ? []
+    : supabaseVideos.length > 0
+      ? supabaseVideos
+      : fallbackItems.map((item) => item.video);
+  const posters =
+    supabaseVideos.length > 0 ? [] : fallbackItems.map((item) => item.poster);
 
   const [current, setCurrent] = useState(0);
+  const safeCurrent = videos.length > 0 ? Math.min(current, videos.length - 1) : 0;
 
-  const prevIdx = videos.length > 1 ? (current - 1 + videos.length) % videos.length : null;
-  const nextIdx = videos.length > 1 ? (current + 1) % videos.length : null;
+  const prevIdx = videos.length > 1 ? (safeCurrent - 1 + videos.length) % videos.length : null;
+  const nextIdx = videos.length > 1 ? (safeCurrent + 1) % videos.length : null;
   const goToPrev = () => prevIdx !== null && setCurrent(prevIdx);
   const goToNext = () => nextIdx !== null && setCurrent(nextIdx);
 
@@ -116,9 +142,9 @@ export default function TestimonialsSection() {
             <div className="md:hidden px-4">
               <div className="relative mx-auto w-full max-w-sm">
                 <TestimonialVideo
-                  key={current}
-                  src={videos[current]}
-                  poster={posters[current]}
+                  key={safeCurrent}
+                  src={videos[safeCurrent]}
+                  poster={posters[safeCurrent]}
                   className="aspect-[9/16] w-full"
                 />
                 {videos.length > 1 && (
@@ -151,7 +177,7 @@ export default function TestimonialsSection() {
                       key={i}
                       onClick={() => setCurrent(i)}
                       className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                        i === current ? "bg-[#5EA85B]" : "bg-gray-400/60"
+                        i === safeCurrent ? "bg-[#5EA85B]" : "bg-gray-400/60"
                       }`}
                       aria-label={`Video ${i + 1}`}
                     />
@@ -223,9 +249,9 @@ export default function TestimonialsSection() {
                 style={{ left: "50%", transform: "translateX(-50%)", top: 0, width: 680, height: 540, zIndex: 10 }}
               >
                 <TestimonialVideo
-                  key={current}
-                  src={videos[current]}
-                  poster={posters[current]}
+                  key={safeCurrent}
+                  src={videos[safeCurrent]}
+                  poster={posters[safeCurrent]}
                   className="h-full w-full"
                 />
               </div>

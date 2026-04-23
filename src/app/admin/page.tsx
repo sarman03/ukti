@@ -16,6 +16,7 @@ import {
   HOME_HERO_WEB_FALLBACK_IMAGES,
   HOME_HERO_MOBILE_FALLBACK_IMAGES,
   LEARNING_GOALS_FALLBACK_IMAGES,
+  TESTIMONIAL_FALLBACK_VIDEOS,
   WHY_CHOOSE_FALLBACK_IMAGES,
 } from "@/lib/imageDefaults";
 
@@ -108,15 +109,7 @@ const pages: { label: string; sections: Section[] }[] = [
         type: "video",
         folder: "testimonials",
         title: "Testimonials",
-        fallbackVideos: [
-          "/home/testimonials/Video-68-opt.mp4",
-          "/home/testimonials/VIDEO-2026-02-17-12-40-09.mp4",
-          "/home/testimonials/video-3-opt.mp4",
-          "/home/testimonials/video-4-opt.mp4",
-          "/home/testimonials/video-5-opt.mp4",
-          "/home/testimonials/video-6-opt.mp4",
-          "/home/testimonials/video-7-opt.mp4",
-        ],
+        fallbackVideos: TESTIMONIAL_FALLBACK_VIDEOS,
       },
       {
         folder: "cta",
