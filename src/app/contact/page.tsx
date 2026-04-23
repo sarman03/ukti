@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Contact Ukti Early Years | Admissions in Delhi & Noida",
     description:
-      "Book a tour or submit an admission enquiry at Ukti Early Years. We are open Mon–Fri 1:30–3:30 PM and Saturday 11 AM–2 PM. Delhi and Noida branches.",
+      "Book a tour or submit an admission enquiry at Ukti Early Years. We are open Mon–Fri 9 AM–5 PM and Saturday 10 AM–3 PM. Delhi and Noida branches.",
     url: "https://www.uktiearlyyears.in/contact",
   },
   alternates: {
@@ -32,8 +32,8 @@ const contactDetails = [
   },
   {
     label: "Email",
-    value: "hello@uktiearlyyears.in",
-    href: "mailto:hello@uktiearlyyears.in",
+    value: "Info@uktiearlyyears.in",
+    href: "mailto:Info@uktiearlyyears.in",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
@@ -54,7 +54,7 @@ const contactDetails = [
   },
   {
     label: "Hours",
-    value: "Mon – Fri: 1:30 PM – 3:30 PM\nSat: 11:00 AM – 2:00 PM",
+    value: "Mon – Fri: 9:00 AM – 5:00 PM\nSat: 10:00 AM – 3:00 PM",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10" />

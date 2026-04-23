@@ -9,7 +9,7 @@ import { HOME_ABOUT_FALLBACK_IMAGES } from "@/lib/imageDefaults";
 
 const stats = [
   { value: 6, suffix: "+", label: "Years of Experience", icon: "/about-us/6+.png" },
-  { value: 50, suffix: "+", label: "Happy Little Learners", icon: "/about-us/50 +.png" },
+  { value: 100, suffix: "+", label: "Happy Little Learners", icon: "/about-us/50 +.png" },
   { value: 3, suffix: "hrs+", label: "Tactile Play", icon: "/about-us/3+.png" },
 ];
 
@@ -81,7 +81,7 @@ export default function AboutSection() {
                 <br /><br />
                 More than just a preschool, Ukti is a home for learning—a close-knit community where children feel safe, valued, and inspired every day.
               </p>
-              <RippleButton href="#">
+              <RippleButton href="/about">
                 Know More
               </RippleButton>
           </div>

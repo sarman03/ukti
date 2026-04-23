@@ -218,8 +218,8 @@ export default function EnquiryFormSection() {
         {activeTab === "tour" && (
           <div className="mb-6 text-sm text-gray-700 leading-relaxed">
             <p className="font-semibold">Tour Timings:</p>
-            <p>Monday to Friday: 1:30 pm – 3:30 pm</p>
-            <p>Saturday: 11:00 am – 2:00 pm</p>
+            <p>Monday to Friday: 9:00 am – 5:00 pm</p>
+            <p>Saturday: 10:00 am – 3:00 pm</p>
           </div>
         )}
 
@@ -251,8 +251,25 @@ function TourForm() {
   function getTimeSlots(dateStr: string): string[] {
     if (!dateStr) return [];
     const day = new Date(dateStr).getDay();
-    if (day === 6) return ["11:00 AM - 12:00 PM", "12:00 PM - 1:00 PM", "1:00 PM - 2:00 PM"];
-    return ["1:30 PM - 2:30 PM", "2:30 PM - 3:30 PM"];
+    if (day === 6) {
+      return [
+        "10:00 AM - 11:00 AM",
+        "11:00 AM - 12:00 PM",
+        "12:00 PM - 1:00 PM",
+        "1:00 PM - 2:00 PM",
+        "2:00 PM - 3:00 PM",
+      ];
+    }
+    return [
+      "9:00 AM - 10:00 AM",
+      "10:00 AM - 11:00 AM",
+      "11:00 AM - 12:00 PM",
+      "12:00 PM - 1:00 PM",
+      "1:00 PM - 2:00 PM",
+      "2:00 PM - 3:00 PM",
+      "3:00 PM - 4:00 PM",
+      "4:00 PM - 5:00 PM",
+    ];
   }
 
   function handleDateChange(val: string) {
