@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
 import ImageCropModal from "@/components/ImageCropModal";
+import { useToast, useConfirm, ToastContainer, ConfirmDialog } from "./AdminUI";
 
 async function normalizeFile(file: File): Promise<File> {
   const isHeic =
@@ -25,9 +26,7 @@ interface SectionImageManagerProps {
   aspect: number;
   aspectLabel: string;
   maxImages?: number;
-  /** When provided, enables slot-based mode: one fixed slot per label. */
   slotLabels?: string[];
-  /** Fallback images shown when no Supabase images are uploaded (currently active on site). */
   fallbackImages?: string[];
 }
 
@@ -71,6 +70,10 @@ export default function SectionImageManager({
   const [cropSrc, setCropSrc] = useState<string | null>(null);
   const [replaceTarget, setReplaceTarget] = useState<string | null>(null);
   const [targetSlot, setTargetSlot] = useState<number | null>(null);
+  const [targetFallbackIndex, setTargetFallbackIndex] = useState<number | null>(null);
+
+  const { toasts, toast, dismiss } = useToast();
+  const { confirm, confirmState, closeConfirm } = useConfirm();
 
   const fetchImages = useCallback(async () => {
     const { data, error } = await supabase.storage.from(BUCKET).list(folder, {
@@ -131,7 +134,10 @@ export default function SectionImageManager({
     fetchImages();
   }, [fetchImages]);
 
-  async function openCrop(file: File, opts?: { replaceOld?: string; slotIndex?: number }) {
+  async function openCrop(
+    file: File,
+    opts?: { replaceOld?: string; slotIndex?: number; fallbackIndex?: number }
+  ) {
     setUploading(true);
     const normalized = await normalizeFile(file).catch(() => file);
     setUploading(false);
@@ -140,6 +146,7 @@ export default function SectionImageManager({
       setCropSrc(reader.result as string);
       setReplaceTarget(opts?.replaceOld ?? null);
       setTargetSlot(opts?.slotIndex ?? null);
+      setTargetFallbackIndex(opts?.fallbackIndex ?? null);
     };
     reader.readAsDataURL(normalized);
   }
@@ -148,11 +155,13 @@ export default function SectionImageManager({
     setCropSrc(null);
     setReplaceTarget(null);
     setTargetSlot(null);
+    setTargetFallbackIndex(null);
   }
 
   async function handleCropped(blob: Blob) {
     const oldReplace = replaceTarget;
     const slotIndex = targetSlot;
+    const fallbackIndex = targetFallbackIndex;
     closeCrop();
     setUploading(true);
 
@@ -163,8 +172,21 @@ export default function SectionImageManager({
       if (slotIndex !== null) {
         await supabase.storage.from(BUCKET).remove([`${folder}/slot-${slotIndex}-removed.flag`]);
       }
-      if (slotIndex === null) {
+      // Only clear the all-removed flag for a plain new upload (not a targeted fallback replace)
+      if (slotIndex === null && fallbackIndex === null) {
         await supabase.storage.from(BUCKET).remove([`${folder}/all-removed.flag`]);
+      }
+
+      // When replacing a specific fallback, mark only that slot as removed
+      if (fallbackIndex !== null) {
+        const marker = new Blob(["removed"], { type: "text/plain" });
+        const { error } = await supabase.storage
+          .from(BUCKET)
+          .upload(`${folder}/fallback-${fallbackIndex}-removed.flag`, marker, {
+            contentType: "text/plain",
+            upsert: true,
+          });
+        if (error) throw new Error(error.message);
       }
 
       const fileName =
@@ -177,31 +199,35 @@ export default function SectionImageManager({
         .upload(`${folder}/${fileName}`, blob, { contentType: "image/webp" });
 
       if (error) {
-        alert("Upload failed: " + error.message);
+        toast.error("Upload failed: " + error.message);
       } else {
+        toast.success("Image uploaded successfully.");
         await fetchImages();
       }
     } catch (err) {
-      alert("Upload failed: " + (err as Error).message);
+      toast.error("Upload failed: " + (err as Error).message);
     }
 
     setUploading(false);
   }
 
   async function handleDelete(name: string) {
-    if (!confirm("Delete this image?")) return;
+    const ok = await confirm("Delete this image?", { confirmLabel: "Delete" });
+    if (!ok) return;
 
     const { error } = await supabase.storage.from(BUCKET).remove([`${folder}/${name}`]);
 
     if (error) {
-      alert("Delete failed: " + error.message);
+      toast.error("Delete failed: " + error.message);
     } else {
+      toast.success("Image deleted.");
       await fetchImages();
     }
   }
 
   async function handleDeleteSlot(slot: SlotFile, slotIndex: number, hasLocalFallback: boolean) {
-    if (!confirm("Delete this image?")) return;
+    const ok = await confirm("Delete this image?", { confirmLabel: "Delete" });
+    if (!ok) return;
     setUploading(true);
 
     try {
@@ -223,16 +249,21 @@ export default function SectionImageManager({
         if (error) throw new Error(error.message);
       }
 
+      toast.success("Image deleted.");
       await fetchImages();
     } catch (err) {
-      alert("Delete failed: " + (err as Error).message);
+      toast.error("Delete failed: " + (err as Error).message);
     }
 
     setUploading(false);
   }
 
   async function handleClearFallbacks() {
-    if (!confirm("Remove all default images? The section will show no images until you upload new ones.")) return;
+    const ok = await confirm("Clear all default images?", {
+      detail: "The section will show no images until you upload new ones.",
+      confirmLabel: "Clear all",
+    });
+    if (!ok) return;
     setUploading(true);
     try {
       const marker = new Blob(["removed"], { type: "text/plain" });
@@ -240,15 +271,17 @@ export default function SectionImageManager({
         .from(BUCKET)
         .upload(`${folder}/all-removed.flag`, marker, { contentType: "text/plain", upsert: true });
       if (error) throw new Error(error.message);
+      toast.success("Default images cleared.");
       await fetchImages();
     } catch (err) {
-      alert("Failed: " + (err as Error).message);
+      toast.error("Failed: " + (err as Error).message);
     }
     setUploading(false);
   }
 
   async function handleDeleteFallback(index: number) {
-    if (!confirm("Delete this default image?")) return;
+    const ok = await confirm("Delete this default image?", { confirmLabel: "Delete" });
+    if (!ok) return;
     setUploading(true);
     try {
       const marker = new Blob(["removed"], { type: "text/plain" });
@@ -259,9 +292,10 @@ export default function SectionImageManager({
           upsert: true,
         });
       if (error) throw new Error(error.message);
+      toast.success("Default image removed.");
       await fetchImages();
     } catch (err) {
-      alert("Delete failed: " + (err as Error).message);
+      toast.error("Delete failed: " + (err as Error).message);
     }
     setUploading(false);
   }
@@ -275,9 +309,10 @@ export default function SectionImageManager({
         ...fallbackImages.map((_, i) => `${folder}/fallback-${i}-removed.flag`),
       ];
       await supabase.storage.from(BUCKET).remove(toRemove);
+      toast.success("Default images restored.");
       await fetchImages();
     } catch (err) {
-      alert("Failed: " + (err as Error).message);
+      toast.error("Failed: " + (err as Error).message);
     }
     setUploading(false);
   }
@@ -286,6 +321,7 @@ export default function SectionImageManager({
   const visibleFallbacks = (fallbackImages ?? [])
     .map((src, i) => ({ src, index: i }))
     .filter(({ index }) => !removedFallbacks[index]);
+
   const filledCount = slotMode
     ? slots.reduce((count, slot, i) => {
         const hasFallback = !!fallbackImages?.[i] && !removedSlots[i];
@@ -293,6 +329,22 @@ export default function SectionImageManager({
       }, 0)
     : images.length;
   const totalCount = slotMode ? slotCount : images.length;
+
+  // Badge label for the section header
+  const badgeLabel = loading
+    ? "..."
+    : slotMode
+      ? `${filledCount}/${totalCount} filled`
+      : allCleared && images.length === 0
+        ? "0 images"
+        : (() => {
+            const uploadCount = images.length;
+            const defaultCount = visibleFallbacks.length;
+            if (uploadCount === 0 && defaultCount === 0) return "0 images";
+            if (uploadCount === 0) return `${defaultCount} default${defaultCount !== 1 ? "s" : ""}`;
+            if (defaultCount === 0) return `${uploadCount} image${uploadCount !== 1 ? "s" : ""}`;
+            return `${uploadCount} uploaded, ${defaultCount} default${defaultCount !== 1 ? "s" : ""}`;
+          })();
 
   return (
     <div className="border border-gray-200 rounded-xl bg-white overflow-hidden">
@@ -303,15 +355,7 @@ export default function SectionImageManager({
         <div className="flex items-center gap-3">
           <h2 className="text-base font-bold text-gray-800">{title}</h2>
           <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-            {loading
-              ? "..."
-              : slotMode
-                ? `${filledCount}/${totalCount} filled`
-                : allCleared
-                  ? "0 images"
-                  : images.length === 0 && fallbackImages && fallbackImages.length > 0
-                    ? `${visibleFallbacks.length} default${visibleFallbacks.length !== 1 ? "s" : ""}`
-                    : `${images.length} image${images.length !== 1 ? "s" : ""}`}
+            {badgeLabel}
           </span>
         </div>
         <svg
@@ -421,6 +465,7 @@ export default function SectionImageManager({
               </div>
             )
           ) : (
+            // Non-slot mode
             <>
               {!atLimit && (
                 <div className="mb-4">
@@ -448,23 +493,55 @@ export default function SectionImageManager({
 
               {loading ? (
                 <p className="text-gray-400 text-sm">Loading...</p>
-              ) : images.length === 0 && !allCleared && visibleFallbacks.length > 0 ? (
-                <div>
-                  <div className="flex items-center justify-between mb-3 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                    <p className="text-xs text-amber-600 font-semibold">
-                      Currently showing default images — upload your own, remove one by one, or clear all.
-                    </p>
+              ) : allCleared && images.length === 0 ? (
+                // All defaults were cleared via "Clear all" and no uploads exist
+                <div className="border border-amber-200 bg-amber-50 rounded-lg p-4 flex items-center justify-between gap-3">
+                  <p className="text-sm text-amber-700 font-medium">
+                    Default images are currently hidden.
+                  </p>
+                  <button
+                    onClick={handleRestoreFallbacks}
+                    disabled={uploading}
+                    className="text-xs bg-amber-100 text-amber-800 px-3 py-1.5 rounded font-semibold hover:bg-amber-200 transition-colors"
+                  >
+                    Restore defaults
+                  </button>
+                </div>
+              ) : visibleFallbacks.length === 0 && images.length === 0 ? (
+                // All defaults individually removed, no uploads
+                <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
+                  <p className="text-gray-400 text-sm mb-3">No images</p>
+                  {fallbackImages && fallbackImages.length > 0 && (
                     <button
-                      onClick={handleClearFallbacks}
+                      onClick={handleRestoreFallbacks}
                       disabled={uploading}
-                      className="ml-3 text-xs bg-red-100 text-red-700 px-2.5 py-1 rounded font-semibold hover:bg-red-200 transition-colors flex-shrink-0"
+                      className="text-xs bg-amber-100 text-amber-800 px-3 py-1.5 rounded font-semibold hover:bg-amber-200 transition-colors"
                     >
-                      Clear all
+                      Restore defaults
                     </button>
-                  </div>
+                  )}
+                </div>
+              ) : (
+                // Combined grid: remaining defaults + uploaded images
+                <div>
+                  {visibleFallbacks.length > 0 && (
+                    <div className="flex items-center justify-between mb-3 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                      <p className="text-xs text-amber-600 font-semibold">
+                        Default images shown — replace or delete individual ones, or clear all defaults.
+                      </p>
+                      <button
+                        onClick={handleClearFallbacks}
+                        disabled={uploading}
+                        className="ml-3 text-xs bg-red-100 text-red-700 px-2.5 py-1 rounded font-semibold hover:bg-red-200 transition-colors flex-shrink-0"
+                      >
+                        Clear all defaults
+                      </button>
+                    </div>
+                  )}
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {/* Remaining default images */}
                     {visibleFallbacks.map(({ src, index }) => (
-                      <div key={index} className="group rounded-lg border border-amber-200 overflow-hidden">
+                      <div key={`fallback-${index}`} className="group rounded-lg border border-amber-200 overflow-hidden">
                         <div className="relative aspect-video bg-gray-100">
                           <Image
                             src={src}
@@ -484,7 +561,7 @@ export default function SectionImageManager({
                                 accept="image/*"
                                 onChange={(e) => {
                                   const file = e.target.files?.[0];
-                                  if (file) openCrop(file);
+                                  if (file) openCrop(file, { fallbackIndex: index });
                                   e.target.value = "";
                                 }}
                                 disabled={uploading}
@@ -502,67 +579,49 @@ export default function SectionImageManager({
                         </div>
                       </div>
                     ))}
-                  </div>
-                </div>
-              ) : images.length === 0 && !slotMode && fallbackImages && fallbackImages.length > 0 && (allCleared || removedFallbacks.some(Boolean)) ? (
-                <div className="border border-amber-200 bg-amber-50 rounded-lg p-4 flex items-center justify-between gap-3">
-                  <p className="text-sm text-amber-700 font-medium">
-                    Default images are currently hidden.
-                  </p>
-                  <button
-                    onClick={handleRestoreFallbacks}
-                    disabled={uploading}
-                    className="text-xs bg-amber-100 text-amber-800 px-3 py-1.5 rounded font-semibold hover:bg-amber-200 transition-colors"
-                  >
-                    Restore defaults
-                  </button>
-                </div>
-              ) : images.length === 0 ? (
-                <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
-                  <p className="text-gray-400 text-sm">No images</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {images.map((image) => (
-                    <div
-                      key={image.name}
-                      className="rounded-lg border border-gray-200 overflow-hidden"
-                    >
-                      <div className="relative aspect-video bg-gray-100">
-                        <Image
-                          src={image.url}
-                          alt={image.name}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 50vw, 25vw"
-                        />
-                      </div>
-                      <div className="p-2">
-                        <p className="text-xs text-gray-500 truncate mb-2">{image.name}</p>
-                        <div className="flex gap-1.5">
-                          <label className="flex-1 bg-amber-100 text-amber-700 py-1 rounded text-xs font-medium hover:bg-amber-200 transition-colors text-center cursor-pointer">
-                            Replace
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) openCrop(file, { replaceOld: image.name });
-                                e.target.value = "";
-                              }}
-                              className="hidden"
-                            />
-                          </label>
-                          <button
-                            onClick={() => handleDelete(image.name)}
-                            className="flex-1 bg-red-100 text-red-700 py-1 rounded text-xs font-medium hover:bg-red-200 transition-colors"
-                          >
-                            Delete
-                          </button>
+
+                    {/* Uploaded custom images */}
+                    {images.map((image) => (
+                      <div
+                        key={image.name}
+                        className="rounded-lg border border-gray-200 overflow-hidden"
+                      >
+                        <div className="relative aspect-video bg-gray-100">
+                          <Image
+                            src={image.url}
+                            alt={image.name}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 50vw, 25vw"
+                          />
+                        </div>
+                        <div className="p-2">
+                          <p className="text-xs text-gray-500 truncate mb-2">{image.name}</p>
+                          <div className="flex gap-1.5">
+                            <label className="flex-1 bg-amber-100 text-amber-700 py-1 rounded text-xs font-medium hover:bg-amber-200 transition-colors text-center cursor-pointer">
+                              Replace
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) openCrop(file, { replaceOld: image.name });
+                                  e.target.value = "";
+                                }}
+                                className="hidden"
+                              />
+                            </label>
+                            <button
+                              onClick={() => handleDelete(image.name)}
+                              className="flex-1 bg-red-100 text-red-700 py-1 rounded text-xs font-medium hover:bg-red-200 transition-colors"
+                            >
+                              Delete
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               )}
             </>
@@ -579,6 +638,9 @@ export default function SectionImageManager({
           onCancel={closeCrop}
         />
       )}
+
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
+      <ConfirmDialog state={confirmState} onClose={closeConfirm} />
     </div>
   );
 }

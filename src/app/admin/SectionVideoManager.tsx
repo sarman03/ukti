@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
+import { useToast, useConfirm, ToastContainer, ConfirmDialog } from "./AdminUI";
 
 const BUCKET = "images";
 
@@ -22,6 +23,9 @@ export default function SectionVideoManager({
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
+
+  const { toasts, toast, dismiss } = useToast();
+  const { confirm, confirmState, closeConfirm } = useConfirm();
 
   const fetchVideos = useCallback(async () => {
     const { data, error } = await supabase.storage.from(BUCKET).list(folder, {
@@ -63,10 +67,14 @@ export default function SectionVideoManager({
       const { error } = await supabase.storage
         .from(BUCKET)
         .upload(`${folder}/${Date.now()}.${ext}`, file, { contentType: file.type });
-      if (error) alert("Upload failed: " + error.message);
-      else await fetchVideos();
+      if (error) {
+        toast.error("Upload failed: " + error.message);
+      } else {
+        toast.success("Video uploaded successfully.");
+        await fetchVideos();
+      }
     } catch (err) {
-      alert("Upload failed: " + (err as Error).message);
+      toast.error("Upload failed: " + (err as Error).message);
     }
     setUploading(false);
   }
@@ -79,23 +87,36 @@ export default function SectionVideoManager({
       const { error } = await supabase.storage
         .from(BUCKET)
         .upload(`${folder}/${Date.now()}.${ext}`, file, { contentType: file.type });
-      if (error) alert("Upload failed: " + error.message);
-      else await fetchVideos();
+      if (error) {
+        toast.error("Upload failed: " + error.message);
+      } else {
+        toast.success("Video replaced successfully.");
+        await fetchVideos();
+      }
     } catch (err) {
-      alert("Upload failed: " + (err as Error).message);
+      toast.error("Upload failed: " + (err as Error).message);
     }
     setUploading(false);
   }
 
   async function handleDelete(name: string) {
-    if (!confirm("Delete this video?")) return;
+    const ok = await confirm("Delete this video?", { confirmLabel: "Delete" });
+    if (!ok) return;
     const { error } = await supabase.storage.from(BUCKET).remove([`${folder}/${name}`]);
-    if (error) alert("Delete failed: " + error.message);
-    else await fetchVideos();
+    if (error) {
+      toast.error("Delete failed: " + error.message);
+    } else {
+      toast.success("Video deleted.");
+      await fetchVideos();
+    }
   }
 
   async function handleClearFallbacks() {
-    if (!confirm("Remove default videos? The section will show no videos until you upload new ones.")) return;
+    const ok = await confirm("Remove default videos?", {
+      detail: "The section will show no videos until you upload new ones.",
+      confirmLabel: "Clear all",
+    });
+    if (!ok) return;
     setUploading(true);
     try {
       const marker = new Blob(["removed"], { type: "text/plain" });
@@ -103,15 +124,17 @@ export default function SectionVideoManager({
         .from(BUCKET)
         .upload(`${folder}/all-removed.flag`, marker, { contentType: "text/plain", upsert: true });
       if (error) throw new Error(error.message);
+      toast.success("Default videos cleared.");
       await fetchVideos();
     } catch (err) {
-      alert("Failed: " + (err as Error).message);
+      toast.error("Failed: " + (err as Error).message);
     }
     setUploading(false);
   }
 
   async function handleDeleteFallback(index: number) {
-    if (!confirm("Delete this default video?")) return;
+    const ok = await confirm("Delete this default video?", { confirmLabel: "Delete" });
+    if (!ok) return;
     setUploading(true);
     try {
       const marker = new Blob(["removed"], { type: "text/plain" });
@@ -122,9 +145,10 @@ export default function SectionVideoManager({
           upsert: true,
         });
       if (error) throw new Error(error.message);
+      toast.success("Default video removed.");
       await fetchVideos();
     } catch (err) {
-      alert("Delete failed: " + (err as Error).message);
+      toast.error("Delete failed: " + (err as Error).message);
     }
     setUploading(false);
   }
@@ -138,9 +162,10 @@ export default function SectionVideoManager({
         ...fallbackVideos.map((_, i) => `${folder}/fallback-${i}-removed.flag`),
       ];
       await supabase.storage.from(BUCKET).remove(toRemove);
+      toast.success("Default videos restored.");
       await fetchVideos();
     } catch (err) {
-      alert("Restore failed: " + (err as Error).message);
+      toast.error("Restore failed: " + (err as Error).message);
     }
     setUploading(false);
   }
@@ -306,6 +331,9 @@ export default function SectionVideoManager({
           )}
         </div>
       )}
+
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
+      <ConfirmDialog state={confirmState} onClose={closeConfirm} />
     </div>
   );
 }
