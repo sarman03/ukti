@@ -21,17 +21,25 @@ export default function Navbar() {
       </div>
 
     <nav className="bg-[#F2DA36] px-4 md:px-20 py-3 md:py-4 flex items-center justify-between">
-      {/* Mobile: Logo on left */}
-      <Link href="/" className="md:hidden">
-        <Image
-          src="/logo/Ukti _ Logo.png"
-          alt="Ukti Early Years"
-          width={120}
-          height={125}
-          priority
-          className="w-16 h-auto"
-        />
-      </Link>
+      {/* Mobile: Logo + brand text on left */}
+      <div className="md:hidden flex items-center gap-2">
+        <Link href="/">
+          <Image
+            src="/logo/Ukti _ Logo.png"
+            alt="Ukti Early Years"
+            width={120}
+            height={125}
+            priority
+            className="w-16 h-auto"
+          />
+        </Link>
+        <span
+          className="text-gray-800 leading-tight text-sm"
+          style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+        >
+          Ukti Early Years
+        </span>
+      </div>
 
       {/* Left: Nav Links (desktop) */}
       <div className="hidden md:flex items-center gap-10">

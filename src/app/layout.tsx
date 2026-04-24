@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Baloo_2 } from "next/font/google";
+import { Baloo_2, DM_Sans } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import JsonLd from "@/components/JsonLd";
@@ -8,6 +8,11 @@ const baloo = Baloo_2({
   variable: "--font-baloo",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
 });
 
 const SITE_URL = "https://www.uktiearlyyears.in";
@@ -90,7 +95,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${baloo.variable} h-full antialiased`}
+      className={`${baloo.variable} ${dmSans.variable} h-full antialiased`}
     >
       <head>
         <JsonLd />

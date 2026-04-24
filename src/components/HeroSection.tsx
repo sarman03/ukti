@@ -93,13 +93,28 @@ export default function HeroSection() {
             </svg>
           </button>
 
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-            {Array.from({ length: maxLength }).map((_, index) => (
+          {/* Mobile indicators */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10 md:hidden">
+            {mobileImages.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrent(index)}
                 className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                  index === current ? "bg-white" : "bg-white/50"
+                  index === mobileIdx ? "bg-white" : "bg-white/50"
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Desktop indicators */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex gap-2 z-10">
+            {webImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrent(index)}
+                className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                  index === webIdx ? "bg-white" : "bg-white/50"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
