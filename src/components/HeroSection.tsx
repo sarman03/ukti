@@ -19,8 +19,8 @@ export default function HeroSection() {
 
   const webFallbacks = HOME_HERO_WEB_FALLBACK_IMAGES.filter((_, i) => !webRemovedFallbacks[i]);
   const mobileFallbacks = HOME_HERO_MOBILE_FALLBACK_IMAGES.filter((_, i) => !mobileRemovedFallbacks[i]);
-  const webImages = webCleared ? [] : webAdmin.length > 0 ? webAdmin : webFallbacks;
-  const mobileImages = mobileCleared ? [] : mobileAdmin.length > 0 ? mobileAdmin : mobileFallbacks;
+  const webImages = webCleared ? [] : [...webAdmin, ...webFallbacks];
+  const mobileImages = mobileCleared ? [] : [...mobileAdmin, ...mobileFallbacks];
 
   const maxLength = Math.max(webImages.length, mobileImages.length, 1);
   const [current, setCurrent] = useState(0);

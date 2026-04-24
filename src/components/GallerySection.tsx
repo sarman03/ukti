@@ -11,7 +11,7 @@ export default function GallerySection() {
     GALLERY_FALLBACK_IMAGES.length
   );
   const galleryFallbacks = GALLERY_FALLBACK_IMAGES.filter((_, i) => !removedFallbacks[i]);
-  const images = cleared ? [] : adminImages.length > 0 ? adminImages : galleryFallbacks;
+  const images = cleared ? [] : [...adminImages, ...galleryFallbacks];
 
   // Split images into two rows, duplicate for seamless loop
   const half = Math.ceil(images.length / 2);
