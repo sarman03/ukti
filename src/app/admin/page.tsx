@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import SectionImageManager from "./SectionImageManager";
 import SectionVideoManager from "./SectionVideoManager";
+import ClassroomProgramManager from "./ClassroomProgramManager";
 import {
   ABOUT_ENVIRONMENT_FALLBACK_IMAGES,
   ABOUT_FOUNDERS_FALLBACK_IMAGES,
   ABOUT_HERO_FALLBACK_IMAGES,
-  CLASSROOM_CARD_FALLBACK_IMAGES,
   CLASSROOM_HERO_WEB_FALLBACK_IMAGES,
   CLASSROOM_HERO_MOBILE_FALLBACK_IMAGES,
   CTA_FALLBACK_IMAGES,
@@ -74,21 +74,6 @@ const pages: { label: string; sections: Section[] }[] = [
         fallbackImages: WHY_CHOOSE_FALLBACK_IMAGES,
       },
       {
-        folder: "classroom",
-        title: "Our Classroom",
-        aspect: 16 / 9,
-        aspectLabel: "Classroom card — 16:9",
-        maxImages: 5,
-        slotLabels: [
-          "Toddlers (Pre School)",
-          "Pre Nursery (Pre School)",
-          "Nursery (Pre School)",
-          "Storytelling Program (After School)",
-          "Language & Math Program (After School)",
-        ],
-        fallbackImages: CLASSROOM_CARD_FALLBACK_IMAGES,
-      },
-      {
         folder: "gallery",
         title: "Gallery",
         aspect: 1,
@@ -148,21 +133,6 @@ const pages: { label: string; sections: Section[] }[] = [
         fallbackImages: CLASSROOM_HERO_MOBILE_FALLBACK_IMAGES,
         allowReorder: true,
       },
-      {
-        folder: "classroom-cards",
-        title: "Program Cards",
-        aspect: 4 / 3,
-        aspectLabel: "Program Card — 4:3",
-        maxImages: 5,
-        slotLabels: [
-          "Toddlers",
-          "Pre Nursery",
-          "Nursery",
-          "Storytelling Program",
-          "Language & Math Program",
-        ],
-        fallbackImages: CLASSROOM_CARD_FALLBACK_IMAGES,
-      },
     ],
   },
   {
@@ -214,10 +184,12 @@ export default function AdminPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (localStorage.getItem(AUTH_KEY) === "1") {
-      setAuthenticated(true);
-    }
-    setHydrated(true);
+    const authed = localStorage.getItem(AUTH_KEY) === "1";
+    const timer = window.setTimeout(() => {
+      setAuthenticated(authed);
+      setHydrated(true);
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   function handleLogin(e: React.FormEvent) {
@@ -311,6 +283,8 @@ export default function AdminPage() {
               {page.label}
             </h2>
             <div className="space-y-4">
+              {page.label === "Home" && <ClassroomProgramManager mode="home" />}
+              {page.label === "Classroom" && <ClassroomProgramManager mode="page" />}
               {page.sections.map((s) =>
                 s.type === "video" ? (
                   <SectionVideoManager key={s.folder} folder={s.folder} title={s.title} fallbackVideos={s.fallbackVideos} />

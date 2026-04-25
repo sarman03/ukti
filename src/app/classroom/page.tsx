@@ -8,104 +8,14 @@ import FadeUp from "@/components/FadeUp";
 import DayAtUktiSection from "@/components/DayAtUktiSection";
 import EnquiryFormSection from "@/components/EnquiryFormSection";
 import RippleButton from "@/components/RippleButton";
+import { getStoragePublicUrl } from "@/lib/classroomPrograms";
+import { useClassroomPageCards } from "@/lib/useClassroomPrograms";
 import { useSupabaseImages, useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 import {
   CLASSROOM_CARD_FALLBACK_IMAGES,
   CLASSROOM_HERO_WEB_FALLBACK_IMAGES,
   CLASSROOM_HERO_MOBILE_FALLBACK_IMAGES,
 } from "@/lib/imageDefaults";
-
-const preschoolPrograms = [
-  {
-    title: "Toddlers",
-    subtitle: "A safe start to explore the world",
-    description:
-      "For children aged 15-23 months, a nurturing environment focused on sensory discovery, movement, and emotional comfort.",
-    points: [
-      "Weekly Thematic Experiences",
-      "Circle Time",
-      "Storytelling Adventures",
-      "Sensory Play and Messy Play",
-      "Multimedia Art",
-      "Cooking Experiences",
-      "Practical Life and Montessori Exercises",
-      "Gross Motor Sessions",
-    ],
-  },
-  {
-    title: "Pre Nursery",
-    subtitle: "Nurture curiosity and early growth",
-    description:
-      "For children aged 3-4 years, a gentle introduction to learning through play, exploration, and early social skills.",
-    points: [
-      "Theme-based learning every week",
-      "Circle time for bonding & communication",
-      "Storytelling to build imagination",
-      "Early language & math concepts",
-      "Montessori practical life skills",
-    ],
-  },
-  {
-    title: "Nursery",
-    subtitle: "Build strong foundations for growth",
-    description:
-      "A structured, play-based program where children explore themes through hands-on learning, building early literacy, numeracy, creativity, independence, and strong social-emotional skills.",
-    points: [
-      "Thematic Learning & Experiential Exploration",
-      "Circle Time & Storytelling",
-      "Creative Arts & STEAM Learning",
-      "Early Literacy & Pre-Writing Skills",
-      "Early Math & Logical Thinking",
-      "Practical Life Skills & Montessori Exercises",
-      "Gross Motor Development & Outdoor Play",
-    ],
-  },
-];
-
-const afterschoolPrograms = [
-  {
-    title: "Storytelling Program",
-    subtitle: "Bringing stories to life through imagination",
-    description:
-      'An immersive program where children explore a "Story of the Day" through engaging, expressive, and play-focused experiences.',
-    points: [
-      "Music, movement & rhythm",
-      "Theatre games & role play",
-      "Expressive storytelling sessions",
-      "Art & sensory-based experiences",
-      "Gross motor play & movement",
-    ],
-  },
-  {
-    title: "Language & Math Program",
-    subtitle: "Build strong literacy and numeracy foundations",
-    description:
-      "A structured program based on Jolly Phonics, designed to develop language and math skills through fun, hands-on learning.",
-    sections: [
-      {
-        heading: "Language Development",
-        points: [
-          "One letter introduced per session",
-          "Sound-symbol recognition",
-          "Letter formation practice",
-          "Beginning sound identification",
-          "Reading 2-3 letter words",
-        ],
-      },
-      {
-        heading: "Pre-Math Skills",
-        points: [
-          "Numbers, symbols & recognition",
-          "Counting & number sequencing",
-          "Sorting, matching & patterns",
-          "Intro to graphs through play",
-          "Shapes recognition",
-          "Number writing practice",
-        ],
-      },
-    ],
-  },
-];
 
 function ProgramCard({
   title,
@@ -315,7 +225,22 @@ function HeroCarousel() {
 }
 
 export default function ClassroomPage() {
+  const { cards } = useClassroomPageCards();
   const { images: cardImages, removed: removedCardSlots } = useSupabaseSlotImages("classroom-cards", 5);
+  const preschoolPrograms = cards.filter((card) => card.tab === "preschool");
+  const afterschoolPrograms = cards.filter((card) => card.tab === "afterschool");
+  const resolveCardImage = (cardId: string, explicitPath?: string) => {
+    const card = cards.find((item) => item.id === cardId);
+    if (card?.imageRemoved) return "";
+    const adminImage = getStoragePublicUrl(explicitPath);
+    if (adminImage) return adminImage;
+
+    const index = cards.findIndex((card) => card.id === cardId);
+    if (index === -1) return "";
+    return removedCardSlots[index]
+      ? cardImages[index]
+      : cardImages[index] || CLASSROOM_CARD_FALLBACK_IMAGES[index];
+  };
 
   return (
     <main>
@@ -337,7 +262,8 @@ export default function ClassroomPage() {
                 <ProgramCard
                   {...program}
                   imageLeft
-                  imageUrl={removedCardSlots[i] ? cardImages[i] : cardImages[i] || CLASSROOM_CARD_FALLBACK_IMAGES[i]}
+                  imageUrl={resolveCardImage(program.id, program.imagePath)}
+                  imageHeight={program.imageHeight === "tall" ? "md:h-[600px]" : "md:h-[400px]"}
                 />
               </FadeUp>
             ))}
@@ -358,12 +284,8 @@ export default function ClassroomPage() {
               <FadeUp key={program.title} delay={i * 0.15}>
                 <ProgramCard
                   {...program}
-                  imageUrl={
-                    removedCardSlots[preschoolPrograms.length + i]
-                      ? cardImages[preschoolPrograms.length + i]
-                      : cardImages[preschoolPrograms.length + i] || CLASSROOM_CARD_FALLBACK_IMAGES[preschoolPrograms.length + i]
-                  }
-                  imageHeight={program.title === "Language & Math Program" ? "md:h-[600px]" : "md:h-[400px]"}
+                  imageUrl={resolveCardImage(program.id, program.imagePath)}
+                  imageHeight={program.imageHeight === "tall" ? "md:h-[600px]" : "md:h-[400px]"}
                 />
               </FadeUp>
             ))}

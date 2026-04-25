@@ -4,53 +4,18 @@ import { useState } from "react";
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
+import { getStoragePublicUrl } from "@/lib/classroomPrograms";
+import { useHomeClassroomCards } from "@/lib/useClassroomPrograms";
 import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 import { CLASSROOM_CARD_FALLBACK_IMAGES } from "@/lib/imageDefaults";
 
 type Tab = "preschool" | "afterschool";
 
-type Program = { title: string; age?: string; description: string };
-
-const programs: Record<Tab, Program[]> = {
-  preschool: [
-    {
-      title: "Toddlers",
-      age: "Age: 15 – 23 Months",
-      description:
-        "A warm, nurturing space where little ones explore the world through play, movement, sensory experiences, and gentle storytime that sparks imagination and early language.",
-    },
-    {
-      title: "Pre Nursery",
-      age: "Age: 2 – 3 Years",
-      description:
-        "A structured, play-based program where children explore themes through hands-on learning, building early literacy, numeracy, creativity, independence, and strong social-emotional skills.",
-    },
-    {
-      title: "Nursery",
-      age: "Age: 3 – 4 Years",
-      description:
-        "A gentle introduction to learning through play, helping children build social skills, sensory awareness, and early motor development.",
-    },
-  ],
-  afterschool: [
-    {
-      title: "Storytelling Program",
-      description:
-        "An immersive storytelling experience where children learn through imagination, expression, and play.",
-    },
-    {
-      title: "Language & Math Program",
-      description:
-        "A structured yet fun program focused on building strong literacy and numeracy foundations.",
-    },
-  ],
-};
-
 export default function ClassroomSection() {
   const [activeTab, setActiveTab] = useState<Tab>("preschool");
-  const activePrograms = programs[activeTab];
+  const { cards } = useHomeClassroomCards();
   const { images, removed } = useSupabaseSlotImages("classroom", 5);
-  const slotOffset = activeTab === "preschool" ? 0 : programs.preschool.length;
+  const activePrograms = cards.filter((card) => card.tab === activeTab);
 
   return (
     <section id="classes" className="py-12 md:py-20 px-4 md:px-8 bg-white">
@@ -87,15 +52,16 @@ export default function ClassroomSection() {
               : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
           }`}
         >
-          {activePrograms.map((program, idx) => {
-            const slotIndex = slotOffset + idx;
+          {activePrograms.map((program) => {
+            const slotIndex = cards.findIndex((card) => card.id === program.id);
             const slotImage = images[slotIndex];
             const slotRemoved = removed[slotIndex];
             const fallback = CLASSROOM_CARD_FALLBACK_IMAGES[slotIndex];
             const imageUrl =
-              slotRemoved
-                ? slotImage
-                : slotImage || fallback;
+              program.imageRemoved
+                ? ""
+                : getStoragePublicUrl(program.imagePath) ||
+                  (slotRemoved ? slotImage : slotImage || fallback);
             return (
             <div
               key={program.title}
