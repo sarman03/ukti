@@ -33,10 +33,7 @@ export default function Navbar() {
             className="w-16 h-auto"
           />
         </Link>
-        <span
-          className="text-gray-800 leading-tight text-sm"
-          style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
-        >
+        <span className="text-gray-800 leading-tight text-sm font-bold">
           Ukti Early Years
         </span>
       </div>

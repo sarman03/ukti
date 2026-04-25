@@ -6,12 +6,13 @@ import { useSupabaseImages } from "@/lib/useSupabaseImages";
 import { GALLERY_FALLBACK_IMAGES } from "@/lib/imageDefaults";
 
 export default function GallerySection() {
-  const { images: adminImages, cleared, removedFallbacks } = useSupabaseImages(
+  const { images: adminImages, allImages, cleared, removedFallbacks } = useSupabaseImages(
     "gallery",
-    GALLERY_FALLBACK_IMAGES.length
+    GALLERY_FALLBACK_IMAGES.length,
+    GALLERY_FALLBACK_IMAGES
   );
   const galleryFallbacks = GALLERY_FALLBACK_IMAGES.filter((_, i) => !removedFallbacks[i]);
-  const images = cleared ? [] : [...adminImages, ...galleryFallbacks];
+  const images = cleared ? [] : (allImages.length > 0 ? allImages : [...adminImages, ...galleryFallbacks]);
 
   // Split images into two rows, duplicate for seamless loop
   const half = Math.ceil(images.length / 2);

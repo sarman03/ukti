@@ -109,7 +109,7 @@ export default function SafetyFacilitiesSection() {
 
       {/* Desktop image */}
       <div className="hidden md:block max-w-5xl mx-auto pt-12">
-        <Image src="/home/safety new.png" alt="Safety and Facilities" width={1200} height={700} className="w-full h-auto" />
+        <Image src="/home/safety2.png" alt="Safety and Facilities" width={1200} height={700} className="w-full h-auto" />
       </div>
 
       {/* Desktop SVG diagram (kept for reference) */}

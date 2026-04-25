@@ -26,7 +26,7 @@ const ADMIN_EMAIL = "admin@ukti.in";
 const ADMIN_PASSWORD = "ukti@2026";
 
 type Section =
-  | { type?: never; folder: string; title: string; aspect: number; aspectLabel: string; maxImages?: number; slotLabels?: string[]; fallbackImages?: string[] }
+  | { type?: never; folder: string; title: string; aspect: number; aspectLabel: string; maxImages?: number; slotLabels?: string[]; fallbackImages?: string[]; allowReorder?: boolean }
   | { type: "video"; folder: string; title: string; fallbackVideos?: string[] };
 
 const pages: { label: string; sections: Section[] }[] = [
@@ -39,6 +39,7 @@ const pages: { label: string; sections: Section[] }[] = [
         aspect: 16 / 9,
         aspectLabel: "Desktop Hero — 16:9 landscape",
         fallbackImages: HOME_HERO_WEB_FALLBACK_IMAGES,
+        allowReorder: true,
       },
       {
         folder: "hero-mobile",
@@ -46,6 +47,7 @@ const pages: { label: string; sections: Section[] }[] = [
         aspect: 9 / 16,
         aspectLabel: "Mobile Hero — 9:16 portrait",
         fallbackImages: HOME_HERO_MOBILE_FALLBACK_IMAGES,
+        allowReorder: true,
       },
       {
         folder: "home-about",
@@ -92,6 +94,7 @@ const pages: { label: string; sections: Section[] }[] = [
         aspect: 1,
         aspectLabel: "Gallery — 1:1 square",
         fallbackImages: GALLERY_FALLBACK_IMAGES,
+        allowReorder: true,
       },
       {
         folder: "learning-goals",
@@ -135,6 +138,7 @@ const pages: { label: string; sections: Section[] }[] = [
         aspect: 16 / 9,
         aspectLabel: "Desktop Hero — 16:9 landscape",
         fallbackImages: CLASSROOM_HERO_WEB_FALLBACK_IMAGES,
+        allowReorder: true,
       },
       {
         folder: "classroom-hero-mobile",
@@ -142,6 +146,7 @@ const pages: { label: string; sections: Section[] }[] = [
         aspect: 9 / 16,
         aspectLabel: "Mobile Hero — 9:16 portrait",
         fallbackImages: CLASSROOM_HERO_MOBILE_FALLBACK_IMAGES,
+        allowReorder: true,
       },
       {
         folder: "classroom-cards",

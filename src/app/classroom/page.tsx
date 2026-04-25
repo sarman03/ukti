@@ -190,19 +190,21 @@ function ProgramCard({
 function HeroCarousel() {
   const {
     images: webAdmin,
+    allImages: webAll,
     cleared: webCleared,
     removedFallbacks: webRemovedFallbacks,
-  } = useSupabaseImages("classroom-hero-web", CLASSROOM_HERO_WEB_FALLBACK_IMAGES.length);
+  } = useSupabaseImages("classroom-hero-web", CLASSROOM_HERO_WEB_FALLBACK_IMAGES.length, CLASSROOM_HERO_WEB_FALLBACK_IMAGES);
   const {
     images: mobileAdmin,
+    allImages: mobileAll,
     cleared: mobileCleared,
     removedFallbacks: mobileRemovedFallbacks,
-  } = useSupabaseImages("classroom-hero-mobile", CLASSROOM_HERO_MOBILE_FALLBACK_IMAGES.length);
+  } = useSupabaseImages("classroom-hero-mobile", CLASSROOM_HERO_MOBILE_FALLBACK_IMAGES.length, CLASSROOM_HERO_MOBILE_FALLBACK_IMAGES);
 
   const webFallbacks = CLASSROOM_HERO_WEB_FALLBACK_IMAGES.filter((_, i) => !webRemovedFallbacks[i]);
   const mobileFallbacks = CLASSROOM_HERO_MOBILE_FALLBACK_IMAGES.filter((_, i) => !mobileRemovedFallbacks[i]);
-  const webImages = webCleared ? [] : [...webAdmin, ...webFallbacks];
-  const mobileImages = mobileCleared ? [] : [...mobileAdmin, ...mobileFallbacks];
+  const webImages = webCleared ? [] : (webAll.length > 0 ? webAll : [...webAdmin, ...webFallbacks]);
+  const mobileImages = mobileCleared ? [] : (mobileAll.length > 0 ? mobileAll : [...mobileAdmin, ...mobileFallbacks]);
 
   const maxLength = Math.max(webImages.length, mobileImages.length, 1);
   const [current, setCurrent] = useState(0);
