@@ -53,8 +53,16 @@ function TestimonialVideo({
         className="h-full w-full object-cover"
         controls={isPlaying}
         playsInline
-        preload="metadata"
+        preload="none"
       />
+      {!isPlaying && poster && (
+        <img
+          src={poster}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      )}
       {!isPlaying && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/20">
           <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/95 shadow-lg">
