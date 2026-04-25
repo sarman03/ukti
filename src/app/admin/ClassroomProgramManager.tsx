@@ -55,8 +55,8 @@ function textToPoints(value: string) {
 }
 
 function sanitizeCardForSave(card: Card): Card {
-  if ("points" in card || "sections" in card) {
-    const pageCard = card as ClassroomPageCard;
+  if ("subtitle" in card) {
+    const pageCard = card;
     return {
       ...pageCard,
       points: (pageCard.points ?? []).map((point) => point.trim()).filter(Boolean),
