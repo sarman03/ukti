@@ -30,8 +30,8 @@ export const CLASSROOM_CARD_FALLBACK_IMAGES = [
   "/home/classroom/toddler.jpg",
   "/home/classroom/pre%20nursery.jpg",
   "/home/classroom/nursery.jpg",
-  "",
-  "",
+  "/home/classroom/story-telling.jpg",
+  "/home/classroom/lang-math.jpg",
 ];
 
 export const GALLERY_FALLBACK_IMAGES = [

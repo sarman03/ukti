@@ -120,12 +120,12 @@ export default function SectionImageManager({
         }
         const i = parseSlotIndex(f.name);
         if (i !== null && i >= 0 && i < slotCount) {
-          next[i] = {
-            name: f.name,
-            url: supabase.storage.from(BUCKET).getPublicUrl(`${folder}/${f.name}`).data.publicUrl,
-          };
+          const url = supabase.storage.from(BUCKET).getPublicUrl(`${folder}/${f.name}`).data.publicUrl;
+          console.log(`[${folder}] slot ${i} → ${url}`);
+          next[i] = { name: f.name, url };
         }
       }
+      console.log(`[${folder}] all files:`, files.map(f => f.name));
       setSlots(next);
       setRemovedSlots(nextRemoved);
     } else {

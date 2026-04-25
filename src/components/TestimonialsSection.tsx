@@ -53,7 +53,7 @@ function TestimonialVideo({
         className="h-full w-full object-cover"
         controls={isPlaying}
         playsInline
-        preload="none"
+        preload="metadata"
       />
       {!isPlaying && poster && (
         <img
@@ -125,6 +125,13 @@ export default function TestimonialsSection() {
 
   const [current, setCurrent] = useState(0);
   const safeCurrent = videos.length > 0 ? Math.min(current, videos.length - 1) : 0;
+  const desktopCenterWidth = 420;
+  const desktopCenterHeight = 747; // 9:16 portrait
+  const desktopPreviewSize = 360;
+  const desktopPreviewTop = 190;
+  const desktopSideGap = -10;
+  const desktopTrackHeight = 760;
+  const desktopSideInset = `calc(50% - ${desktopCenterWidth / 2}px - ${desktopSideGap}px - ${desktopPreviewSize}px)`;
 
   const prevIdx = videos.length > 1 ? (safeCurrent - 1 + videos.length) % videos.length : null;
   const nextIdx = videos.length > 1 ? (safeCurrent + 1) % videos.length : null;
@@ -195,12 +202,19 @@ export default function TestimonialsSection() {
             </div>
 
             {/* Desktop — original layout with prev/next navigation */}
-            <div className="hidden md:block relative mx-auto" style={{ maxWidth: 1200, height: 540 }}>
+            <div className="hidden md:block relative mx-auto" style={{ maxWidth: 1200, height: desktopTrackHeight }}>
 
               {/* Left preview box — prev video thumbnail, or plain box if none */}
               <div
                 className={`absolute rounded-2xl overflow-hidden ${prevIdx !== null ? "cursor-pointer" : ""}`}
-                style={{ left: 0, top: 90, width: 360, height: 360, backgroundColor: "#9c9188", zIndex: 0 }}
+                style={{
+                  left: desktopSideInset,
+                  top: desktopPreviewTop,
+                  width: desktopPreviewSize,
+                  height: desktopPreviewSize,
+                  backgroundColor: "#9c9188",
+                  zIndex: 0,
+                }}
                 onClick={prevIdx !== null ? () => setCurrent(prevIdx) : undefined}
               >
                 {prevIdx !== null && (
@@ -227,7 +241,14 @@ export default function TestimonialsSection() {
               {/* Right preview box — next video thumbnail, or plain box if none */}
               <div
                 className={`absolute rounded-2xl overflow-hidden ${nextIdx !== null ? "cursor-pointer" : ""}`}
-                style={{ right: 0, top: 90, width: 360, height: 360, backgroundColor: "#9c9188", zIndex: 0 }}
+                style={{
+                  right: desktopSideInset,
+                  top: desktopPreviewTop,
+                  width: desktopPreviewSize,
+                  height: desktopPreviewSize,
+                  backgroundColor: "#9c9188",
+                  zIndex: 0,
+                }}
                 onClick={nextIdx !== null ? () => setCurrent(nextIdx) : undefined}
               >
                 {nextIdx !== null && (
@@ -254,7 +275,14 @@ export default function TestimonialsSection() {
               {/* Center active video */}
               <div
                 className="absolute"
-                style={{ left: "50%", transform: "translateX(-50%)", top: 0, width: 680, height: 540, zIndex: 10 }}
+                style={{
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  top: 0,
+                  width: desktopCenterWidth,
+                  height: desktopCenterHeight,
+                  zIndex: 10,
+                }}
               >
                 <TestimonialVideo
                   key={safeCurrent}
