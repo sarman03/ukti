@@ -75,7 +75,7 @@ export default function AboutSection() {
             <div className="text-center flex flex-col items-center gap-6">
               <h2 className="text-3xl md:text-5xl font-extrabold text-[#5EA85B]">About Us</h2>
               <p className="text-gray-600 leading-relaxed text-base">
-                At Ukti Early Years, a thoughtfully designed micro preschool, where we offer a warm, intimate environment where every child receives personalised attention and care.
+                Ukti Early Years, a thoughtfully designed micro preschool, offers a warm, intimate environment where every child receives personalised attention and care.
                 <br /><br />
                 Through hands-on exploration, play-based learning, and meaningful interactions, we nurture confident, expressive, and independent learners.
                 <br /><br />
