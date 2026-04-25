@@ -51,17 +51,40 @@ function pointsToText(points?: string[]) {
 function textToPoints(value: string) {
   return value
     .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
+    .map((line) => line.trim());
+}
+
+function sanitizeCardForSave(card: Card): Card {
+  if ("points" in card || "sections" in card) {
+    const pageCard = card as ClassroomPageCard;
+    return {
+      ...pageCard,
+      points: (pageCard.points ?? []).map((point) => point.trim()).filter(Boolean),
+      sections: (pageCard.sections ?? []).map((section) => ({
+        ...section,
+        heading: section.heading.trim(),
+        points: section.points.map((point) => point.trim()).filter(Boolean),
+      })),
+    };
+  }
+
+  return {
+    ...card,
+    age: (card.age ?? "").trim(),
+    title: card.title.trim(),
+    description: card.description.trim(),
+  };
+}
+
+function cloneCard<T extends Card>(card: T): T {
+  return JSON.parse(JSON.stringify(card)) as T;
 }
 
 export default function ClassroomProgramManager({ mode }: { mode: ManagerMode }) {
   const isHome = mode === "home";
   const title = isHome ? "Classroom Cards Content" : "Program Details Content";
   const configPath = isHome ? CLASSROOM_HOME_CONFIG_PATH : CLASSROOM_PAGE_CONFIG_PATH;
-  const imageFolder = isHome
-    ? CLASSROOM_HOME_IMAGE_FOLDER
-    : CLASSROOM_PAGE_IMAGE_FOLDER;
+  const imageFolder = isHome ? CLASSROOM_HOME_IMAGE_FOLDER : CLASSROOM_PAGE_IMAGE_FOLDER;
   const defaults = useMemo<Card[]>(
     () => (isHome ? DEFAULT_HOME_CLASSROOM_CARDS : DEFAULT_CLASSROOM_PAGE_CARDS),
     [isHome]
@@ -71,11 +94,12 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
   const [cards, setCards] = useState<Card[]>(defaults);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [uploadingId, setUploadingId] = useState<string | null>(null);
   const [collapsed, setCollapsed] = useState(true);
   const [activeTab, setActiveTab] = useState<ProgramTab>("preschool");
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [dirty, setDirty] = useState(false);
+  const [draftCard, setDraftCard] = useState<Card | null>(null);
+  const [draftIsNew, setDraftIsNew] = useState(false);
+  const [pendingImageFile, setPendingImageFile] = useState<File | null>(null);
+  const [pendingImagePreview, setPendingImagePreview] = useState<string>("");
 
   const { toasts, toast, dismiss } = useToast();
   const { confirm, confirmState, closeConfirm } = useConfirm();
@@ -88,22 +112,51 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
     const next = await readProgramConfig<Card[]>(configPath, defaults);
     setCards(Array.isArray(next) ? next : defaults);
     setLoading(false);
-    setDirty(false);
   }, [configPath, defaults]);
 
   useEffect(() => {
     loadCards();
   }, [loadCards]);
 
-  const visibleCards = cards.filter((card) => card.tab === activeTab);
-  const editingCard = cards.find((card) => card.id === editingId) ?? null;
+  useEffect(() => {
+    return () => {
+      if (pendingImagePreview.startsWith("blob:")) URL.revokeObjectURL(pendingImagePreview);
+    };
+  }, [pendingImagePreview]);
 
-  function updateCard(cardId: string, updater: (card: Card) => Card) {
-    setCards((prev) => prev.map((card) => (card.id === cardId ? updater(card) : card)));
-    setDirty(true);
+  const visibleCards = cards.filter((card) => card.tab === activeTab);
+
+  async function persistCards(nextCards: Card[], successMessage?: string) {
+    setSaving(true);
+    try {
+      await writeProgramConfig(configPath, nextCards);
+      setCards(nextCards);
+      if (successMessage) toast.success(successMessage);
+      return true;
+    } catch (error) {
+      toast.error("Save failed: " + (error as Error).message);
+      return false;
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  function closeEditor() {
+    setDraftCard(null);
+    setDraftIsNew(false);
+    setPendingImageFile(null);
+    if (pendingImagePreview.startsWith("blob:")) URL.revokeObjectURL(pendingImagePreview);
+    setPendingImagePreview("");
+  }
+
+  function openEdit(card: Card) {
+    closeEditor();
+    setDraftCard(cloneCard(card));
+    setDraftIsNew(false);
   }
 
   function addCard(tab: ProgramTab) {
+    closeEditor();
     const baseCard: Card = isHome
       ? {
           id: createProgramId("home-card"),
@@ -124,105 +177,12 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
           imagePath: "",
           imageHeight: "normal",
         };
-    setCards((prev) => [...prev, baseCard]);
-    setEditingId(baseCard.id);
-    setDirty(true);
+    setDraftCard(baseCard);
+    setDraftIsNew(true);
   }
 
-  async function saveCards() {
-    setSaving(true);
-    try {
-      await writeProgramConfig(configPath, cards);
-      toast.success("Cards saved successfully.");
-      setDirty(false);
-    } catch (error) {
-      toast.error("Save failed: " + (error as Error).message);
-    }
-    setSaving(false);
-  }
-
-  async function handleImageUpload(cardId: string, file: File) {
-    setUploadingId(cardId);
-    try {
-      const normalized = await normalizeFile(file).catch(() => file);
-      const current = cards.find((card) => card.id === cardId);
-      const ext =
-        normalized.name.split(".").pop()?.toLowerCase() ||
-        normalized.type.split("/").pop() ||
-        "jpg";
-      const path = `${imageFolder}/${cardId}-${Date.now()}.${ext}`;
-
-      if (current?.imagePath) {
-        await supabase.storage.from("images").remove([current.imagePath]);
-      }
-
-      const { error } = await supabase.storage.from("images").upload(path, normalized, {
-        contentType: normalized.type || "image/jpeg",
-        upsert: true,
-      });
-      if (error) throw new Error(error.message);
-
-      updateCard(cardId, (card) => ({ ...card, imagePath: path, imageRemoved: false }));
-      toast.success("Image uploaded.");
-    } catch (error) {
-      toast.error("Image upload failed: " + (error as Error).message);
-    }
-    setUploadingId(null);
-  }
-
-  async function handleDelete(card: Card) {
-    const ok = await confirm("Delete this card?", {
-      detail: "This removes the card from admin-managed content.",
-      confirmLabel: "Delete",
-    });
-    if (!ok) return;
-
-    try {
-      if (card.imagePath) {
-        await supabase.storage.from("images").remove([card.imagePath]);
-      }
-      setCards((prev) => prev.filter((item) => item.id !== card.id));
-      if (editingId === card.id) setEditingId(null);
-      setDirty(true);
-      toast.success("Card deleted.");
-    } catch (error) {
-      toast.error("Delete failed: " + (error as Error).message);
-    }
-  }
-
-  async function handleDeleteImage(card: Card) {
-    const ok = await confirm("Delete this image?", {
-      detail: "The card will show no image until you upload a new one.",
-      confirmLabel: "Delete image",
-    });
-    if (!ok) return;
-
-    try {
-      if (card.imagePath) {
-        await supabase.storage.from("images").remove([card.imagePath]);
-      }
-      updateCard(card.id, (item) => ({
-        ...item,
-        imagePath: "",
-        imageRemoved: true,
-      }));
-      toast.success("Image deleted.");
-    } catch (error) {
-      toast.error("Delete image failed: " + (error as Error).message);
-    }
-  }
-
-  function updateSections(
-    cardId: string,
-    updater: (sections: ProgramSectionGroup[]) => ProgramSectionGroup[]
-  ) {
-    updateCard(cardId, (card) => {
-      if (isHome) return card;
-      return {
-        ...card,
-        sections: updater((card as ClassroomPageCard).sections ?? []),
-      };
-    });
+  function updateDraft(updater: (card: Card) => Card) {
+    setDraftCard((current) => (current ? updater(current) : current));
   }
 
   function resolveCardImage(card: Card) {
@@ -236,9 +196,128 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
       : legacyImages[index] || CLASSROOM_CARD_FALLBACK_IMAGES[index];
   }
 
+  function resolveDraftImage(card: Card) {
+    if (pendingImagePreview) return pendingImagePreview;
+    if (card.imageRemoved) return "";
+    const uploaded = getStoragePublicUrl(card.imagePath);
+    if (uploaded) return uploaded;
+
+    const index = draftIsNew
+      ? cards.length
+      : cards.findIndex((item) => item.id === card.id);
+    if (index === -1 || index >= CLASSROOM_CARD_FALLBACK_IMAGES.length) return "";
+    return removedLegacyImages[index]
+      ? legacyImages[index]
+      : legacyImages[index] || CLASSROOM_CARD_FALLBACK_IMAGES[index];
+  }
+
+  async function handleDraftImagePick(file: File) {
+    const normalized = await normalizeFile(file).catch(() => file);
+    if (pendingImagePreview.startsWith("blob:")) URL.revokeObjectURL(pendingImagePreview);
+    setPendingImageFile(normalized);
+    setPendingImagePreview(URL.createObjectURL(normalized));
+    updateDraft((card) => ({ ...card, imageRemoved: false }));
+  }
+
+  function handleDraftImageDelete() {
+    if (pendingImagePreview.startsWith("blob:")) URL.revokeObjectURL(pendingImagePreview);
+    setPendingImagePreview("");
+    setPendingImageFile(null);
+    updateDraft((card) => ({
+      ...card,
+      imagePath: "",
+      imageRemoved: true,
+    }));
+  }
+
+  async function saveDraft() {
+    if (!draftCard) return;
+
+    setSaving(true);
+    let nextCard = sanitizeCardForSave(cloneCard(draftCard));
+    let uploadedPath = "";
+
+    try {
+      if (pendingImageFile) {
+        const ext =
+          pendingImageFile.name.split(".").pop()?.toLowerCase() ||
+          pendingImageFile.type.split("/").pop() ||
+          "jpg";
+        uploadedPath = `${imageFolder}/${draftCard.id}-${Date.now()}.${ext}`;
+
+        const { error } = await supabase.storage.from("images").upload(uploadedPath, pendingImageFile, {
+          contentType: pendingImageFile.type || "image/jpeg",
+          upsert: true,
+        });
+        if (error) throw new Error(error.message);
+        nextCard = {
+          ...nextCard,
+          imagePath: uploadedPath,
+          imageRemoved: false,
+        };
+      }
+
+      const previousCard = cards.find((card) => card.id === nextCard.id);
+      const nextCards = draftIsNew
+        ? [...cards, nextCard]
+        : cards.map((card) => (card.id === nextCard.id ? nextCard : card));
+
+      await writeProgramConfig(configPath, nextCards);
+      setCards(nextCards);
+
+      if (previousCard?.imagePath && previousCard.imagePath !== nextCard.imagePath) {
+        await supabase.storage.from("images").remove([previousCard.imagePath]);
+      }
+      if (
+        previousCard?.imagePath &&
+        nextCard.imageRemoved &&
+        previousCard.imagePath === nextCard.imagePath
+      ) {
+        await supabase.storage.from("images").remove([previousCard.imagePath]);
+      }
+
+      toast.success("Card saved successfully.");
+      closeEditor();
+    } catch (error) {
+      if (uploadedPath) {
+        await supabase.storage.from("images").remove([uploadedPath]);
+      }
+      toast.error("Save failed: " + (error as Error).message);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleDelete(card: Card) {
+    const ok = await confirm("Delete this card?", {
+      detail: "This removes the card from admin-managed content.",
+      confirmLabel: "Delete",
+    });
+    if (!ok) return;
+
+    const nextCards = cards.filter((item) => item.id !== card.id);
+    const didSave = await persistCards(nextCards, "Card deleted.");
+    if (!didSave) return;
+
+    if (card.imagePath) {
+      await supabase.storage.from("images").remove([card.imagePath]);
+    }
+    if (draftCard?.id === card.id) closeEditor();
+  }
+
+  function updateDraftSections(updater: (sections: ProgramSectionGroup[]) => ProgramSectionGroup[]) {
+    updateDraft((card) => {
+      if (isHome) return card;
+      return {
+        ...card,
+        sections: updater((card as ClassroomPageCard).sections ?? []),
+      };
+    });
+  }
+
   function renderEditorFields(card: Card) {
     const pageCard = card as ClassroomPageCard;
-    const imageUrl = resolveCardImage(card);
+    const imageUrl = resolveDraftImage(card);
 
     return (
       <div className="grid gap-5 lg:grid-cols-[180px,1fr]">
@@ -251,6 +330,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
                 fill
                 className="object-cover"
                 sizes="180px"
+                unoptimized={imageUrl.startsWith("http")}
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center text-xs text-gray-400">
@@ -260,15 +340,14 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
           </div>
 
           <label className="mt-3 block text-center px-3 py-2 rounded-lg text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors cursor-pointer">
-            {uploadingId === card.id ? "Uploading..." : imageUrl ? "Replace Image" : "Upload Image"}
+            {pendingImageFile || imageUrl ? "Replace Image" : "Upload Image"}
             <input
               type="file"
               accept="image/*"
               className="hidden"
-              disabled={uploadingId === card.id}
               onChange={(event) => {
                 const file = event.target.files?.[0];
-                if (file) void handleImageUpload(card.id, file);
+                if (file) void handleDraftImagePick(file);
                 event.target.value = "";
               }}
             />
@@ -276,7 +355,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
 
           {imageUrl && (
             <button
-              onClick={() => void handleDeleteImage(card)}
+              onClick={handleDraftImageDelete}
               className="mt-2 block w-full text-center px-3 py-2 rounded-lg text-sm font-medium bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
             >
               Delete Image
@@ -290,7 +369,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
             <select
               value={card.tab}
               onChange={(event) =>
-                updateCard(card.id, (item) => ({
+                updateDraft((item) => ({
                   ...item,
                   tab: event.target.value as ProgramTab,
                 }))
@@ -307,7 +386,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
             <input
               value={card.title}
               onChange={(event) =>
-                updateCard(card.id, (item) => ({
+                updateDraft((item) => ({
                   ...item,
                   title: event.target.value,
                 }))
@@ -322,7 +401,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
               <input
                 value={(card as HomeClassroomCard).age ?? ""}
                 onChange={(event) =>
-                  updateCard(card.id, (item) => ({
+                  updateDraft((item) => ({
                     ...item,
                     age: event.target.value,
                   }))
@@ -337,7 +416,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
                 <input
                   value={pageCard.subtitle}
                   onChange={(event) =>
-                    updateCard(card.id, (item) => ({
+                    updateDraft((item) => ({
                       ...(item as ClassroomPageCard),
                       subtitle: event.target.value,
                     }))
@@ -351,7 +430,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
                 <select
                   value={pageCard.imageHeight ?? "normal"}
                   onChange={(event) =>
-                    updateCard(card.id, (item) => ({
+                    updateDraft((item) => ({
                       ...(item as ClassroomPageCard),
                       imageHeight: event.target.value as "normal" | "tall",
                     }))
@@ -370,7 +449,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
             <textarea
               value={card.description}
               onChange={(event) =>
-                updateCard(card.id, (item) => ({
+                updateDraft((item) => ({
                   ...item,
                   description: event.target.value,
                 }))
@@ -387,7 +466,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
                 <textarea
                   value={pointsToText(pageCard.points)}
                   onChange={(event) =>
-                    updateCard(card.id, (item) => ({
+                    updateDraft((item) => ({
                       ...(item as ClassroomPageCard),
                       points: textToPoints(event.target.value),
                     }))
@@ -403,7 +482,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
                   <p className="text-sm font-semibold text-gray-800">Grouped sections</p>
                   <button
                     onClick={() =>
-                      updateSections(card.id, (sections) => [
+                      updateDraftSections((sections) => [
                         ...sections,
                         {
                           id: createProgramId("section"),
@@ -425,7 +504,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
                         <input
                           value={section.heading}
                           onChange={(event) =>
-                            updateSections(card.id, (sections) =>
+                            updateDraftSections((sections) =>
                               sections.map((item) =>
                                 item.id === section.id
                                   ? { ...item, heading: event.target.value }
@@ -438,7 +517,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
                         />
                         <button
                           onClick={() =>
-                            updateSections(card.id, (sections) =>
+                            updateDraftSections((sections) =>
                               sections.filter((item) => item.id !== section.id)
                             )
                           }
@@ -450,7 +529,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
                       <textarea
                         value={pointsToText(section.points)}
                         onChange={(event) =>
-                          updateSections(card.id, (sections) =>
+                          updateDraftSections((sections) =>
                             sections.map((item) =>
                               item.id === section.id
                                 ? { ...item, points: textToPoints(event.target.value) }
@@ -473,7 +552,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
     );
   }
 
-  const badgeLabel = loading ? "..." : `${cards.length} cards${dirty ? " • unsaved" : ""}`;
+  const badgeLabel = loading ? "..." : `${cards.length} cards`;
 
   return (
     <div className="border border-gray-200 rounded-xl bg-white overflow-hidden">
@@ -517,21 +596,12 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
               ))}
             </div>
 
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => addCard(activeTab)}
-                className="px-4 py-2 rounded-lg text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
-              >
-                Add Card
-              </button>
-              <button
-                onClick={saveCards}
-                disabled={saving || loading}
-                className="px-4 py-2 rounded-lg text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors disabled:opacity-50"
-              >
-                {saving ? "Saving..." : "Save Changes"}
-              </button>
-            </div>
+            <button
+              onClick={() => addCard(activeTab)}
+              className="px-4 py-2 rounded-lg text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
+            >
+              Add Card
+            </button>
           </div>
 
           {loading ? (
@@ -569,6 +639,7 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
                             fill
                             className="object-cover"
                             sizes="80px"
+                            unoptimized={imageUrl.startsWith("http")}
                           />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center text-[10px] text-gray-400">
@@ -597,15 +668,14 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
 
                     <div className="flex flex-wrap gap-2 mt-3">
                       <button
-                        onClick={() => setEditingId(card.id)}
+                        onClick={() => openEdit(card)}
                         className="px-3 py-1.5 rounded text-xs font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors"
                       >
                         Edit
                       </button>
-
-                      <div className="ml-auto flex flex-wrap gap-2">
+                      <div className="ml-auto">
                         <button
-                          onClick={() => handleDelete(card)}
+                          onClick={() => void handleDelete(card)}
                           className="px-3 py-1.5 rounded text-xs font-medium bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
                         >
                           Delete
@@ -618,10 +688,10 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
             </div>
           )}
 
-          {editingCard && (
+          {draftCard && (
             <div
               className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
-              onClick={() => setEditingId(null)}
+              onClick={closeEditor}
             >
               <div
                 className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden"
@@ -629,13 +699,15 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
               >
                 <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Edit Card</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {draftIsNew ? "Add Card" : "Edit Card"}
+                    </h3>
                     <p className="text-sm text-gray-500 mt-0.5">
-                      Image and content live together in this editor.
+                      Image and content save together from this modal.
                     </p>
                   </div>
                   <button
-                    onClick={() => setEditingId(null)}
+                    onClick={closeEditor}
                     className="px-3 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
                   >
                     Close
@@ -643,18 +715,19 @@ export default function ClassroomProgramManager({ mode }: { mode: ManagerMode })
                 </div>
 
                 <div className="px-6 py-5 overflow-y-auto max-h-[calc(90vh-140px)]">
-                  {renderEditorFields(editingCard)}
+                  {renderEditorFields(draftCard)}
                 </div>
 
                 <div className="flex items-center justify-between gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50">
                   <p className="text-xs text-gray-500">
-                    Changes stay local until you click Save Changes.
+                    Click save to sync this card to Supabase.
                   </p>
                   <button
-                    onClick={() => setEditingId(null)}
-                    className="px-4 py-2 rounded-lg text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+                    onClick={() => void saveDraft()}
+                    disabled={saving}
+                    className="px-4 py-2 rounded-lg text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors disabled:opacity-50"
                   >
-                    Done
+                    {saving ? "Saving..." : "Save Changes"}
                   </button>
                 </div>
               </div>
