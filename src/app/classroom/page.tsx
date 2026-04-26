@@ -252,9 +252,12 @@ export default function ClassroomPage() {
       <section className="py-12 md:py-20 px-4 md:px-8 bg-white">
         <div className="max-w-4xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-10 md:mb-14">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#5EA85B] mb-2">
               Pre School
             </h2>
+            <p className="text-center text-gray-700 font-semibold text-lg md:text-xl mb-10 md:mb-14">
+              Age: 15 months to 5 years
+            </p>
           </FadeUp>
           <div className="flex flex-col gap-8 md:gap-10">
             {preschoolPrograms.map((program, i) => (
@@ -275,9 +278,12 @@ export default function ClassroomPage() {
       <section className="py-12 md:py-20 px-4 md:px-8 bg-white">
         <div className="max-w-4xl mx-auto">
           <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#F6892A] mb-10 md:mb-14">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-center text-[#F6892A] mb-2">
               After school
             </h2>
+            <p className="text-center text-gray-700 font-semibold text-lg md:text-xl mb-10 md:mb-14">
+              Age: 3 years and above
+            </p>
           </FadeUp>
           <div className="flex flex-col gap-8 md:gap-10">
             {afterschoolPrograms.map((program, i) => (

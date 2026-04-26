@@ -104,7 +104,7 @@ export const DEFAULT_CLASSROOM_PAGE_CARDS: ClassroomPageCard[] = [
     title: "Pre Nursery",
     subtitle: "Nurture curiosity and early growth",
     description:
-      "For children aged 3-4 years, a gentle introduction to learning through play, exploration, and early social skills.",
+      "For children aged 2-3 years, a gentle introduction to learning through play, exploration, and early social skills.",
     points: [
       "Theme-based learning every week",
       "Circle time for bonding & communication",
@@ -119,7 +119,7 @@ export const DEFAULT_CLASSROOM_PAGE_CARDS: ClassroomPageCard[] = [
     title: "Nursery",
     subtitle: "Build strong foundations for growth",
     description:
-      "A structured, play-based program where children explore themes through hands-on learning, building early literacy, numeracy, creativity, independence, and strong social-emotional skills.",
+      "For children aged 3-4 years, a structured, play-based program where children explore themes through hands-on learning, building early literacy, numeracy, creativity, independence, and strong social-emotional skills.",
     points: [
       "Thematic Learning & Experiential Exploration",
       "Circle Time & Storytelling",
