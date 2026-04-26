@@ -71,18 +71,18 @@ export default function Footer() {
         {/* Center: Quick links */}
         <div className="flex flex-col gap-2">
           <h3 className="font-extrabold text-gray-900 text-sm mb-1">Quick Links</h3>
-          <a href="#about" className="text-gray-800 text-sm hover:text-gray-600 transition-colors">About</a>
-          <a href="#classes" className="text-gray-800 text-sm hover:text-gray-600 transition-colors">Classes</a>
-          <a href="#gallery" className="text-gray-800 text-sm hover:text-gray-600 transition-colors">Gallery</a>
-          <a href="#contact" className="text-gray-800 text-sm hover:text-gray-600 transition-colors">Contact</a>
+          <Link href="/about" className="text-gray-800 text-sm hover:text-gray-600 transition-colors">About</Link>
+          <Link href="/classroom" className="text-gray-800 text-sm hover:text-gray-600 transition-colors">Classes</Link>
+          <Link href="/#gallery" className="text-gray-800 text-sm hover:text-gray-600 transition-colors">Gallery</Link>
+          <Link href="/contact" className="text-gray-800 text-sm hover:text-gray-600 transition-colors">Contact</Link>
         </div>
 
         {/* Right: Contact info + socials */}
         <div className="flex flex-col gap-2">
           <h3 className="font-extrabold text-gray-900 text-sm mb-1">Get in Touch</h3>
           <p className="text-gray-800 text-sm">Delhi | Noida</p>
-          <a href="#contact" className="text-gray-800 text-sm hover:text-gray-600 transition-colors">Book a Tour</a>
-          <a href="#contact" className="text-gray-800 text-sm hover:text-gray-600 transition-colors">Admission Enquiry</a>
+          <Link href="/contact" className="text-gray-800 text-sm hover:text-gray-600 transition-colors">Book a Tour</Link>
+          <Link href="/contact" className="text-gray-800 text-sm hover:text-gray-600 transition-colors">Admission Enquiry</Link>
           <div className="flex items-center gap-2 mt-4">
             {socials.map((s) => {
               if (s.onClick) {

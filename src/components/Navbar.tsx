@@ -16,8 +16,14 @@ export default function Navbar() {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex flex-col">
       {/* Announcement ribbon */}
-      <div className="bg-[#F6892A] text-white text-xs md:text-sm font-semibold text-center py-2 px-4 tracking-wide">
-         New branch opened in sector 108, Noida !
+      <div className="bg-[#F6892A] text-white text-xs md:text-sm font-semibold overflow-hidden py-2 tracking-wide">
+        <div className="flex gap-12 w-max animate-marquee-slow-rtl">
+          {[...Array(20)].map((_, i) => (
+            <span key={i} className="whitespace-nowrap">
+              New branch opened in sector 108, Noida !
+            </span>
+          ))}
+        </div>
       </div>
 
     <nav className="bg-[#F2DA36] px-4 md:px-20 py-0 md:py-4 flex items-center justify-between">

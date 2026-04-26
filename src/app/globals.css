@@ -47,8 +47,13 @@ body {
 }
 
 .animate-marquee-ltr:hover,
-.animate-marquee-rtl:hover {
+.animate-marquee-rtl:hover,
+.animate-marquee-slow-rtl:hover {
   animation-play-state: paused;
+}
+
+.animate-marquee-slow-rtl {
+  animation: marquee-rtl 100s linear infinite;
 }
 
 /* ── Swing animations for images ── */

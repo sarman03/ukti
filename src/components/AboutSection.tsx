@@ -79,7 +79,7 @@ export default function AboutSection() {
                 <br /><br />
                 Through hands-on exploration, play-based learning, and meaningful interactions, we nurture confident, expressive, and independent learners.
                 <br /><br />
-                More than just a preschool, Ukti is a home for learning—a close-knit community where children feel safe, valued, and inspired every day.
+                More than a preschool, Ukti is a home for learning—a close-knit community where children feel safe, valued, and inspired every day.
               </p>
               <RippleButton href="/about">
                 Know More
