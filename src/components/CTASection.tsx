@@ -1,12 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import FadeUp from "@/components/FadeUp";
 import RippleButton from "@/components/RippleButton";
+import EnrollmentModal from "@/components/EnrollmentModal";
 import { useSupabaseSlotImages } from "@/lib/useSupabaseImages";
 import { CTA_FALLBACK_IMAGES } from "@/lib/imageDefaults";
 
 export default function CTASection() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { images: adminImages, removed } = useSupabaseSlotImages("cta", 3);
   const images = [
     removed[0] ? adminImages[0] : adminImages[0] || CTA_FALLBACK_IMAGES[0],
@@ -45,7 +48,7 @@ export default function CTASection() {
             <p className="font-extrabold text-[#0FB3BC]">Grow</p>
             <p className="font-extrabold text-gray-900 text-[length:clamp(1.1rem,2.5vw,1.9rem)] mt-2">With Ukti Early Years</p>
           </div>
-          <RippleButton>
+          <RippleButton onClick={() => setIsModalOpen(true)}>
             Enroll Your Child
           </RippleButton>
         </div>
@@ -80,6 +83,8 @@ export default function CTASection() {
         </div>
       </div>
       </FadeUp>
+
+      <EnrollmentModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </section>
   );
 }

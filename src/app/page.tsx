@@ -33,18 +33,12 @@ export default function Home() {
   return (
     <main>
       <Navbar />
-      {sections.map((Section, i) => (
-        <div
-          key={Section.name}
-          className="sticky top-0 md:min-h-screen bg-white"
-          style={{ zIndex: i + 1 }}
-        >
+      {sections.map((Section) => (
+        <div key={Section.name} className="relative bg-white">
           <Section />
         </div>
       ))}
-      <div className="sticky top-0" style={{ zIndex: sections.length + 1 }}>
-        <Footer />
-      </div>
+      <Footer />
     </main>
   );
 }

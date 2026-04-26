@@ -11,14 +11,14 @@ type ContactLocation = {
 const locations: ContactLocation[] = [
   {
     label: "Delhi",
-    address: "Ukti Early Years, Delhi",
+    address: "W-1, Ground Floor, Greater Kailash 1, 110048",
     embedSrc: "https://www.google.com/maps?q=28.5538228,77.2329972&z=17&output=embed",
     mapsHref:
       "https://www.google.com/maps/place/Ukti+Early+Years/@28.5538228,77.2329972,17z/",
   },
   {
     label: "Noida",
-    address: "Ukti Early Years, Noida",
+    address: "B-185, Sec 108, Noida, 201304",
     embedSrc: "https://www.google.com/maps?q=28.528498,77.378998&z=17&output=embed",
     mapsHref:
       "https://www.google.com/maps/dir/28.6314,77.222342/28.528498,77.378998/@28.578116,77.1358341,11z/data=!3m1!4b1!4m6!4m5!1m1!4e1!1m1!4e1!3e0",

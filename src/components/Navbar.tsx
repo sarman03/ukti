@@ -20,9 +20,9 @@ export default function Navbar() {
          New branch opened in sector 108, Noida !
       </div>
 
-    <nav className="bg-[#F2DA36] px-4 md:px-20 py-3 md:py-4 flex items-center justify-between">
-      {/* Mobile: Logo + brand text on left */}
-      <div className="md:hidden flex items-center gap-2">
+    <nav className="bg-[#F2DA36] px-4 md:px-20 py-0 md:py-4 flex items-center justify-between">
+      {/* Mobile: Logo on left */}
+      <div className="md:hidden flex items-center">
         <Link href="/">
           <Image
             src="/logo/Ukti _ Logo.png"
@@ -30,10 +30,14 @@ export default function Navbar() {
             width={120}
             height={125}
             priority
-            className="w-16 h-auto"
+            className="w-20 h-auto"
           />
         </Link>
-        <span className="text-gray-800 leading-tight text-sm font-bold">
+      </div>
+
+      {/* Mobile: Brand text in center */}
+      <div className="md:hidden absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
+        <span className="text-[#F6892A] leading-tight text-2xl font-extrabold whitespace-nowrap">
           Ukti Early Years
         </span>
       </div>
