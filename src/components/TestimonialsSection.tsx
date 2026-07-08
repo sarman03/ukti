@@ -22,7 +22,12 @@ function TestimonialVideo({
   className?: string;
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    setIsLoaded(false);
+  }, [src]);
 
   const startPlayback = () => {
     if (isPlaying) return;
@@ -39,13 +44,43 @@ function TestimonialVideo({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl bg-gray-200 shadow-xl ${className ?? ""}`}
+      className={`relative overflow-hidden rounded-2xl bg-[#fefce8] shadow-xl ${className ?? ""}`}
       onClick={!isPlaying ? startPlayback : undefined}
       onKeyDown={!isPlaying ? handleKeyDown : undefined}
       role={!isPlaying ? "button" : undefined}
       tabIndex={!isPlaying ? 0 : undefined}
       aria-label={!isPlaying ? "Play testimonial video" : undefined}
     >
+      <style>{`
+        @keyframes shimmerSweep {
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
+        }
+        .shimmer-bg {
+          background: linear-gradient(90deg, #fefce8 25%, #fef08a 50%, #fefce8 75%);
+          background-size: 200% 100%;
+          animation: shimmerSweep 1.5s infinite linear;
+        }
+      `}</style>
+
+      {/* Shimmer loading skeleton */}
+      {!isPlaying && (
+        <div
+          className={`absolute inset-0 flex flex-col items-center justify-center z-10 shimmer-bg transition-opacity duration-500 pointer-events-none ${
+            isLoaded ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          {/* Pulsing play icon placeholder */}
+          <div className="h-16 w-16 rounded-full bg-white/40 shadow-inner flex items-center justify-center animate-pulse">
+            <div className="h-8 w-8 rounded-full bg-white/60" />
+          </div>
+        </div>
+      )}
+
       <video
         ref={videoRef}
         src={src}
@@ -54,6 +89,7 @@ function TestimonialVideo({
         controls={isPlaying}
         playsInline
         preload="metadata"
+        onLoadedData={() => setIsLoaded(true)}
       />
       {!isPlaying && poster && (
         <img
@@ -61,10 +97,15 @@ function TestimonialVideo({
           alt=""
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover"
+          onLoad={() => setIsLoaded(true)}
         />
       )}
       {!isPlaying && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+        <div
+          className={`absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity duration-500 ${
+            isLoaded ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        >
           <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/95 shadow-lg">
             <svg
               className="h-8 w-8 text-[#5EA85B]"
