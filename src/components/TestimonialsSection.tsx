@@ -27,10 +27,7 @@ function TestimonialVideo({
   const startPlayback = () => {
     if (isPlaying) return;
     setIsPlaying(true);
-    if (videoRef.current) {
-      videoRef.current.muted = false;
-      void videoRef.current.play();
-    }
+    void videoRef.current?.play();
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -56,8 +53,7 @@ function TestimonialVideo({
         className="h-full w-full object-cover"
         controls={isPlaying}
         playsInline
-        preload="auto"
-        muted={!isPlaying}
+        preload="metadata"
       />
       {!isPlaying && poster && (
         <img
@@ -232,7 +228,7 @@ export default function TestimonialsSection() {
                       src={videos[prevIdx]}
                       poster={posters[prevIdx]}
                       className="w-full h-full object-cover opacity-70"
-                      preload="auto"
+                      preload="metadata"
                       playsInline
                       muted
                     />
@@ -266,7 +262,7 @@ export default function TestimonialsSection() {
                       src={videos[nextIdx]}
                       poster={posters[nextIdx]}
                       className="w-full h-full object-cover opacity-70"
-                      preload="auto"
+                      preload="metadata"
                       playsInline
                       muted
                     />
