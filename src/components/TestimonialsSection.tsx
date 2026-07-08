@@ -115,11 +115,16 @@ export default function TestimonialsSection() {
     index: i,
   })).filter(({ index }) => !removedFallbacks[index]);
 
-  const videos = cleared
+  const rawVideos = cleared
     ? []
     : supabaseVideos.length > 0
       ? supabaseVideos
       : fallbackItems.map((item) => item.video);
+
+  const videos = rawVideos.map((url) =>
+    url.includes("#t=") ? url : `${url}#t=0.001`
+  );
+
   const posters =
     supabaseVideos.length > 0 ? [] : fallbackItems.map((item) => item.poster);
 
