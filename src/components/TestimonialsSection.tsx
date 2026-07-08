@@ -16,18 +16,32 @@ function TestimonialVideo({
   src,
   poster,
   className,
+  isActive,
 }: {
   src: string;
   poster?: string;
   className?: string;
+  isActive: boolean;
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  useEffect(() => {
+    if (!isActive && isPlaying) {
+      setIsPlaying(false);
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+    }
+  }, [isActive, isPlaying]);
+
   const startPlayback = () => {
     if (isPlaying) return;
     setIsPlaying(true);
-    void videoRef.current?.play();
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      void videoRef.current.play();
+    }
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -53,7 +67,8 @@ function TestimonialVideo({
         className="h-full w-full object-cover"
         controls={isPlaying}
         playsInline
-        preload="metadata"
+        preload="auto"
+        muted={!isPlaying}
       />
       {!isPlaying && poster && (
         <img
@@ -160,13 +175,20 @@ export default function TestimonialsSection() {
           <>
             {/* Mobile — carousel */}
             <div className="md:hidden px-4">
-              <div className="relative mx-auto w-full max-w-sm">
-                <TestimonialVideo
-                  key={safeCurrent}
-                  src={videos[safeCurrent]}
-                  poster={posters[safeCurrent]}
-                  className="aspect-[9/16] w-full"
-                />
+              <div className="relative mx-auto w-full max-w-sm aspect-[9/16]">
+                {videos.map((videoUrl, i) => (
+                  <TestimonialVideo
+                    key={i}
+                    src={videoUrl}
+                    poster={posters[i]}
+                    isActive={i === safeCurrent}
+                    className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
+                      i === safeCurrent
+                        ? "opacity-100 z-10 pointer-events-auto"
+                        : "opacity-0 z-0 pointer-events-none"
+                    }`}
+                  />
+                ))}
                 {videos.length > 1 && (
                   <>
                     <button
@@ -222,24 +244,31 @@ export default function TestimonialsSection() {
                 }}
                 onClick={prevIdx !== null ? () => setCurrent(prevIdx) : undefined}
               >
-                {prevIdx !== null && (
-                  <>
+                {videos.map((videoUrl, i) => (
+                  <div
+                    key={i}
+                    className={`absolute inset-0 transition-opacity duration-300 ${
+                      i === prevIdx ? "opacity-100 z-10 pointer-events-auto" : "opacity-0 z-0 pointer-events-none"
+                    }`}
+                  >
                     <video
-                      src={videos[prevIdx]}
-                      poster={posters[prevIdx]}
+                      src={videoUrl}
+                      poster={posters[i]}
                       className="w-full h-full object-cover opacity-70"
-                      preload="metadata"
+                      preload="auto"
                       playsInline
                       muted
                     />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/80 shadow">
-                        <svg className="h-6 w-6 text-[#5EA85B]" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </span>
-                    </div>
-                  </>
+                  </div>
+                ))}
+                {prevIdx !== null && (
+                  <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/80 shadow">
+                      <svg className="h-6 w-6 text-[#5EA85B]" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </div>
                 )}
               </div>
 
@@ -256,24 +285,31 @@ export default function TestimonialsSection() {
                 }}
                 onClick={nextIdx !== null ? () => setCurrent(nextIdx) : undefined}
               >
-                {nextIdx !== null && (
-                  <>
+                {videos.map((videoUrl, i) => (
+                  <div
+                    key={i}
+                    className={`absolute inset-0 transition-opacity duration-300 ${
+                      i === nextIdx ? "opacity-100 z-10 pointer-events-auto" : "opacity-0 z-0 pointer-events-none"
+                    }`}
+                  >
                     <video
-                      src={videos[nextIdx]}
-                      poster={posters[nextIdx]}
+                      src={videoUrl}
+                      poster={posters[i]}
                       className="w-full h-full object-cover opacity-70"
-                      preload="metadata"
+                      preload="auto"
                       playsInline
                       muted
                     />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/80 shadow">
-                        <svg className="h-6 w-6 text-[#5EA85B]" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </span>
-                    </div>
-                  </>
+                  </div>
+                ))}
+                {nextIdx !== null && (
+                  <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/80 shadow">
+                      <svg className="h-6 w-6 text-[#5EA85B]" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </div>
                 )}
               </div>
 
@@ -289,12 +325,19 @@ export default function TestimonialsSection() {
                   zIndex: 10,
                 }}
               >
-                <TestimonialVideo
-                  key={safeCurrent}
-                  src={videos[safeCurrent]}
-                  poster={posters[safeCurrent]}
-                  className="h-full w-full"
-                />
+                {videos.map((videoUrl, i) => (
+                  <TestimonialVideo
+                    key={i}
+                    src={videoUrl}
+                    poster={posters[i]}
+                    isActive={i === safeCurrent}
+                    className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
+                      i === safeCurrent
+                        ? "opacity-100 z-10 pointer-events-auto"
+                        : "opacity-0 z-0 pointer-events-none"
+                    }`}
+                  />
+                ))}
               </div>
 
               {/* Prev / Next arrow buttons */}
