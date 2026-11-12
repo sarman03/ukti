@@ -253,14 +253,19 @@ function TourForm() {
     const day = new Date(dateStr).getDay();
     if (day === 6) {
       return [
-        "11:00 AM - 12:00 PM",
-        "12:00 PM - 1:00 PM",
-        "1:00 PM - 2:00 PM",
+        "11:00 AM - 11:30 AM",
+        "11:30 AM - 12:00 PM",
+        "12:00 PM - 12:30 PM",
+        "12:30 PM - 1:00 PM",
+        "1:00 PM - 1:30 PM",
+        "1:30 PM - 2:00 PM",
       ];
     }
     return [
-      "1:00 PM - 2:00 PM",
-      "2:00 PM - 3:00 PM",
+      "1:00 PM - 1:30 PM",
+      "1:30 PM - 2:00 PM",
+      "2:00 PM - 2:30 PM",
+      "2:30 PM - 3:00 PM",
     ];
   }
 
